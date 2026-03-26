@@ -1,10 +1,10 @@
+"use client";
+
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { useAdmin } from "@/components/admin/AdminProvider";
 
 export default function DashboardRedirect() {
   const router = useRouter();
-  const { isAdmin } = useAdmin();
 
   useEffect(() => {
     // Force redirect to Home for Visual Editor
