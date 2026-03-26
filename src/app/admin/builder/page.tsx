@@ -11,6 +11,7 @@ import {
 } from "@/types";
 
 export const metadata = { title: "Admin Dashboard | Timon Biswas" };
+export const dynamic = "force-dynamic";
 
 export default async function BuilderPage() {
   // Fetch initial data from Supabase (with static fallbacks)
