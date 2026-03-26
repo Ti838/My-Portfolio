@@ -165,31 +165,36 @@ const staticSkillCategories: SkillCategory[] = [
 
 const staticExperiences: ExperienceItem[] = [
   {
-    id: "medical-app-dev",
-    title: "Solo Developer — Medical Management App",
+    id: "jerry-ai",
+    title: "AI Developer — Jerry AI Voice Assistant",
     type: "work",
-    duration: "March 2025 – Present",
-    description:
-      "Building a Medical Management App to streamline healthcare processes such as patient record management and appointment scheduling. Applying Java and Python skills to create a user-friendly solution focused on functionality and efficiency.",
-    tags: ["Java", "Python", "Android", "Solo Dev"],
+    duration: "2025 – Present",
+    description: "Built an advanced voice assistant equipped with Hugging Face free AI models and PC/Android automation capabilities. Key features include background listening with a wake word and a unified server process.",
+    tags: ["Python", "Hugging Face API", "AI Agent"],
+  },
+  {
+    id: "medical-app-dev",
+    title: "Solo Developer — Philomedis Mobile App",
+    type: "work",
+    duration: "2024 – Present",
+    description: "Developing a comprehensive medical management application designed to streamline hospital operations, including patient record management and appointment scheduling.",
+    tags: ["Java", "Firebase", "Android Studio"],
+  },
+  {
+    id: "task-management-dev",
+    title: "Full Stack Developer — Task Management System",
+    type: "work",
+    duration: "2024",
+    description: "Developed a modern task management application featuring a Next.js drag-and-drop board, secure user authentication, and real-time database updates.",
+    tags: ["Next.js", "Firebase", "Tailwind CSS"],
   },
   {
     id: "competitive-programmer",
-    title: "Competitive Programmer",
+    title: "Competitive Programmer (ICPC)",
     type: "competition",
-    duration: "2024 – Present",
-    description:
-      "Actively participating in competitive programming to enhance problem-solving and coding skills. Regularly practicing on Codeforces and LeetCode, solving problems in C, C++, and Java. Participated in ICPC Asia Dhaka Preliminary 2024 and earned Honorable Mention.",
-    tags: ["Codeforces", "LeetCode", "ICPC", "C++"],
-  },
-  {
-    id: "singer",
-    title: "Singer & Vocal Performer",
-    type: "volunteer",
     duration: "2023 – Present",
-    description:
-      "Performed at local events and college functions, delivering powerful vocal performances. Regularly practicing to refine singing skills, focusing on versatility and emotional expression. This experience has built confidence, stage presence, and audience connection.",
-    tags: ["Live Performance", "Vocal", "Stage"],
+    description: "Actively participating in competitive programming on platforms like Codeforces and LeetCode. Earned an Honorable Mention at the ICPC Asia Dhaka Preliminary 2024.",
+    tags: ["Codeforces", "LeetCode", "ICPC", "C++"],
   },
 ];
 

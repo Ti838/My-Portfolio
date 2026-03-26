@@ -6,8 +6,8 @@ import { getPersonalInfo, getAchievements, getSkills, getProjects, getTechColor,
 import EditableSection from "@/components/admin/EditableSection";
 
 export const metadata: Metadata = {
-  title: "Timon Biswas — CSE Student & AI Enthusiast",
-  description: "Personal portfolio of Timon Biswas — 2nd-year CSE student, ICPC 2024 Honorable Mention, AI & ML enthusiast from Bangladesh.",
+  title: "Timon Biswas",
+  description: "Personal portfolio of Timon Biswas — 3rd-year CSE student, ICPC 2024 Honorable Mention, AI & ML enthusiast from Bangladesh.",
 };
 
 async function getLiveStats() {
@@ -209,7 +209,7 @@ export default async function HomePage() {
         <section className="bg-slate-50 dark:bg-slate-800/40 py-16 lg:py-20 px-5">
         <div className="max-w-6xl mx-auto grid md:grid-cols-3 gap-8">
           {[
-            { icon: <div className="p-3 bg-blue-50 dark:bg-blue-900/20 text-blue-500 rounded-2xl w-fit"><FiMonitor size={24} /></div>, title: "Developer", desc: "Building the Philomedis Medical App solo. Experienced in Android (Java), Dart, PHP, and Python. Always shifting ideas into real-world code." },
+            { icon: <div className="p-3 bg-blue-50 dark:bg-blue-900/20 text-blue-500 rounded-2xl w-fit"><FiMonitor size={24} /></div>, title: "Developer", desc: "Building the Philomedis Medical App, Jerry AI Assistant, and Web applications. Experienced in Android (Java), Dart, PHP, and Python. Always shifting ideas into real-world code." },
             { icon: <div className="p-3 bg-amber-50 dark:bg-amber-900/20 text-amber-500 rounded-2xl w-fit"><FiAward size={24} /></div>, title: "Competitive Programmer", desc: "ICPC Asia Dhaka 2024 Honorable Mention. Active on Codeforces & LeetCode." },
             { icon: <div className="p-3 bg-purple-50 dark:bg-purple-900/20 text-purple-500 rounded-2xl w-fit"><FiMic size={24} /></div>, title: "Vocalist", desc: "Performed at college events. Passionate about emotional vocal delivery and stage presence." },
           ].map(({ icon, title, desc }) => (

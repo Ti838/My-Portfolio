@@ -15,7 +15,7 @@ export const metadata: Metadata = {
     template: "%s | Timon Biswas",
   },
   description:
-    "Personal portfolio of Timon Biswas — 2nd-year CSE student at SMUCT, competitive programmer (ICPC 2024 Honorable Mention), AI & ML enthusiast, and vocalist.",
+    "Personal portfolio of Timon Biswas — 3rd-year CSE student at SMUCT, competitive programmer (ICPC 2024 Honorable Mention), AI & ML enthusiast, and vocalist.",
   keywords: ["Timon Biswas", "CSE", "SMUCT", "ICPC", "AI", "Machine Learning", "Competitive Programming", "Bangladesh"],
   authors: [{ name: "Timon Biswas", url: "https://timonbiswas.vercel.app" }],
   creator: "Timon Biswas",
