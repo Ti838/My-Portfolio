@@ -280,17 +280,11 @@ export default async function HomePage() {
               {skillCategories.map((cat) => (
                 <div key={cat.category} className="card-base p-6">
                   <h3 className="font-display font-700 text-slate-900 dark:text-white mb-4">{cat.category}</h3>
-                  <div className="space-y-3">
-                    {cat.skills.map((s: { name: string, level: number }) => (
-                      <div key={s.name}>
-                        <div className="flex justify-between text-xs mb-1">
-                          <span className="text-slate-600 dark:text-slate-400">{s.name}</span>
-                          <span className="text-accent-500 font-bold">{s.level}%</span>
-                        </div>
-                        <div className="h-1.5 w-full bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden">
-                          <div className="h-full bg-accent-500 rounded-full" style={{ width: `${s.level}%` }} />
-                        </div>
-                      </div>
+                  <div className="flex flex-wrap gap-2">
+                    {cat.skills.map((s: { name: string; level: number }) => (
+                      <span key={s.name} className="px-3 py-1.5 bg-slate-100 dark:bg-slate-700 rounded-lg text-xs font-semibold text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-600">
+                        {s.name}
+                      </span>
                     ))}
                   </div>
                 </div>
