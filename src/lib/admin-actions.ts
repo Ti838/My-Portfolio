@@ -5,6 +5,49 @@ import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
 import { verifyTOTP } from "@/lib/totp";
 
+const SESSION_COOKIE = "admin_session";
+const SESSION_VALUE = "authenticated";
+
+// ─── Session Management ──────────────────────────────────────────────────────
+
+export async function loginAdminAction(password: string, token: string): Promise<{ success: boolean; error?: string; back?: boolean }> {
+  try {
+    // 1. Verify password (env var first, then Supabase fallback)
+    const envPassword = process.env.ADMIN_PASSWORD;
+    if (!envPassword) return { success: false, error: "Server misconfigured: ADMIN_PASSWORD not set.", back: true };
+    if (password !== envPassword) return { success: false, error: "Incorrect password.", back: true };
+
+    // 2. Verify TOTP
+    const validToken = verifyTOTP(token);
+    if (!validToken) return { success: false, error: "Invalid or expired 2FA code. Try again." };
+
+    // 3. Set server-side session cookie (HTTP-only, secure)
+    const cookieStore = cookies();
+    cookieStore.set(SESSION_COOKIE, SESSION_VALUE, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      path: "/",
+      maxAge: 60 * 60 * 24, // 24 hours
+    });
+
+    return { success: true };
+  } catch {
+    return { success: false, error: "Server error during authentication." };
+  }
+}
+
+export async function logoutAdminAction(): Promise<void> {
+  const cookieStore = cookies();
+  cookieStore.delete(SESSION_COOKIE);
+}
+
+export async function checkAdminAuth(): Promise<boolean> {
+  const cookieStore = cookies();
+  return cookieStore.get(SESSION_COOKIE)?.value === SESSION_VALUE;
+}
+
+
 export async function getAllAdminData() {
   const supabase = createAdminClient();
   

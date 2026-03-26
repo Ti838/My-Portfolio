@@ -1,94 +1,163 @@
 "use client";
 import { useState } from "react";
-import { FiDownload, FiAlertCircle, FiCheckCircle } from "react-icons/fi";
+import { useRouter } from "next/navigation";
+import { FiShield, FiLock, FiAlertCircle, FiCheckCircle, FiEye, FiEyeOff, FiArrowRight } from "react-icons/fi";
+import { loginAdminAction } from "@/lib/admin-actions";
+import { useAdmin } from "@/components/admin/AdminProvider";
 
-type Status = "idle" | "loading" | "success" | "error";
+type Step = "password" | "totp";
+type Status = "idle" | "loading" | "error" | "success";
 
-export default function ResumeDownloadPage() {
+export default function AdminLoginPage() {
+  const [step, setStep] = useState<Step>("password");
+  const [password, setPassword] = useState("");
   const [token, setToken] = useState("");
+  const [showPwd, setShowPwd] = useState(false);
   const [status, setStatus] = useState<Status>("idle");
-  const [message, setMessage] = useState("");
+  const [errorMsg, setErrorMsg] = useState("");
+  const router = useRouter();
+  const { login } = useAdmin();
 
-  const verify = async (e: React.FormEvent) => {
+  const handlePasswordStep = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (token.length !== 6 || !/^\d+$/.test(token)) {
+    if (!password || password.length < 4) {
       setStatus("error");
-      setMessage("Enter the 6-digit code from Google Authenticator.");
+      setErrorMsg("Please enter your admin password.");
+      return;
+    }
+    setStatus("loading");
+    // Move to TOTP step (password is verified together with TOTP on the backend)
+    setTimeout(() => {
+      setStatus("idle");
+      setStep("totp");
+    }, 500);
+  };
+
+  const handleTotpStep = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (token.length !== 6) {
+      setStatus("error");
+      setErrorMsg("Enter the 6-digit code from Google Authenticator.");
       return;
     }
     setStatus("loading");
     try {
-      const res = await fetch("/api/resume", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ token }),
-      });
-      const data = await res.json();
-      if (!res.ok) {
+      const result = await loginAdminAction(password, token);
+      if (!result.success) {
         setStatus("error");
-        setMessage(data.error ?? "Invalid or expired code. Try again.");
+        setErrorMsg(result.error ?? "Invalid credentials. Try again.");
+        if (result.back) setStep("password");
         return;
       }
-      
-      // TRIGGER DOWNLOAD
       setStatus("success");
-      setMessage("Success! Your download is starting...");
-      window.location.href = data.url;
+      login();
+      setTimeout(() => router.push("/"), 800);
     } catch {
       setStatus("error");
-      setMessage("Something went wrong. Please try again.");
+      setErrorMsg("Server error. Please try again.");
     }
   };
 
   return (
-    <div className="pt-24 pb-20 min-h-screen bg-white dark:bg-slate-900 flex items-center justify-center px-5 font-sans">
-      <div className="w-full max-w-md">
-        <div className="card-base p-8 space-y-7 shadow-2xl border border-slate-100 dark:border-slate-800">
-          {/* Header */}
-          <div className="text-center space-y-3">
-            <div className="w-14 h-14 rounded-2xl bg-accent-50 dark:bg-accent-900/30 flex items-center justify-center mx-auto text-accent-500">
-               <FiDownload size={26} />
-            </div>
-            <h1 className="font-display font-900 text-2xl text-slate-900 dark:text-white uppercase tracking-tight">Download Resume</h1>
-            <p className="text-sm text-slate-500 dark:text-slate-400 font-medium">
-              Please enter the security code to access documents.
-            </p>
+    <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 flex items-center justify-center px-5 relative overflow-hidden">
+      {/* Animated glow */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute top-1/3 left-1/4 w-96 h-96 bg-accent-500/10 rounded-full blur-3xl animate-pulse" />
+        <div className="absolute bottom-1/4 right-1/4 w-64 h-64 bg-purple-500/10 rounded-full blur-3xl animate-pulse delay-1000" />
+      </div>
+
+      <div className="w-full max-w-sm relative z-10">
+        {/* Logo / Header */}
+        <div className="text-center mb-8 space-y-4">
+          <div className="w-16 h-16 rounded-2xl bg-accent-500/20 border border-accent-500/30 flex items-center justify-center mx-auto shadow-2xl shadow-accent-500/20">
+            <FiShield size={28} className="text-accent-400" />
           </div>
+          <div>
+            <h1 className="text-2xl font-bold text-white tracking-tight">Admin Portal</h1>
+            <p className="text-sm text-slate-400 mt-1">Timon Biswas Portfolio</p>
+          </div>
+        </div>
 
-          {/* TOTP form */}
-          <form onSubmit={verify} className="space-y-4">
-            <input
-              type="text"
-              inputMode="numeric"
-              maxLength={6}
-              value={token}
-              onChange={(e) => {
-                setToken(e.target.value.replace(/\D/g, ""));
-                setStatus("idle");
-              }}
-              placeholder="000000"
-              className="w-full px-4 py-4 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white text-center text-3xl font-mono tracking-[0.5em] focus:ring-2 focus:ring-accent-500 outline-none placeholder-slate-200"
-            />
+        {/* Step Indicator */}
+        <div className="flex items-center gap-2 mb-6 justify-center">
+          <div className={`flex items-center gap-2 text-xs font-bold px-3 py-1.5 rounded-full transition-all ${step === "password" ? "bg-accent-500 text-white" : "bg-green-500/20 text-green-400 border border-green-500/30"}`}>
+            {step !== "password" ? <FiCheckCircle size={12} /> : <span>1</span>}
+            Password
+          </div>
+          <div className="w-8 h-px bg-slate-700" />
+          <div className={`flex items-center gap-2 text-xs font-bold px-3 py-1.5 rounded-full transition-all ${step === "totp" ? "bg-accent-500 text-white" : "bg-slate-700 text-slate-400"}`}>
+            <span>2</span>
+            Authenticator
+          </div>
+        </div>
 
-            {status === "error" && (
-              <div className="flex items-center gap-2 text-red-500 text-xs bg-red-50 dark:bg-red-900/10 p-3 rounded-lg font-bold">
-                <FiAlertCircle size={14} /> {message}
+        {/* Card */}
+        <div className="bg-slate-900/80 backdrop-blur-xl border border-slate-700/50 rounded-3xl p-7 shadow-2xl space-y-5">
+          {status === "error" && (
+            <div className="flex items-center gap-2 text-red-400 text-xs bg-red-500/10 border border-red-500/20 p-3 rounded-xl font-semibold">
+              <FiAlertCircle size={14} className="flex-shrink-0" /> {errorMsg}
+            </div>
+          )}
+          {status === "success" && (
+            <div className="flex items-center gap-2 text-green-400 text-xs bg-green-500/10 border border-green-500/20 p-3 rounded-xl font-semibold">
+              <FiCheckCircle size={14} /> Access granted! Redirecting…
+            </div>
+          )}
+
+          {/* STEP 1: Password */}
+          {step === "password" && (
+            <form onSubmit={handlePasswordStep} className="space-y-4">
+              <div>
+                <label className="block text-xs font-semibold text-slate-400 uppercase tracking-widest mb-2">Admin Password</label>
+                <div className="relative">
+                  <FiLock size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500" />
+                  <input
+                    type={showPwd ? "text" : "password"}
+                    value={password}
+                    onChange={e => { setPassword(e.target.value); setStatus("idle"); }}
+                    placeholder="Enter your password"
+                    className="w-full pl-10 pr-10 py-3.5 rounded-xl bg-slate-800 border border-slate-700 text-white placeholder-slate-600 focus:border-accent-500 focus:ring-2 focus:ring-accent-500/20 outline-none transition-all text-sm"
+                    autoFocus
+                  />
+                  <button type="button" onClick={() => setShowPwd(v => !v)} className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-300 transition-colors p-1">
+                    {showPwd ? <FiEyeOff size={15} /> : <FiEye size={15} />}
+                  </button>
+                </div>
               </div>
-            )}
-            {status === "success" && (
-              <div className="flex items-center gap-2 text-green-600 text-xs bg-green-50 dark:bg-green-900/10 p-3 rounded-lg font-bold">
-                <FiCheckCircle size={14} /> {message}
-              </div>
-            )}
+              <button type="submit" disabled={status === "loading" || !password} className="w-full h-12 rounded-xl bg-accent-500 hover:bg-accent-600 disabled:opacity-50 text-white font-bold text-sm flex items-center justify-center gap-2 transition-all shadow-lg shadow-accent-500/25 active:scale-95">
+                {status === "loading" ? "Verifying…" : <><span>Continue</span><FiArrowRight size={16} /></>}
+              </button>
+              <p className="text-center text-[11px] text-slate-600">
+                First time? <a href="/admin/setup" className="text-accent-400 hover:text-accent-300 transition-colors">Setup 2FA →</a>
+              </p>
+            </form>
+          )}
 
-            <button
-              type="submit"
-              disabled={token.length < 6 || status === "loading"}
-              className="btn-primary w-full justify-center h-12 shadow-lg shadow-accent-500/20"
-            >
-              {status === "loading" ? "Verifying..." : <><FiDownload size={16} /> Get PDF Now</>}
-            </button>
-          </form>
+          {/* STEP 2: TOTP */}
+          {step === "totp" && (
+            <form onSubmit={handleTotpStep} className="space-y-4">
+              <div>
+                <label className="block text-xs font-semibold text-slate-400 uppercase tracking-widest mb-2">Authenticator Code</label>
+                <p className="text-xs text-slate-500 mb-3">Open Google Authenticator and enter the 6-digit code for "Timon Portfolio".</p>
+                <input
+                  type="text"
+                  inputMode="numeric"
+                  maxLength={6}
+                  value={token}
+                  onChange={e => { setToken(e.target.value.replace(/\D/g, "")); setStatus("idle"); }}
+                  placeholder="000000"
+                  className="w-full px-4 py-4 rounded-xl bg-slate-800 border border-slate-700 text-white text-center text-3xl font-mono tracking-[0.5em] focus:border-accent-500 focus:ring-2 focus:ring-accent-500/20 outline-none transition-all placeholder-slate-700"
+                  autoFocus
+                />
+              </div>
+              <button type="submit" disabled={token.length < 6 || status === "loading"} className="w-full h-12 rounded-xl bg-accent-500 hover:bg-accent-600 disabled:opacity-50 text-white font-bold text-sm flex items-center justify-center gap-2 transition-all shadow-lg shadow-accent-500/25 active:scale-95">
+                {status === "loading" ? "Authenticating…" : <><FiShield size={16} /><span>Verify & Enter</span></>}
+              </button>
+              <button type="button" onClick={() => { setStep("password"); setStatus("idle"); }} className="w-full text-xs text-slate-500 hover:text-slate-400 transition-colors py-1">
+                ← Back to password
+              </button>
+            </form>
+          )}
         </div>
       </div>
     </div>

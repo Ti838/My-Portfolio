@@ -1,6 +1,7 @@
 "use client";
 
-import React, { createContext, useContext, useEffect, useState } from "react";
+import React, { createContext, useContext, useEffect, useState, useCallback } from "react";
+import { checkAdminAuth, logoutAdminAction } from "@/lib/admin-actions";
 
 interface AdminContextProps {
   isAdmin: boolean;
@@ -17,23 +18,21 @@ const AdminContext = createContext<AdminContextProps>({
 export function AdminProvider({ children }: { children: React.ReactNode }) {
   const [isAdmin, setIsAdmin] = useState(false);
 
+  // Check server-side session on mount
   useEffect(() => {
-    // Check initial state from localStorage
-    const adminAuth = localStorage.getItem("admin_auth");
-    if (adminAuth === "true") {
-      setIsAdmin(true);
-    }
+    checkAdminAuth().then(setIsAdmin).catch(() => setIsAdmin(false));
   }, []);
 
-  const login = () => {
-    localStorage.setItem("admin_auth", "true");
+  const login = useCallback(() => {
     setIsAdmin(true);
-  };
+  }, []);
 
-  const logout = () => {
-    localStorage.removeItem("admin_auth");
+  const logout = useCallback(async () => {
+    try {
+      await logoutAdminAction();
+    } catch { /* ignore */ }
     setIsAdmin(false);
-  };
+  }, []);
 
   return (
     <AdminContext.Provider value={{ isAdmin, login, logout }}>
