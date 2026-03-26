@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { useTheme } from "next/themes";
+import { useTheme } from "next-themes";
 import { useAdmin } from "@/components/admin/AdminProvider";
 import { FiSun, FiMoon, FiMenu, FiX, FiChevronDown, FiEdit3 } from "react-icons/fi";
 
