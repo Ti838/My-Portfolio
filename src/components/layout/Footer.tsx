@@ -36,7 +36,7 @@ export default function Footer({ socialLinks = [] }: { socialLinks?: any[] }) {
         </div>
         <p className="text-xs text-slate-400 dark:text-slate-600">
           © {new Date().getFullYear()} Timon Biswas. All rights reserved.
-          <Link href="/admin/dashboard" className="ml-2 text-[10px] text-slate-300 dark:text-slate-700 hover:text-accent-500 transition-colors opacity-0 hover:opacity-100">Admin</Link>
+          <Link href="/admin" className="ml-2 text-[10px] text-slate-300 dark:text-slate-700 hover:text-accent-500 transition-colors opacity-0 hover:opacity-100">Admin</Link>
         </p>
       </div>
     </footer>

@@ -9,23 +9,21 @@ import { useState, useEffect } from "react";
 export default function HeaderStack({ personalInfo }: { personalInfo?: any }) {
   const { isAdmin } = useAdmin();
   const [mounted, setMounted] = useState(false);
-  const [bannerVisible, setBannerVisible] = useState(true);
 
   useEffect(() => {
     setMounted(true);
   }, []);
 
-  if (!mounted) return null;
-
   const announcement = personalInfo?.announcement;
-  const showBanner = announcement?.active && announcement?.text && bannerVisible;
-  const paddingOffset = (isAdmin ? 40 : 0) + (showBanner ? 40 : 0);
+  const showBanner = mounted && announcement?.active && announcement?.text;
+  // Use 64px for navbar height always (it's always rendered), add banner + admin bar only when mounted
+  const paddingOffset = 64 + (mounted && isAdmin ? 40 : 0) + (showBanner ? 40 : 0);
 
   return (
     <>
-      <AdminOverlay />
+      {mounted && <AdminOverlay />}
       <Navbar logoImage={personalInfo?.logoImage} />
-      <AnnouncementBanner announcement={announcement} />
+      {mounted && <AnnouncementBanner announcement={announcement} />}
       {/* Spacer to push content below fixed header components */}
       <div style={{ height: `${paddingOffset}px` }} className="transition-all duration-300" />
     </>

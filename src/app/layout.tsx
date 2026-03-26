@@ -62,8 +62,14 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800;900&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,400&family=JetBrains+Mono:wght@400;500&display=swap"
           rel="stylesheet"
         />
+      {/* Blocking theme script - prevents FOUC/flicker on load */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){try{var t=localStorage.getItem('theme');if(t==='dark'){document.documentElement.classList.add('dark');}}catch(e){}})();`,
+          }}
+        />
       </head>
-      <body className="noise-bg antialiased">
+      <body suppressHydrationWarning className="noise-bg antialiased">
         <ThemeProvider attribute="class" defaultTheme="light" enableSystem={false}>
           <AdminProvider>
             <HeaderStack personalInfo={personalInfo} />

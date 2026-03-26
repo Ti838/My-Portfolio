@@ -98,7 +98,16 @@ export default function Navbar({ logoImage }: { logoImage?: string }) {
         <div className="flex items-center gap-2">
           {mounted && (
             <button
-              onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+              onClick={() => {
+                // Suppress transitions for one frame to prevent flicker
+                document.documentElement.classList.add("no-transitions");
+                setTheme(theme === "dark" ? "light" : "dark");
+                requestAnimationFrame(() => {
+                  requestAnimationFrame(() => {
+                    document.documentElement.classList.remove("no-transitions");
+                  });
+                });
+              }}
               aria-label="Toggle theme"
               className="w-9 h-9 rounded-lg flex items-center justify-center text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
             >

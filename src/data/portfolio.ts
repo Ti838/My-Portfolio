@@ -50,9 +50,9 @@ const staticPersonalInfo = {
     projects: "14+",
   },
   announcement: {
-    text: "Open to exciting opportunities in Software Engineering & AI Integration!",
-    link: "mailto:timonbiswas33@gmail.com",
-    active: true
+    text: "",
+    link: "",
+    active: false
   }
 };
 

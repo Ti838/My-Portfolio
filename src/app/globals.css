@@ -256,3 +256,13 @@ h1, h2, h3, h4 {
   background-image: radial-gradient(circle, var(--border) 1px, transparent 1px);
   background-size: 28px 28px;
 }
+
+/* ── Prevent theme-switch flicker ──────────────────────────────────────────── */
+/* Applied via JS for one frame when toggling theme */
+.no-transitions,
+.no-transitions *,
+.no-transitions *::before,
+.no-transitions *::after {
+  transition: none !important;
+  animation: none !important;
+}
