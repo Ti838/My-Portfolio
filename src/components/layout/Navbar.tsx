@@ -2,7 +2,8 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { useTheme } from "next-themes";
+import { usePathname } from "next/navigation";
+import { useTheme } from "next/themes";
 import { useAdmin } from "@/components/admin/AdminProvider";
 import { FiSun, FiMoon, FiMenu, FiX, FiChevronDown, FiEdit3 } from "react-icons/fi";
 
@@ -22,10 +23,10 @@ const navLinks = [
 export default function Navbar({ logoImage }: { logoImage?: string }) {
   const { theme, setTheme } = useTheme();
   const { isAdmin } = useAdmin();
+  const pathname = usePathname();
   const [mounted, setMounted] = useState(false);
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const pathname = typeof window !== 'undefined' ? window.location.pathname : ''; // Replaced usePathname with window.location.pathname
 
   useEffect(() => {
     setMounted(true);
