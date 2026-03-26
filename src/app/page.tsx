@@ -12,11 +12,12 @@ export const metadata: Metadata = {
 
 async function getLiveStats() {
   try {
-    const [cfUser, cfStatus, cfRatingRes, ghUser] = await Promise.all([
+    const [cfUser, cfStatus, cfRatingRes, ghUser, lcUser] = await Promise.all([
       fetch("https://codeforces.com/api/user.info?handles=Timon15", { next: { revalidate: 3600 } }).then(r => r.ok ? r.json() : null).catch(()=>null),
       fetch("https://codeforces.com/api/user.status?handle=Timon15", { next: { revalidate: 3600 } }).then(r => r.ok ? r.json() : null).catch(()=>null),
       fetch("https://codeforces.com/api/user.rating?handle=Timon15", { next: { revalidate: 3600 } }).then(r => r.ok ? r.json() : null).catch(()=>null),
-      fetch("https://api.github.com/users/Ti838", { next: { revalidate: 3600 } }).then(r => r.ok ? r.json() : null).catch(()=>null)
+      fetch("https://api.github.com/users/Ti838", { next: { revalidate: 3600 } }).then(r => r.ok ? r.json() : null).catch(()=>null),
+      fetch("https://leetcode-stats-api.herokuapp.com/zPb5WFxojz", { next: { revalidate: 3600 } }).then(r => r.ok ? r.json() : null).catch(()=>null)
     ]);
 
     const cfRating = cfUser?.result?.[0]?.rating || 863;
@@ -32,10 +33,11 @@ async function getLiveStats() {
 
     const cfContests = cfRatingRes?.result?.length || 0;
     const ghRepos = ghUser?.public_repos || 10;
+    const lcSolved = lcUser?.totalSolved || 0;
 
-    return { cfRating, cfSolved, cfContests, ghRepos };
+    return { cfRating, cfSolved, cfContests, ghRepos, lcSolved };
   } catch (error) {
-    return { cfRating: 863, cfSolved: 0, cfContests: 0, ghRepos: 10 };
+    return { cfRating: 863, cfSolved: 0, cfContests: 0, ghRepos: 10, lcSolved: 0 };
   }
 }
 
@@ -54,6 +56,11 @@ export default async function HomePage() {
       label: "Codeforces", username: "Timon15", url: "https://codeforces.com/profile/Timon15", 
       color: "text-blue-500", bg: "bg-blue-50 dark:bg-blue-900/20",
       stats: personalInfo.stats?.codeforces_stats || `Rating: ${liveStats.cfRating} • Solved: ${liveStats.cfSolved} • Contests: ${liveStats.cfContests}`
+    },
+    { 
+      label: "LeetCode", username: "zPb5WFxojz", url: "https://leetcode.com/u/zPb5WFxojz/", 
+      color: "text-amber-500", bg: "bg-amber-50 dark:bg-amber-900/20",
+      stats: personalInfo.stats?.leetcode_stats || `Solved: ${liveStats.lcSolved}`
     },
     { 
       label: "GitHub", username: "Ti838", url: "https://github.com/Ti838", 
