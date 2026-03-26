@@ -16,8 +16,8 @@ export default function HeaderStack({ personalInfo }: { personalInfo?: any }) {
 
   const announcement = personalInfo?.announcement;
   const showBanner = mounted && announcement?.active && announcement?.text;
-  // Use 64px for navbar height always (it's always rendered), add banner + admin bar only when mounted
-  const paddingOffset = 64 + (mounted && isAdmin ? 40 : 0) + (showBanner ? 40 : 0);
+  // Only add space for admin bar and announcement banner (pages handle navbar offset themselves via pt-24 etc)
+  const paddingOffset = (mounted && isAdmin ? 40 : 0) + (showBanner ? 40 : 0);
 
   return (
     <>
