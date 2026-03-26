@@ -182,6 +182,25 @@ export async function updateProject(id: string, data: any) {
     cookieStore.set("portfolio_draft", JSON.stringify(draftData), { maxAge: 60 * 60 * 24 });
     return { success: true };
   }
+
+  const { error } = await supabase
+    .from("projects")
+    .update({
+      title: data.title,
+      description: data.description,
+      tech_stack: data.techStack,
+      github_url: data.githubUrl,
+      live_url: data.liveUrl,
+      featured: data.featured,
+      status: data.status,
+      sort_order: data.sort_order
+    })
+    .eq("id", id);
+
+  if (error) throw error;
+  revalidatePath("/projects");
+  revalidatePath("/");
+  return { success: true };
 }
 
 export async function createProject(data: any) {

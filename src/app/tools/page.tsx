@@ -24,36 +24,12 @@ const tools = [
     bg: "bg-green-50 dark:bg-green-500/10",
   },
   {
-    title: "PDF Converter",
-    description: "Combine multiple images into a single professional PDF document. Fast and completely offline.",
+    title: "PDF Toolkit",
+    description: "A complete professional suite for PDF conversion: Images to PDF, DOCX to PDF, PDF to Images and Word.",
     icon: FiFileText,
-    href: "/tools/image-to-pdf",
+    href: "/tools/pdf",
     color: "text-red-500",
     bg: "bg-red-50 dark:bg-red-500/10",
-  },
-  {
-    title: "DOCX to PDF",
-    description: "Convert Word documents (.docx) to high-quality PDF files instantly in your browser.",
-    icon: FiFileText,
-    href: "/tools/docs-to-pdf",
-    color: "text-orange-500",
-    bg: "bg-orange-50 dark:bg-orange-500/10",
-  },
-  {
-    title: "PDF to Image",
-    description: "Extract high-quality images from each page of your PDF documents quickly and securely.",
-    icon: FiImage,
-    href: "/tools/pdf-to-image",
-    color: "text-purple-500",
-    bg: "bg-purple-50 dark:bg-purple-500/10",
-  },
-  {
-    title: "PDF to Word",
-    description: "Convert PDF documents back to editable Word (.docx) files accurately and securely.",
-    icon: FiFileText,
-    href: "/tools/pdf-to-word",
-    color: "text-blue-600",
-    bg: "bg-blue-50 dark:bg-blue-600/10",
   }
 ];
 

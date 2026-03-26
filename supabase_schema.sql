@@ -8,6 +8,8 @@ CREATE TABLE IF NOT EXISTS personal_info (
   id             INT PRIMARY KEY DEFAULT 1,
   name           TEXT NOT NULL DEFAULT 'Timon Biswas',
   tagline        TEXT DEFAULT 'CSE Student & AI Enthusiast',
+  admin_password TEXT DEFAULT 'root123',
+  totp_secret    TEXT DEFAULT '',
   bio            TEXT,
   bio_extended   TEXT,
   location       TEXT DEFAULT 'Dhaka, Bangladesh',
@@ -64,6 +66,14 @@ CREATE TABLE IF NOT EXISTS experiences (
   tags         TEXT[] DEFAULT '{}',
   sort_order   INT DEFAULT 0
 );
+
+-- Seed default experiences
+INSERT INTO experiences (title, type, duration, description, tags, sort_order) VALUES
+  ('AI Developer — Jerry AI Voice Assistant', 'work', '2026 – Present', 'Built an advanced voice assistant equipped with Hugging Face free AI models and PC/Android automation capabilities.', ARRAY['Python', 'Hugging Face API', 'AI Agent'], 1),
+  ('Full Stack Developer — Philomedis Web App', 'work', '2025 – Present', 'Developed the core web infrastructure for Philomedis, a hospital management ecosystem.', ARRAY['Next.js', 'Supabase', 'Tailwind CSS'], 2),
+  ('Solo Developer — Philomedis Mobile App', 'work', '2026 – Present', 'Developing a comprehensive medical management application designed to streamline hospital operations.', ARRAY['Java', 'Firebase', 'Android Studio'], 3),
+  ('Full Stack Developer — Task Management System', 'work', '2026', 'Developed a modern task management application featuring a Next.js drag-and-drop board.', ARRAY['Next.js', 'Firebase', 'Tailwind CSS'], 4)
+ON CONFLICT DO NOTHING;
 
 -- 5. Education
 CREATE TABLE IF NOT EXISTS education (

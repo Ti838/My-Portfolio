@@ -5,11 +5,6 @@ import { FiArrowRight, FiDownload, FiGithub, FiLinkedin, FiCode, FiStar, FiMonit
 import { getPersonalInfo, getAchievements, getSkills, getProjects, getTechColor, getSocialLinks } from "@/data/portfolio";
 import EditableSection from "@/components/admin/EditableSection";
 
-export const metadata: Metadata = {
-  title: "Timon Biswas",
-  description: "Personal portfolio of Timon Biswas — 3rd-year CSE student, ICPC 2024 Honorable Mention, AI & ML enthusiast from Bangladesh.",
-};
-
 async function getLiveStats() {
   try {
     const [cfUser, cfStatus, cfRatingRes, ghUser, lcUser] = await Promise.all([

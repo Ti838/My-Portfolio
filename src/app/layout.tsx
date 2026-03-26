@@ -8,39 +8,43 @@ import HeaderStack from "@/components/layout/HeaderStack";
 import AdminModalsRenderer from "@/components/admin/AdminModalsRenderer";
 import { getPersonalInfo, getProjects, getAchievements, getExperiences, getEducation, getSkills, getSocialLinks } from "@/data/portfolio";
 
-export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "https://timonbiswas.vercel.app"),
-  title: {
-    default: "Timon Biswas — CSE Student & AI Enthusiast",
-    template: "%s | Timon Biswas",
-  },
-  description:
-    "Personal portfolio of Timon Biswas — 3rd-year CSE student at SMUCT, competitive programmer (ICPC 2024 Honorable Mention), AI & ML enthusiast, and vocalist.",
-  keywords: ["Timon Biswas", "CSE", "SMUCT", "ICPC", "AI", "Machine Learning", "Competitive Programming", "Bangladesh"],
-  authors: [{ name: "Timon Biswas", url: "https://timonbiswas.vercel.app" }],
-  creator: "Timon Biswas",
-  openGraph: {
-    type: "website",
-    locale: "en_US",
-    url: "/",
-    siteName: "Timon Biswas Portfolio",
-    title: "Timon Biswas — CSE Student & AI Enthusiast",
-    description: "Personal portfolio of Timon Biswas — competitive programmer and AI enthusiast from Bangladesh.",
-    images: [{ url: "/images/profile.jpg", width: 800, height: 800, alt: "Timon Biswas" }],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Timon Biswas — CSE Student & AI Enthusiast",
-    description: "Personal portfolio — competitive programmer and AI enthusiast.",
-    images: ["/images/profile.jpg"],
-  },
-  robots: { index: true, follow: true },
-  icons: {
-    icon: "/favicon.png",
-    shortcut: "/favicon.png",
-    apple: "/favicon.png",
-  },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const personalInfo = await getPersonalInfo();
+  const siteName = personalInfo?.name || "Timon Biswas";
+  
+  return {
+    metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "https://timonbiswas.vercel.app"),
+    title: {
+      default: siteName,
+      template: `%s | ${siteName}`,
+    },
+    description: personalInfo?.bio || "Personal portfolio of Timon Biswas",
+    keywords: ["Timon Biswas", "CSE", "SMUCT", "ICPC", "AI", "Machine Learning", "Competitive Programming", "Bangladesh"],
+    authors: [{ name: siteName, url: "https://timonbiswas.vercel.app" }],
+    creator: siteName,
+    openGraph: {
+      type: "website",
+      locale: "en_US",
+      url: "/",
+      siteName: `${siteName} Portfolio`,
+      title: siteName,
+      description: personalInfo?.bio || "Personal portfolio",
+      images: [{ url: "/images/profile.jpg", width: 800, height: 800, alt: siteName }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: siteName,
+      description: personalInfo?.bio || "Personal portfolio",
+      images: ["/images/profile.jpg"],
+    },
+    robots: { index: true, follow: true },
+    icons: {
+      icon: "/favicon.png",
+      shortcut: "/favicon.png",
+      apple: "/favicon.png",
+    },
+  };
+}
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const [personalInfo, projects, achievements, experiences, education, skillData, socialLinks] = await Promise.all([
