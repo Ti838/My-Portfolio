@@ -1,96 +1,69 @@
-"use client";
-import { useState } from "react";
-import { FiDownload, FiAlertCircle, FiCheckCircle } from "react-icons/fi";
+import { getAchievements, getEducation, getExperiences, getPersonalInfo, getProjects, getSkills, getSocialLinks } from "@/data/portfolio";
+import type { ResumeData } from "@/components/ResumePDF";
+import { checkTotpSession } from "@/lib/admin-actions";
+import ResumeDownloadBuilderClient from "./resume-download-builder-client";
 
-type Status = "idle" | "loading" | "success" | "error";
+export const dynamic = "force-dynamic";
 
-export default function ResumeDownloadPage() {
-  const [token, setToken] = useState("");
-  const [status, setStatus] = useState<Status>("idle");
-  const [message, setMessage] = useState("");
+export default async function ResumeDownloadPage() {
+  const [{ verified }, personalInfo, projects, skillCategories, experiences, education, achievements, socialLinks] = await Promise.all([
+    checkTotpSession(),
+    getPersonalInfo(),
+    getProjects(),
+    getSkills(),
+    getExperiences(),
+    getEducation(),
+    getAchievements(),
+    getSocialLinks(),
+  ]);
 
-  const verify = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (token.length !== 6 || !/^\d+$/.test(token)) {
-      setStatus("error");
-      setMessage("Enter the 6-digit code from Google Authenticator.");
-      return;
-    }
-    setStatus("loading");
-    try {
-      const res = await fetch("/api/resume", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ token }),
-      });
-      const data = await res.json();
-      if (!res.ok) {
-        setStatus("error");
-        setMessage(data.error ?? "Invalid or expired code. Try again.");
-        return;
-      }
-      
-      // TRIGGER DOWNLOAD
-      setStatus("success");
-      setMessage("Success! Your download is starting...");
-      window.location.href = data.url;
-    } catch {
-      setStatus("error");
-      setMessage("Something went wrong. Please try again.");
-    }
+  const githubLink = socialLinks.find((s: any) => String(s.label).toLowerCase() === "github")?.url;
+  const githubUser = githubLink ? String(githubLink).split("/").pop() : "";
+  const linkedin = socialLinks.find((s: any) => String(s.label).toLowerCase() === "linkedin")?.url;
+
+  const resumeInitial: ResumeData = {
+    layout: "resume",
+    personalInfo: {
+      name: personalInfo.name,
+      tagline: personalInfo.tagline,
+      email: personalInfo.email,
+      phone: personalInfo.phone,
+      location: personalInfo.location,
+      github: githubUser,
+      linkedin,
+      portfolio: "timonbiswas.vercel.app",
+      profileImage: personalInfo.profileImage,
+    },
+    summary: personalInfo.bio,
+    education: education.map((edu: any) => ({
+      institution: edu.institution,
+      degree: edu.degree,
+      duration: edu.duration,
+      details: edu.details || [],
+    })),
+    experience: experiences.map((exp: any) => ({
+      title: exp.title,
+      org: exp.type === "work" ? "Experience" : "Competition/Project",
+      duration: exp.duration,
+      bullets: [exp.description],
+    })),
+    projects: projects.map((proj: any) => ({
+      title: proj.title,
+      tech: proj.techStack,
+      duration: "Present",
+      bullets: [proj.description],
+      url: proj.githubUrl,
+    })),
+    skills: skillCategories.map((cat: any) => ({
+      category: cat.category,
+      items: cat.skills.map((s: any) => s.name),
+    })),
+    achievements: achievements.map((a: any) => ({
+      title: a.title,
+      date: a.date,
+      description: a.description,
+    })),
   };
 
-  return (
-    <div className="pt-24 pb-20 min-h-screen bg-white dark:bg-slate-900 flex items-center justify-center px-5 font-sans">
-      <div className="w-full max-w-md">
-        <div className="card-base p-8 space-y-7 shadow-2xl border border-slate-100 dark:border-slate-800">
-          {/* Header */}
-          <div className="text-center space-y-3">
-            <div className="w-14 h-14 rounded-2xl bg-accent-50 dark:bg-accent-900/30 flex items-center justify-center mx-auto text-accent-500">
-               <FiDownload size={26} />
-            </div>
-            <h1 className="font-display font-900 text-2xl text-slate-900 dark:text-white uppercase tracking-tight">Download Resume</h1>
-            <p className="text-sm text-slate-500 dark:text-slate-400 font-medium">
-              Please enter the security code to access documents.
-            </p>
-          </div>
-
-          {/* TOTP form */}
-          <form onSubmit={verify} className="space-y-4">
-            <input
-              type="text"
-              inputMode="numeric"
-              maxLength={6}
-              value={token}
-              onChange={(e) => {
-                setToken(e.target.value.replace(/\D/g, ""));
-                setStatus("idle");
-              }}
-              placeholder="000000"
-              className="w-full px-4 py-4 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white text-center text-3xl font-mono tracking-[0.5em] focus:ring-2 focus:ring-accent-500 outline-none placeholder-slate-200"
-            />
-
-            {status === "error" && (
-              <div className="flex items-center gap-2 text-red-500 text-xs bg-red-50 dark:bg-red-900/10 p-3 rounded-lg font-bold">
-                <FiAlertCircle size={14} /> {message}
-              </div>
-            )}
-            {status === "success" && (
-              <div className="flex items-center gap-2 text-green-600 text-xs bg-green-50 dark:bg-green-900/10 p-3 rounded-lg font-bold">
-                <FiCheckCircle size={14} /> {message}
-              </div>
-            )}
-
-            <button
-              type="submit"
-              disabled={token.length < 6 || status === "loading"}
-              className="btn-primary w-full justify-center h-12 shadow-lg shadow-accent-500/20"
-            >
-              {status === "loading" ? "Verifying..." : <><FiDownload size={16} /> Get PDF Now</>}
-            </button>
-          </form>
-        </div>
-      </div>
-    </div>
-  );
+  return <ResumeDownloadBuilderClient initialResumeData={resumeInitial} initiallyVerified={verified} />;
 }

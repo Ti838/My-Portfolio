@@ -10,11 +10,6 @@ export default function AdminDashboard({ initialData }: { initialData: any }) {
 
   useEffect(() => {
     setIsClient(true);
-    // Check auth
-    const isAuth = localStorage.getItem("admin_auth") === "true";
-    if (!isAuth && window.location.hostname !== "localhost") {
-       // window.location.href = "/admin/dashboard";
-    }
   }, []);
 
   if (!isClient) return null;

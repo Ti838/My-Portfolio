@@ -11,11 +11,13 @@ import { getPersonalInfo, getProjects, getAchievements, getExperiences, getEduca
 export async function generateMetadata(): Promise<Metadata> {
   const personalInfo = await getPersonalInfo();
   const siteName = personalInfo?.name || "Timon Biswas";
+  const tagline = (personalInfo?.tagline || "").trim();
+  const fullTitle = tagline ? `${siteName} — ${tagline}` : siteName;
   
   return {
     metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "https://timonbiswas.vercel.app"),
     title: {
-      default: siteName,
+      default: fullTitle,
       template: `%s | ${siteName}`,
     },
     description: personalInfo?.bio || "Personal portfolio of Timon Biswas",
@@ -88,7 +90,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
               socialLinks={socialLinks}
             />
             <main className="min-h-screen">{children}</main>
-            <Footer socialLinks={socialLinks} />
+            <Footer socialLinks={socialLinks} tagline={personalInfo?.tagline} />
             <Toaster
               position="bottom-right"
               toastOptions={{

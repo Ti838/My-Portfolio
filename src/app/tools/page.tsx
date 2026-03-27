@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { FiImage, FiMinimize2, FiFileText, FiArrowRight } from "react-icons/fi";
+import { FiImage, FiFileText, FiArrowRight } from "react-icons/fi";
 
 export const metadata = {
   title: "Web Tools - Utilities & Converters",
@@ -8,18 +8,10 @@ export const metadata = {
 
 const tools = [
   {
-    title: "Image Resizer",
-    description: "Instantly resize your images to specific dimensions. 100% secure, processes completely in your browser.",
-    icon: FiMinimize2,
-    href: "/tools/image-resizer",
-    color: "text-blue-500",
-    bg: "bg-blue-50 dark:bg-blue-500/10",
-  },
-  {
-    title: "Image Converter",
-    description: "Convert images between WEBP, PNG, and JPG formats instantly without any quality loss.",
     icon: FiImage,
-    href: "/tools/image-converter",
+    title: "Image Suite",
+    description: "Resize and convert images in one place. 100% private, processes entirely in your browser.",
+    href: "/tools/image",
     color: "text-green-500",
     bg: "bg-green-50 dark:bg-green-500/10",
   },

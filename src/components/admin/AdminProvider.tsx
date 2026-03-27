@@ -20,7 +20,7 @@ export function AdminProvider({ children }: { children: React.ReactNode }) {
 
   // Check server-side session on mount
   useEffect(() => {
-    checkAdminAuth().then(setIsAdmin).catch(() => setIsAdmin(false));
+    checkAdminAuth().then(({ isAdmin }) => setIsAdmin(isAdmin)).catch(() => setIsAdmin(false));
   }, []);
 
   const login = useCallback(() => {

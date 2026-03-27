@@ -208,7 +208,11 @@ export default function ResumeBuilder({ initialData }: { initialData: ResumeData
       <div className="hidden lg:flex flex-col flex-1 h-full bg-slate-800">
         <div className="p-4 bg-slate-900 flex items-center justify-between border-b border-slate-700">
            <span className="text-sm font-semibold text-slate-300">Live Preview</span>
-           <PDFDownloadLink document={<ResumePDF data={data} />} fileName="Resume_Timon_Biswas.pdf" className="px-4 py-2 bg-accent-500 text-white rounded-lg text-xs font-bold hover:bg-accent-600 transition-colors">
+           <PDFDownloadLink
+             document={<ResumePDF data={data} />}
+             fileName={data.layout === "cv" ? "Timon_Biswas_CV.pdf" : "Timon_Biswas_Resume.pdf"}
+             className="px-4 py-2 bg-accent-500 text-white rounded-lg text-xs font-bold hover:bg-accent-600 transition-colors"
+           >
              {({ loading }) => loading ? "Preparing..." : <><FiDownload size={14} /> Download PDF</>}
            </PDFDownloadLink>
         </div>
@@ -221,7 +225,11 @@ export default function ResumeBuilder({ initialData }: { initialData: ResumeData
 
       {/* Mobile Download FAB */}
       <div className="lg:hidden fixed bottom-6 right-6">
-         <PDFDownloadLink document={<ResumePDF data={data} />} fileName="Resume_Timon_Biswas.pdf" className="w-14 h-14 rounded-full bg-accent-500 text-white flex items-center justify-center shadow-2xl">
+         <PDFDownloadLink
+           document={<ResumePDF data={data} />}
+           fileName={data.layout === "cv" ? "Timon_Biswas_CV.pdf" : "Timon_Biswas_Resume.pdf"}
+           className="w-14 h-14 rounded-full bg-accent-500 text-white flex items-center justify-center shadow-2xl"
+         >
            <FiDownload size={24} />
          </PDFDownloadLink>
       </div>

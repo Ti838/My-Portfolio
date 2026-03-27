@@ -1,13 +1,26 @@
 "use client";
 
 import React, { useState } from "react";
-import { updateAchievement, createAchievement, deleteAchievement } from "@/lib/admin-actions";
+import { updateAchievement, createAchievement, deleteAchievement, uploadAdminAsset } from "@/lib/admin-actions";
 import { FiSave, FiX, FiLoader, FiPlus, FiTrash2, FiUpload } from "react-icons/fi";
 import { toast } from "react-hot-toast";
 
 export default function AchievementsEditorModal({ initialAchievements, onClose }: { initialAchievements: any[], onClose: () => void }) {
   const [achievements, setAchievements] = useState(initialAchievements);
   const [loading, setLoading] = useState(false);
+
+  const uploadImage = async (file: File, folder: string) => {
+    const bytes = await file.arrayBuffer();
+    const bytesBase64 = arrayBufferToBase64(bytes);
+    const { publicUrl } = await uploadAdminAsset({
+      bucket: "portfolio",
+      folder,
+      filename: file.name,
+      contentType: file.type || "application/octet-stream",
+      bytesBase64,
+    });
+    return publicUrl;
+  };
 
   const saveAchievement = async (ach: any) => {
     setLoading(true);
@@ -117,24 +130,26 @@ export default function AchievementsEditorModal({ initialAchievements, onClose }
                             type="file" 
                             accept="image/*" 
                             className="hidden" 
-                            onChange={(e) => {
+                            onChange={async (e) => {
                               const file = e.target.files?.[0];
-                              if (file) {
-                                const reader = new FileReader();
-                                reader.onloadend = () => {
-                                  const next = [...achievements];
-                                  next.find(a => a.id === ach.id)!.imageUrl = reader.result as string;
-                                  setAchievements(next);
-                                };
-                                reader.readAsDataURL(file);
+                              if (!file) return;
+                              setLoading(true);
+                              try {
+                                const url = await uploadImage(file, "achievements");
+                                const next = [...achievements];
+                                next.find(a => a.id === ach.id)!.imageUrl = url;
+                                setAchievements(next);
+                                await saveAchievement({ ...ach, imageUrl: url });
+                              } catch (err: any) {
+                                toast.error(err?.message || "Upload failed");
+                              } finally {
+                                setLoading(false);
+                                e.currentTarget.value = "";
                               }
                             }}
                           />
                         </label>
                       </div>
-                      {ach.imageUrl && ach.imageUrl.startsWith('data:') && (
-                        <p className="text-[9px] text-green-500 font-bold mt-1 uppercase">Ready to save</p>
-                      )}
                     </div>
                     <Input label="Issuer" value={ach.issuer || ""} onChange={(v) => {
                       const next = [...achievements];
@@ -168,4 +183,17 @@ function Input({ label, value, onChange }: { label: string, value: string, onCha
       />
     </div>
   );
+}
+
+function arrayBufferToBase64(buffer: ArrayBuffer) {
+  let binary = "";
+  const bytes = new Uint8Array(buffer);
+  const chunkSize = 0x8000;
+  for (let i = 0; i < bytes.length; i += chunkSize) {
+    const chunk = bytes.subarray(i, i + chunkSize);
+    for (let j = 0; j < chunk.length; j++) {
+      binary += String.fromCharCode(chunk[j]!);
+    }
+  }
+  return btoa(binary);
 }

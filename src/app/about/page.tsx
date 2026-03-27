@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { FiArrowRight } from "react-icons/fi";
+import { FiArrowRight, FiBookOpen, FiCpu, FiCreditCard, FiLayers, FiMapPin, FiMail, FiPhone } from "react-icons/fi";
 import { getPersonalInfo } from "@/data/portfolio";
 import EditableSection from "@/components/admin/EditableSection";
 
@@ -27,17 +27,21 @@ export default async function AboutPage() {
               </div>
               {/* Quick facts */}
               <div className="card-base p-5 space-y-3 text-sm">
-                {[
-                  ["🎓", "Shanto-Mariam University of Creative Technology"],
-                  ["💻", "Department of CSE"],
-                  ["🆔", `Student ID: ${personalInfo.studentId}`],
-                  ["📚", "Batch: 34th"],
-                  ["📍", personalInfo.location],
-                  ["✉️", personalInfo.email],
-                  ["📞", personalInfo.phone],
-                ].map(([icon, val]) => (
-                  <div key={String(val)} className="flex items-start gap-2.5 text-slate-600 dark:text-slate-400">
-                    <span>{icon}</span>
+                {([
+                  [FiBookOpen, personalInfo.university || "Shanto-Mariam University of Creative Technology"],
+                  [FiCpu, "Department of CSE"],
+                  [FiCreditCard, `Student ID: ${personalInfo.studentId}`],
+                  [FiLayers, `Batch: ${personalInfo.batch || "34th"}`],
+                  ...(personalInfo.stats?.location_public === false
+                    ? []
+                    : [[FiMapPin, personalInfo.stats?.location_full || personalInfo.location]]),
+                  [FiMail, personalInfo.email],
+                  [FiPhone, personalInfo.phone],
+                ] as any[]).map(([Icon, val]) => (
+                  <div key={String(val)} className="flex items-start gap-3 text-slate-600 dark:text-slate-400">
+                    <span className="mt-0.5 w-6 h-6 rounded-lg bg-accent-500/10 text-accent-600 dark:text-accent-400 dark:bg-accent-500/15 flex items-center justify-center shrink-0">
+                      <Icon size={14} />
+                    </span>
                     <span className="break-all">{val}</span>
                   </div>
                 ))}

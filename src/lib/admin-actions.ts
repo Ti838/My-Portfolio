@@ -8,6 +8,9 @@ import { verifyTOTP } from "@/lib/totp";
 const SESSION_COOKIE = "admin_session";
 const SESSION_VALUE = "authenticated";
 
+const TOTP_COOKIE = "totp_session";
+const TOTP_VALUE = "verified";
+
 // ─── Session Management ──────────────────────────────────────────────────────
 
 export async function loginAdminAction(password: string, token: string): Promise<{ success: boolean; error?: string; back?: boolean }> {
@@ -22,7 +25,7 @@ export async function loginAdminAction(password: string, token: string): Promise
     if (!validToken) return { success: false, error: "Invalid or expired 2FA code. Try again." };
 
     // 3. Set server-side session cookie (HTTP-only, secure)
-    const cookieStore = cookies();
+    const cookieStore = await cookies();
     cookieStore.set(SESSION_COOKIE, SESSION_VALUE, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
@@ -38,13 +41,46 @@ export async function loginAdminAction(password: string, token: string): Promise
 }
 
 export async function logoutAdminAction(): Promise<void> {
-  const cookieStore = cookies();
+  const cookieStore = await cookies();
   cookieStore.delete(SESSION_COOKIE);
 }
 
-export async function checkAdminAuth(): Promise<boolean> {
-  const cookieStore = cookies();
-  return cookieStore.get(SESSION_COOKIE)?.value === SESSION_VALUE;
+export async function checkAdminAuth(): Promise<{ isAdmin: boolean }> {
+  const cookieStore = await cookies();
+  return { isAdmin: cookieStore.get(SESSION_COOKIE)?.value === SESSION_VALUE };
+}
+
+async function requireAdmin(): Promise<void> {
+  const { isAdmin } = await checkAdminAuth();
+  if (!isAdmin) throw new Error("Unauthorized: admin session required.");
+}
+
+export async function verifyTotpAndStartSession(token: string): Promise<{ success: boolean; error?: string }> {
+  try {
+    if (!token || typeof token !== "string" || !/^\d{6}$/.test(token)) {
+      return { success: false, error: "Enter a valid 6-digit code." };
+    }
+    const validToken = verifyTOTP(token);
+    if (!validToken) return { success: false, error: "Invalid or expired 2FA code. Try again." };
+
+    const cookieStore = await cookies();
+    cookieStore.set(TOTP_COOKIE, TOTP_VALUE, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      path: "/",
+      maxAge: 60 * 10, // 10 minutes
+    });
+
+    return { success: true };
+  } catch {
+    return { success: false, error: "Server error during verification." };
+  }
+}
+
+export async function checkTotpSession(): Promise<{ verified: boolean }> {
+  const cookieStore = await cookies();
+  return { verified: cookieStore.get(TOTP_COOKIE)?.value === TOTP_VALUE };
 }
 
 
@@ -57,7 +93,7 @@ export async function getAllAdminData() {
   // I will enhance the client components to handle the "Supabase not configured" state.
   
   if (!supabase) {
-    const cookieStore = cookies();
+    const cookieStore = await cookies();
     const draft = cookieStore.get("portfolio_draft")?.value;
     const draftData = draft ? JSON.parse(draft) : null;
 
@@ -92,7 +128,12 @@ export async function getAllAdminData() {
 
   return {
     personalInfo: personalInfoRes.data ? { ...personalInfoRes.data, bioExtended: personalInfoRes.data.bio_extended, profileImage: personalInfoRes.data.profile_image, logoImage: personalInfoRes.data.logo_image, studentId: personalInfoRes.data.student_id, stats: personalInfoRes.data.stats } : null,
-    projects: projectsRes.data || [],
+    projects: (projectsRes.data || []).map((p: any) => ({
+      ...p,
+      techStack: p.tech_stack ?? [],
+      githubUrl: p.github_url ?? "",
+      liveUrl: p.live_url ?? "",
+    })),
     achievements: achievementsRes.data || [],
     experiences: experiencesRes.data || [],
     education: educationRes.data || [],
@@ -103,9 +144,10 @@ export async function getAllAdminData() {
 }
 
 export async function updatePersonalInfo(data: any) {
+  await requireAdmin();
   const supabase = createAdminClient();
   if (!supabase) {
-    const cookieStore = cookies();
+    const cookieStore = await cookies();
     const existing = cookieStore.get("portfolio_draft")?.value;
     const draftData = existing ? JSON.parse(existing) : { personalInfo: {}, projects: [], achievements: [] };
     draftData.personalInfo = { ...draftData.personalInfo, ...data };
@@ -166,17 +208,32 @@ export async function verifyAdminCredentials(password: string, token: string) {
 }
 
 export async function updateProject(id: string, data: any) {
+  await requireAdmin();
   const supabase = createAdminClient();
   if (!supabase) {
-    const cookieStore = cookies();
+    const cookieStore = await cookies();
     const existing = cookieStore.get("portfolio_draft")?.value;
     const draftData = existing ? JSON.parse(existing) : { personalInfo: {}, projects: [], achievements: [] };
     
     const idx = draftData.projects.findIndex((p: any) => p.id === id);
     if (idx >= 0) {
-      draftData.projects[idx] = { ...draftData.projects[idx], ...data, tech_stack: data.techStack, github_url: data.githubUrl, live_url: data.liveUrl };
+      draftData.projects[idx] = {
+        ...draftData.projects[idx],
+        ...data,
+        tech_stack: data.techStack,
+        github_url: data.githubUrl,
+        live_url: data.liveUrl,
+        image_url: data.imageUrl,
+      };
     } else {
-      draftData.projects.push({ ...data, id, tech_stack: data.techStack, github_url: data.githubUrl, live_url: data.liveUrl });
+      draftData.projects.push({
+        ...data,
+        id,
+        tech_stack: data.techStack,
+        github_url: data.githubUrl,
+        live_url: data.liveUrl,
+        image_url: data.imageUrl,
+      });
     }
     
     cookieStore.set("portfolio_draft", JSON.stringify(draftData), { maxAge: 60 * 60 * 24 });
@@ -191,6 +248,7 @@ export async function updateProject(id: string, data: any) {
       tech_stack: data.techStack,
       github_url: data.githubUrl,
       live_url: data.liveUrl,
+      image_url: data.imageUrl,
       featured: data.featured,
       status: data.status,
       sort_order: data.sort_order
@@ -204,6 +262,7 @@ export async function updateProject(id: string, data: any) {
 }
 
 export async function createProject(data: any) {
+  await requireAdmin();
   const supabase = createAdminClient();
   if (!supabase) throw new Error("Supabase not configured");
 
@@ -215,6 +274,8 @@ export async function createProject(data: any) {
       description: data.description,
       tech_stack: data.techStack,
       github_url: data.githubUrl,
+      live_url: data.liveUrl,
+      image_url: data.imageUrl,
       featured: data.featured,
       status: data.status,
     }]);
@@ -226,6 +287,7 @@ export async function createProject(data: any) {
 }
 
 export async function deleteProject(id: string) {
+  await requireAdmin();
   const supabase = createAdminClient();
   if (!supabase) throw new Error("Supabase not configured");
 
@@ -258,6 +320,7 @@ export async function getInboxMessages() {
 }
 
 export async function deleteMessage(id: string) {
+  await requireAdmin();
   const supabase = createAdminClient();
   if (!supabase) throw new Error("Supabase not configured");
   
@@ -271,9 +334,10 @@ export async function deleteMessage(id: string) {
 }
 
 export async function createAchievement(data: any) {
+  await requireAdmin();
   const supabase = createAdminClient();
   if (!supabase) {
-    const cookieStore = cookies();
+    const cookieStore = await cookies();
     const existing = cookieStore.get("portfolio_draft")?.value;
     const draftData = existing ? JSON.parse(existing) : { personalInfo: {}, projects: [], achievements: [], experiences: [], education: [] };
     const newId = Math.random().toString(36).substring(7);
@@ -301,9 +365,10 @@ export async function createAchievement(data: any) {
 }
 
 export async function updateAchievement(id: string, data: any) {
+  await requireAdmin();
   const supabase = createAdminClient();
   if (!supabase) {
-    const cookieStore = cookies();
+    const cookieStore = await cookies();
     const existing = cookieStore.get("portfolio_draft")?.value;
     const draftData = existing ? JSON.parse(existing) : { personalInfo: {}, projects: [], achievements: [], experiences: [], education: [] };
     const idx = draftData.achievements.findIndex((a: any) => a.id === id);
@@ -332,9 +397,10 @@ export async function updateAchievement(id: string, data: any) {
 }
 
 export async function deleteAchievement(id: string) {
+  await requireAdmin();
   const supabase = createAdminClient();
   if (!supabase) {
-    const cookieStore = cookies();
+    const cookieStore = await cookies();
     const existing = cookieStore.get("portfolio_draft")?.value;
     if (existing) {
       const draftData = JSON.parse(existing);
@@ -358,9 +424,10 @@ export async function deleteAchievement(id: string) {
 // ─── Experience ─────────────────────────────────────────────────────────────
 
 export async function createExperience(data: any) {
+  await requireAdmin();
   const supabase = createAdminClient();
   if (!supabase) {
-    const cookieStore = cookies();
+    const cookieStore = await cookies();
     const existing = cookieStore.get("portfolio_draft")?.value;
     const draftData = existing ? JSON.parse(existing) : { personalInfo: {}, projects: [], achievements: [], experiences: [], education: [] };
     const newId = Math.random().toString(36).substring(7);
@@ -387,9 +454,10 @@ export async function createExperience(data: any) {
 }
 
 export async function updateExperience(id: string, data: any) {
+  await requireAdmin();
   const supabase = createAdminClient();
   if (!supabase) {
-    const cookieStore = cookies();
+    const cookieStore = await cookies();
     const existing = cookieStore.get("portfolio_draft")?.value;
     const draftData = existing ? JSON.parse(existing) : { personalInfo: {}, projects: [], achievements: [], experiences: [], education: [] };
     const idx = draftData.experiences.findIndex((e: any) => e.id === id);
@@ -417,9 +485,10 @@ export async function updateExperience(id: string, data: any) {
 }
 
 export async function deleteExperience(id: string) {
+  await requireAdmin();
   const supabase = createAdminClient();
   if (!supabase) {
-    const cookieStore = cookies();
+    const cookieStore = await cookies();
     const existing = cookieStore.get("portfolio_draft")?.value;
     if (existing) {
       const draftData = JSON.parse(existing);
@@ -443,9 +512,10 @@ export async function deleteExperience(id: string) {
 // ─── Education ──────────────────────────────────────────────────────────────
 
 export async function createEducation(data: any) {
+  await requireAdmin();
   const supabase = createAdminClient();
   if (!supabase) {
-    const cookieStore = cookies();
+    const cookieStore = await cookies();
     const existing = cookieStore.get("portfolio_draft")?.value;
     const draftData = existing ? JSON.parse(existing) : { personalInfo: {}, projects: [], achievements: [], experiences: [], education: [] };
     const newId = Math.random().toString(36).substring(7);
@@ -474,9 +544,10 @@ export async function createEducation(data: any) {
 }
 
 export async function updateEducation(id: string, data: any) {
+  await requireAdmin();
   const supabase = createAdminClient();
   if (!supabase) {
-    const cookieStore = cookies();
+    const cookieStore = await cookies();
     const existing = cookieStore.get("portfolio_draft")?.value;
     const draftData = existing ? JSON.parse(existing) : { personalInfo: {}, projects: [], achievements: [], experiences: [], education: [] };
     const idx = draftData.education.findIndex((e: any) => e.id === id);
@@ -506,9 +577,10 @@ export async function updateEducation(id: string, data: any) {
 }
 
 export async function deleteEducation(id: string) {
+  await requireAdmin();
   const supabase = createAdminClient();
   if (!supabase) {
-    const cookieStore = cookies();
+    const cookieStore = await cookies();
     const existing = cookieStore.get("portfolio_draft")?.value;
     if (existing) {
       const draftData = JSON.parse(existing);
@@ -529,9 +601,41 @@ export async function deleteEducation(id: string) {
   return { success: true };
 }
 
+// ─── Storage (Images/Assets) ───────────────────────────────────────────────
+
+export async function uploadAdminAsset(params: {
+  bucket?: string;
+  folder?: string;
+  filename: string;
+  contentType: string;
+  bytesBase64: string;
+}): Promise<{ publicUrl: string }> {
+  await requireAdmin();
+  const supabase = createAdminClient();
+  if (!supabase) throw new Error("Supabase not configured");
+
+  const bucket = params.bucket ?? "portfolio";
+  const folder = (params.folder ?? "assets").replace(/^\/+|\/+$/g, "");
+  const safeName = params.filename.replace(/[^a-zA-Z0-9._-]/g, "-");
+  const path = `${folder}/${Date.now()}-${safeName}`;
+
+  const bytes = Buffer.from(params.bytesBase64, "base64");
+  const { error: uploadError } = await supabase.storage.from(bucket).upload(path, bytes, {
+    contentType: params.contentType,
+    upsert: true,
+    cacheControl: "3600",
+  });
+  if (uploadError) throw uploadError;
+
+  const { data } = supabase.storage.from(bucket).getPublicUrl(path);
+  if (!data?.publicUrl) throw new Error("Failed to get public URL");
+  return { publicUrl: data.publicUrl };
+}
+
 // ─── Skills ─────────────────────────────────────────────────────────────────
 
 export async function createSkill(data: any) {
+  await requireAdmin();
   const supabase = createAdminClient();
   if (!supabase) throw new Error("Supabase not configured for Skills management yet");
   
@@ -551,6 +655,7 @@ export async function createSkill(data: any) {
 }
 
 export async function updateSkill(id: string, data: any) {
+  await requireAdmin();
   const supabase = createAdminClient();
   if (!supabase) throw new Error("Supabase not configured");
   
@@ -571,6 +676,7 @@ export async function updateSkill(id: string, data: any) {
 }
 
 export async function deleteSkill(id: string) {
+  await requireAdmin();
   const supabase = createAdminClient();
   if (!supabase) throw new Error("Supabase not configured");
   
@@ -588,6 +694,7 @@ export async function deleteSkill(id: string) {
 // ─── Social Links ───────────────────────────────────────────────────────────
 
 export async function updateSocialLink(id: string, data: any) {
+  await requireAdmin();
   const supabase = createAdminClient();
   if (!supabase) throw new Error("Supabase not configured");
   

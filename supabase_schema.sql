@@ -3,13 +3,12 @@
 --  Run this ONCE in your Supabase SQL Editor
 -- ══════════════════════════════════════════════════════════════
 
--- 1. Personal Info
 CREATE TABLE IF NOT EXISTS personal_info (
   id             INT PRIMARY KEY DEFAULT 1,
   name           TEXT NOT NULL DEFAULT 'Timon Biswas',
   tagline        TEXT DEFAULT 'CSE Student & AI Enthusiast',
-  admin_password TEXT DEFAULT 'root123',
-  totp_secret    TEXT DEFAULT '',
+  admin_password TEXT,
+  totp_secret    TEXT,
   bio            TEXT,
   bio_extended   TEXT,
   location       TEXT DEFAULT 'Dhaka, Bangladesh',
@@ -38,11 +37,15 @@ CREATE TABLE IF NOT EXISTS projects (
   tech_stack   TEXT[] DEFAULT '{}',
   github_url   TEXT DEFAULT '',
   live_url     TEXT DEFAULT '',
+  image_url    TEXT DEFAULT '',
   featured     BOOLEAN DEFAULT FALSE,
   status       TEXT DEFAULT 'completed',
   sort_order   INT DEFAULT 0,
   created_at   TIMESTAMPTZ DEFAULT NOW()
 );
+
+-- Backfill/upgrade for existing databases (safe if column already exists)
+ALTER TABLE projects ADD COLUMN IF NOT EXISTS image_url TEXT DEFAULT '';
 
 -- 3. Achievements / Certificates
 CREATE TABLE IF NOT EXISTS achievements (

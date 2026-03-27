@@ -1,11 +1,17 @@
+"use client";
+
 import Link from "next/link";
 import { FiGithub, FiLinkedin, FiMail, FiCode, FiMessageCircle, FiTwitter, FiGlobe, FiLink } from "react-icons/fi";
+import { useAdmin } from "@/components/admin/AdminProvider";
 
 const icons: Record<string, any> = {
   FiGithub, FiLinkedin, FiMail, FiCode, FiMessageCircle, FiTwitter, FiGlobe, FiLink
 };
 
-export default function Footer({ socialLinks = [] }: { socialLinks?: any[] }) {
+export default function Footer({ socialLinks = [], tagline }: { socialLinks?: any[]; tagline?: string }) {
+  const { isAdmin } = useAdmin();
+  // NOTE: This component is rendered from a Server Component (RootLayout),
+  // so keep props serializable.
   return (
     <footer className="border-t border-slate-100 dark:border-slate-800 bg-white dark:bg-slate-900">
       <div className="max-w-6xl mx-auto px-5 py-10 flex flex-col md:flex-row items-center justify-between gap-6">
@@ -14,7 +20,7 @@ export default function Footer({ socialLinks = [] }: { socialLinks?: any[] }) {
             Timon<span className="text-accent-500">.</span>
           </p>
           <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
-            CSE Student · AI Enthusiast · Competitive Programmer
+            {tagline || "CSE Student · AI Enthusiast · Competitive Programmer"}
           </p>
         </div>
         <div className="flex items-center gap-3">
@@ -36,7 +42,9 @@ export default function Footer({ socialLinks = [] }: { socialLinks?: any[] }) {
         </div>
         <p className="text-xs text-slate-400 dark:text-slate-600">
           © {new Date().getFullYear()} Timon Biswas. All rights reserved.
-          <Link href="/admin" className="ml-2 text-[10px] text-slate-300 dark:text-slate-700 hover:text-accent-500 transition-colors opacity-0 hover:opacity-100">Admin</Link>
+          {!isAdmin && (
+            <Link href="/admin" className="ml-2 text-[10px] text-slate-300 dark:text-slate-700 hover:text-accent-500 transition-colors opacity-0 hover:opacity-100">Admin</Link>
+          )}
         </p>
       </div>
     </footer>

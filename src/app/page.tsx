@@ -5,14 +5,18 @@ import { FiArrowRight, FiDownload, FiGithub, FiLinkedin, FiCode, FiStar, FiMonit
 import { getPersonalInfo, getAchievements, getSkills, getProjects, getTechColor, getSocialLinks } from "@/data/portfolio";
 import EditableSection from "@/components/admin/EditableSection";
 
-async function getLiveStats() {
+async function getLiveStats(params: { codeforcesHandle: string; githubUser: string; leetcodeUser: string }) {
   try {
+    const cfHandle = params.codeforcesHandle;
+    const ghUserName = params.githubUser;
+    const lcUserName = params.leetcodeUser;
+
     const [cfUser, cfStatus, cfRatingRes, ghUser, lcUser] = await Promise.all([
-      fetch("https://codeforces.com/api/user.info?handles=Timon15", { next: { revalidate: 3600 } }).then(r => r.ok ? r.json() : null).catch(()=>null),
-      fetch("https://codeforces.com/api/user.status?handle=Timon15", { next: { revalidate: 3600 } }).then(r => r.ok ? r.json() : null).catch(()=>null),
-      fetch("https://codeforces.com/api/user.rating?handle=Timon15", { next: { revalidate: 3600 } }).then(r => r.ok ? r.json() : null).catch(()=>null),
-      fetch("https://api.github.com/users/Ti838", { next: { revalidate: 3600 } }).then(r => r.ok ? r.json() : null).catch(()=>null),
-      fetch("https://leetcode-stats-api.herokuapp.com/zPb5WFxojz", { next: { revalidate: 3600 } }).then(r => r.ok ? r.json() : null).catch(()=>null)
+      fetch(`https://codeforces.com/api/user.info?handles=${encodeURIComponent(cfHandle)}`, { next: { revalidate: 3600 } }).then(r => r.ok ? r.json() : null).catch(()=>null),
+      fetch(`https://codeforces.com/api/user.status?handle=${encodeURIComponent(cfHandle)}`, { next: { revalidate: 3600 } }).then(r => r.ok ? r.json() : null).catch(()=>null),
+      fetch(`https://codeforces.com/api/user.rating?handle=${encodeURIComponent(cfHandle)}`, { next: { revalidate: 3600 } }).then(r => r.ok ? r.json() : null).catch(()=>null),
+      fetch(`https://api.github.com/users/${encodeURIComponent(ghUserName)}`, { next: { revalidate: 3600 } }).then(r => r.ok ? r.json() : null).catch(()=>null),
+      fetch(`https://leetcode-stats-api.herokuapp.com/${encodeURIComponent(lcUserName)}`, { next: { revalidate: 3600 } }).then(r => r.ok ? r.json() : null).catch(()=>null)
     ]);
 
     const cfRating = cfUser?.result?.[0]?.rating || 863;
@@ -37,38 +41,44 @@ async function getLiveStats() {
 }
 
 export default async function HomePage() {
-  const [personalInfo, achievements, skillCategories, projects, liveStats, socialLinks] = await Promise.all([
-    getPersonalInfo(),
+  const personalInfo = await getPersonalInfo();
+  const codeforcesHandle = personalInfo.stats?.codeforces_handle || "Timon15";
+  const githubUser = personalInfo.stats?.github_user || "Ti838";
+  const leetcodeUser = personalInfo.stats?.leetcode_user || "zPb5WFxojz";
+  const tophUser = personalInfo.stats?.toph_user || codeforcesHandle;
+  const vjudgeUser = personalInfo.stats?.vjudge_user || codeforcesHandle;
+
+  const [achievements, skillCategories, projects, liveStats, socialLinks] = await Promise.all([
     getAchievements(),
     getSkills(),
     getProjects(),
-    getLiveStats(),
+    getLiveStats({ codeforcesHandle, githubUser, leetcodeUser }),
     getSocialLinks()
   ]);
 
   const cpProfiles = [
     { 
-      label: "Codeforces", username: "Timon15", url: "https://codeforces.com/profile/Timon15", 
+      label: "Codeforces", username: codeforcesHandle, url: `https://codeforces.com/profile/${encodeURIComponent(codeforcesHandle)}`, 
       color: "text-blue-500", bg: "bg-blue-50 dark:bg-blue-900/20",
       stats: personalInfo.stats?.codeforces_stats || `Rating: ${liveStats.cfRating} • Solved: ${liveStats.cfSolved} • Contests: ${liveStats.cfContests}`
     },
     { 
-      label: "LeetCode", username: "zPb5WFxojz", url: "https://leetcode.com/u/zPb5WFxojz/", 
+      label: "LeetCode", username: leetcodeUser, url: `https://leetcode.com/u/${encodeURIComponent(leetcodeUser)}/`, 
       color: "text-amber-500", bg: "bg-amber-50 dark:bg-amber-900/20",
       stats: personalInfo.stats?.leetcode_stats || `Solved: ${liveStats.lcSolved}`
     },
     { 
-      label: "GitHub", username: "Ti838", url: "https://github.com/Ti838", 
+      label: "GitHub", username: githubUser, url: `https://github.com/${encodeURIComponent(githubUser)}`, 
       color: "text-slate-800 dark:text-white", bg: "bg-slate-100 dark:bg-slate-800",
       stats: personalInfo.stats?.github_stats || `${liveStats.ghRepos} Public Repositories`, badge: "PRO"
     },
     { 
-      label: "Toph", username: "Timon15", url: "https://toph.co/u/Timon15", 
+      label: "Toph", username: tophUser, url: `https://toph.co/u/${encodeURIComponent(tophUser)}`, 
       color: "text-sky-500", bg: "bg-sky-50 dark:bg-sky-900/20",
       stats: personalInfo.stats?.toph_stats || "Active Profile"
     },
     { 
-      label: "VJudge", username: "Timon15", url: "https://vjudge.net/user/Timon15", 
+      label: "VJudge", username: vjudgeUser, url: `https://vjudge.net/user/${encodeURIComponent(vjudgeUser)}`, 
       color: "text-orange-500", bg: "bg-orange-50 dark:bg-orange-900/20",
       stats: personalInfo.stats?.vjudge_stats || "Active Profile"
     },
@@ -87,7 +97,9 @@ export default async function HomePage() {
         <div className="max-w-6xl mx-auto px-5 w-full grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
           {/* Text */}
           <div className="space-y-7 animate-fade-up">
-            <span className="tag-pill">📍 {personalInfo.location || "Dhaka, Bangladesh"}</span>
+            {personalInfo.stats?.location_public === false ? null : (
+              <span className="tag-pill">📍 {personalInfo.stats?.location_label || personalInfo.location || "Bangladesh"}</span>
+            )}
 
             <h1 className="font-display text-5xl lg:text-6xl font-900 text-slate-900 dark:text-white leading-[1.1] tracking-tight">
               Hi, I&apos;m{" "}
@@ -109,7 +121,7 @@ export default async function HomePage() {
                 View Projects
               </Link>
               <a
-                href="/admin"
+                href="/admin/download"
                 className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-sm font-semibold hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors"
               >
                 <FiDownload size={15} /> Resume

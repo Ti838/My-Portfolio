@@ -1,6 +1,8 @@
 import { getPersonalInfo, getProjects, getSkills, getExperiences, getEducation, getAchievements, getSocialLinks } from "@/data/portfolio";
 import AdminDashboard from "@/components/AdminDashboard";
 import { ResumeData } from "@/components/ResumePDF";
+import { checkAdminAuth } from "@/lib/admin-actions";
+import { redirect } from "next/navigation";
 import {
   Project,
   SkillCategory,
@@ -14,6 +16,9 @@ export const metadata = { title: "Admin Dashboard | Timon Biswas" };
 export const dynamic = "force-dynamic";
 
 export default async function BuilderPage() {
+  const { isAdmin } = await checkAdminAuth();
+  if (!isAdmin) redirect("/admin");
+
   // Fetch initial data from Supabase (with static fallbacks)
   const [
     personalInfo,
@@ -32,9 +37,6 @@ export default async function BuilderPage() {
     getAchievements(),
     getSocialLinks(),
   ]);
-
-  // FOR DEMO PURPOSES: We let you see the dashboard even if auth is not set in this session
-  // In production, this should be strictly protected by getServerSession or similar.
   
   const githubLink = socialLinks.find((s: SocialLink) => s.label.toLowerCase() === 'github')?.url;
   const githubUser = githubLink ? githubLink.split('/').pop() : '';

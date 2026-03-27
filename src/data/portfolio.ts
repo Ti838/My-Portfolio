@@ -284,7 +284,7 @@ export async function getPersonalInfo() {
   try {
     const supabase = createAdminClient();
     if (!supabase) {
-      const cookieStore = cookies();
+      const cookieStore = await cookies();
       const draft = cookieStore.get("portfolio_draft")?.value;
       if (draft) {
         const data = JSON.parse(draft).personalInfo;

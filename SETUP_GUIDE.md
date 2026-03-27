@@ -32,10 +32,12 @@ timon-biswas-portfolio/
 │   │   │   ├── page.tsx            ← Blog list (Supabase ISR)
 │   │   │   └── [slug]/page.tsx     ← Blog post
 │   │   ├── contact/page.tsx        ← Supabase contact form
-│   │   ├── admin/page.tsx          ← TOTP-protected resume download
+│   │   ├── admin/page.tsx          ← Admin login (password + 2FA)
+│   │   ├── admin/download/page.tsx ← 2FA-only unlock → preview/edit/download Resume/CV
 │   │   └── api/
 │   │       ├── contact/route.ts    ← Saves message to Supabase
-│   │       ├── resume/route.ts     ← TOTP verify → signed URL
+│   │       ├── resume/route.ts     ← Retired (returns 410)
+│   │       ├── totp/route.ts       ← TOTP verify → sets short-lived cookie (totp_session)
 │   │       └── admin/
 │   │           └── setup-totp/route.ts  ← First-time TOTP QR generator
 │   ├── components/
@@ -119,7 +121,21 @@ CREATE POLICY "Service role write" ON blog_posts
 1. Go to **Storage** in Supabase dashboard
 2. Click **New Bucket** → name it `resume` → set to **Private**
 3. Upload your PDF: `timon-biswas-cv.pdf` inside the `resume` bucket
-4. The signed URL API will generate a 60-second download link on successful TOTP auth
+4. Note: the site now generates Resume/CV PDFs in-browser from your website data.
+  - The old static storage download endpoint `/api/resume` is retired.
+
+---
+
+## 🖼️ STEP 2B — Supabase Storage (CMS Assets)
+
+To make logo/profile/project images persist from the Admin dashboard:
+
+1. Go to **Storage** in Supabase dashboard
+2. Click **New Bucket** → name it `portfolio`
+3. Set bucket to **Public** (recommended for portfolio images)
+4. (Optional) Create folders inside the bucket: `logo/`, `profile/`, `projects/`, `achievements/`
+
+The Admin dashboard will upload files into this bucket and store the returned public URL in the database.
 
 ---
 
@@ -165,14 +181,17 @@ SUPABASE_SERVICE_ROLE_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
 # TOTP (Google Authenticator) — base32 from Step 3
 TOTP_SECRET=JBSWY3DPEHPK3PXP
 
+# Admin password (required for /admin)
+ADMIN_PASSWORD=your_secure_password
+
 # Temp setup key (remove after setup)
 TOTP_SETUP_KEY=my-secret-setup-key
 
 # Site URL
 NEXT_PUBLIC_SITE_URL=https://timonbiswas.vercel.app
 
-# Resume path in Supabase Storage: bucket/file.pdf
-RESUME_STORAGE_PATH=resume/timon-biswas-cv.pdf
+# Optional legacy (not used anymore)
+# RESUME_STORAGE_PATH=resume/timon-biswas-cv.pdf
 ```
 
 ---

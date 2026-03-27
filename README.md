@@ -20,7 +20,12 @@ A professional, "Live-First" portfolio system built with **Next.js 14**, **Tailw
 - **Dark/Light Mode:** Full pixel-perfect support for both themes.
 
 ### 🧰 Integrated Web Tools
-- **PDF/DOCX Converters:** Built-in client-side utilities for DOCX to PDF, PDF to Image, and PDF to Word.
+- **Image Suite:** Resize, convert, compress, crop & rotate (client-side).
+- **PDF Toolkit:** Images→PDF, merge, extract/split by range, rotate (client-side).
+
+### 🔐 Secure Admin + Owner-only Downloads
+- **Admin (Password + 2FA):** `/admin` → `/admin/builder` for full CMS editing.
+- **Resume/CV (2FA-only unlock):** `/admin/download` lets you unlock preview/edit/download using only a TOTP code (no admin password).
 
 ---
 
@@ -54,6 +59,11 @@ npm run dev
 2. **Authenticate:** Use your configured password and 2FA code.
 3. **Hover & Edit:** Once logged in, hovering over any section on the home page or sub-pages will reveal an "Edit" button.
 4. **Save & Preview:** Clicking "Edit" opens a dedicated modal for that section. Save your changes to see them reflect instantly.
+
+## 📚 Documentation
+- Feature list (truthful): `FEATURES_SPEC.md`
+- UI/UX spec: `UIUX_SPEC.md`
+- SRS (requirements): `SRS.md`
 
 ---
 

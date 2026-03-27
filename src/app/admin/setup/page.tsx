@@ -1,13 +1,28 @@
 "use client";
 import { useState, useEffect } from "react";
 import { FiSmartphone, FiCopy, FiCheckCircle, FiAlertCircle, FiRefreshCw } from "react-icons/fi";
+import { useRouter } from "next/navigation";
+import { checkAdminAuth } from "@/lib/admin-actions";
 
 export default function TotpSetupPage() {
+  const router = useRouter();
   const [setupKey, setSetupKey] = useState("");
   const [data, setData] = useState<any>(null);
   const [status, setStatus] = useState<"idle" | "loading" | "error" | "success">("idle");
   const [errorMsg, setErrorMsg] = useState("");
   const [copied, setCopied] = useState(false);
+
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      const { isAdmin } = await checkAdminAuth();
+      if (cancelled) return;
+      if (!isAdmin) router.replace("/admin");
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [router]);
 
   const loadSetup = async () => {
     if (!setupKey) return;
