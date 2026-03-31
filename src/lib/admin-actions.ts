@@ -15,14 +15,20 @@ const TOTP_VALUE = "verified";
 
 export async function loginAdminAction(password: string, token: string): Promise<{ success: boolean; error?: string; back?: boolean }> {
   try {
-    // 1. Verify password (env var first, then Supabase fallback)
+    // 1. Verify password (from Environment Variable)
     const envPassword = process.env.ADMIN_PASSWORD;
-    if (!envPassword) return { success: false, error: "Server misconfigured: ADMIN_PASSWORD not set.", back: true };
-    if (password !== envPassword) return { success: false, error: "Incorrect password.", back: true };
+    if (!envPassword) {
+      return { success: false, error: "Server misconfigured: ADMIN_PASSWORD not set.", back: true };
+    }
+    if (password !== envPassword) {
+      return { success: false, error: "Incorrect password.", back: true };
+    }
 
-    // 2. Verify TOTP
+    // 2. Verify TOTP (Two-Factor Authentication)
     const validToken = verifyTOTP(token);
-    if (!validToken) return { success: false, error: "Invalid or expired 2FA code. Try again." };
+    if (!validToken) {
+      return { success: false, error: "Invalid or expired 2FA code. Try again." };
+    }
 
     // 3. Set server-side session cookie (HTTP-only, secure)
     const cookieStore = await cookies();
@@ -35,7 +41,8 @@ export async function loginAdminAction(password: string, token: string): Promise
     });
 
     return { success: true };
-  } catch {
+  } catch (error) {
+    console.error("Login error:", error);
     return { success: false, error: "Server error during authentication." };
   }
 }
@@ -93,25 +100,14 @@ export async function getAllAdminData() {
   // I will enhance the client components to handle the "Supabase not configured" state.
   
   if (!supabase) {
-    const cookieStore = await cookies();
-    const draft = cookieStore.get("portfolio_draft")?.value;
-    const draftData = draft ? JSON.parse(draft) : null;
-
+    // If Supabase is not configured, we return an empty or minimal state.
+    // This prevents the admin dashboard from being completely empty while setting up.
     return {
-      personalInfo: draftData?.personalInfo || {
-        id: 1,
-        name: "Timon Biswas", tagline: "CSE Student & AI Enthusiast", bio: "Testing the admin panel", 
-        bioExtended: "Testing extended bio", location: "Dhaka, Bangladesh", email: "test@example.com", 
-        phone: "+8801779976858", profileImage: "/images/profile.jpg", logoImage: "/images/logo.png", university: "SMUCT", 
-        studentId: "241071015", batch: "34th", stats: {
-          certificates: "4+", icpc_rank: "Honorable Mention", languages: "Java/C++/PHP", projects: "14+"
-        },
-        announcement: { text: "Open to exciting opportunities!", link: "", active: true }
-      },
-      projects: draftData?.projects || [{ id: "1", title: "Philomedis Mobile App", description: "Medical management system.", techStack: ["Java", "Firebase"], githubUrl: "", liveUrl: "", featured: true, status: "in-progress" }],
-      achievements: draftData?.achievements || [{ id: "1", title: "ICPC 2024", description: "Honorable Mention", imageUrl: "", category: "Award", date: "2024-11-01", issuer: "ICPC", sort_order: 1 }],
-      experiences: draftData?.experiences || [],
-      education: draftData?.education || []
+      personalInfo: { name: "New User", tagline: "Configure your Supabase", bio: "", location: "", email: "" },
+      projects: [],
+      achievements: [],
+      experiences: [],
+      education: []
     };
   }
   
@@ -181,31 +177,7 @@ export async function updatePersonalInfo(data: any) {
   return { success: true };
 }
 
-export async function verifyAdminCredentials(password: string, token: string) {
-  const supabase = createAdminClient();
-  if (!supabase) throw new Error("Supabase not configured");
-
-  // 1. Check Password
-  const { data, error } = await supabase
-    .from("personal_info")
-    .select("admin_password")
-    .eq("id", 1)
-    .single();
-
-  if (error || !data) throw new Error("Could not verify credentials");
-
-  if (data.admin_password !== password) {
-    return { success: false, error: "Incorrect admin password." };
-  }
-
-  // 2. Check TOTP
-  const validToken = verifyTOTP(token);
-  if (!validToken) {
-    return { success: false, error: "Invalid 2FA code." };
-  }
-
-  return { success: true };
-}
+// Removed redundant verifyAdminCredentials (consolidated into loginAdminAction)
 
 export async function updateProject(id: string, data: any) {
   await requireAdmin();
@@ -712,5 +684,3 @@ export async function updateSocialLink(id: string, data: any) {
   revalidatePath("/");
   return { success: true };
 }
-
-

@@ -1,29 +1,11 @@
 import { NextResponse } from "next/server";
-import { createClient } from "@supabase/supabase-js";
-
-function getSupabaseClient() {
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const supabaseKey =
-    process.env.SUPABASE_SERVICE_ROLE_KEY ?? process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-
-  if (!supabaseUrl || !supabaseKey) {
-    return { client: null, error: "Supabase environment variables are not configured." };
-  }
-
-  try {
-    new URL(supabaseUrl);
-  } catch {
-    return { client: null, error: "Invalid NEXT_PUBLIC_SUPABASE_URL." };
-  }
-
-  return { client: createClient(supabaseUrl, supabaseKey), error: null };
-}
+import { createAdminClient } from "@/lib/supabase";
 
 export async function POST(req: Request) {
   try {
-    const { client: supabase, error: clientError } = getSupabaseClient();
+    const supabase = createAdminClient();
     if (!supabase) {
-      console.error("Contact API configuration error:", clientError);
+      console.error("Contact API configuration error: createAdminClient returned null.");
       return NextResponse.json({ error: "Server configuration error." }, { status: 500 });
     }
 

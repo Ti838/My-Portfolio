@@ -278,125 +278,83 @@ const staticAchievements: Achievement[] = [
   },
 ];
 
-// ─── Supabase Fetchers ────────────────────────────────────────────────────────
+// ─── Supabase Fetchers (Robust Implementation) ────────────────────────────────
 
 export async function getPersonalInfo() {
-  try {
-    const supabase = createAdminClient();
-    if (!supabase) {
-      const cookieStore = await cookies();
-      const draft = cookieStore.get("portfolio_draft")?.value;
-      if (draft) {
-        const data = JSON.parse(draft).personalInfo;
-        if (data && Object.keys(data).length > 0) return { ...staticPersonalInfo, ...data };
-      }
-      return staticPersonalInfo;
-    }
-    const { data, error } = await supabase.from("personal_info").select("*").single();
-    if (error || !data) return staticPersonalInfo;
-    return {
-      ...data,
-      bioExtended: data.bio_extended,
-      profileImage: data.profile_image,
-      logoImage: data.logo_image,
-      studentId: data.student_id,
-      stats: data.stats,
-    };
-  } catch {
-    return staticPersonalInfo;
-  }
-}
+  const supabase = createAdminClient();
+  if (!supabase) return staticPersonalInfo;
+  
+  const { data, error } = await supabase.from("personal_info").select("*").eq("id", 1).maybeSingle();
+  if (error || !data) return staticPersonalInfo;
 
-export async function getSocialLinks() {
-  try {
-    const supabase = createAdminClient();
-    if (!supabase) return staticSocialLinks;
-    const { data, error } = await supabase.from("social_links").select("*").order("sort_order", { ascending: true });
-    if (error || !data || data.length === 0) return staticSocialLinks;
-    return data;
-  } catch {
-    return staticSocialLinks;
-  }
+  return {
+    ...staticPersonalInfo,
+    ...data,
+    bioExtended: data.bio_extended || staticPersonalInfo.bioExtended,
+    profileImage: data.profile_image || staticPersonalInfo.profileImage,
+    logoImage: data.logo_image || staticPersonalInfo.logoImage,
+    studentId: data.student_id || staticPersonalInfo.studentId,
+    stats: { ...staticPersonalInfo.stats, ...(data.stats || {}) },
+  };
 }
 
 export async function getProjects() {
-  try {
-    const supabase = createAdminClient();
-    if (!supabase) return staticProjects;
-    const { data, error } = await supabase.from("projects").select("*").order("sort_order", { ascending: true });
-    if (error || !data || data.length === 0) return staticProjects;
-    return data.map(p => ({
-      ...p,
-      techStack: p.tech_stack,
-      imageUrl: p.image_url,
-      githubUrl: p.github_url,
-      liveUrl: p.live_url,
-    }));
-  } catch {
-    return staticProjects;
-  }
+  const supabase = createAdminClient();
+  if (!supabase) return staticProjects;
+  
+  const { data, error } = await supabase.from("projects").select("*").order("sort_order", { ascending: true });
+  if (error || !data || data.length === 0) return staticProjects;
+  
+  return data.map(p => ({
+    ...p,
+    techStack: p.tech_stack || [],
+    imageUrl: p.image_url,
+    githubUrl: p.github_url,
+    liveUrl: p.live_url,
+  }));
 }
 
 export async function getSkills() {
-  try {
-    const supabase = createAdminClient();
-    if (!supabase) return staticSkillCategories;
-    const { data: categories, error: catError } = await supabase.from("skill_categories").select("*").order("sort_order", { ascending: true });
-    if (catError || !categories) return staticSkillCategories;
-    
-    const { data: skills, error: skillError } = await supabase.from("skills").select("*").order("sort_order", { ascending: true });
-    if (skillError || !skills) return staticSkillCategories;
+  const supabase = createAdminClient();
+  if (!supabase) return staticSkillCategories;
+  
+  const { data: categories, error: ce } = await supabase.from("skill_categories").select("*").order("sort_order", { ascending: true });
+  const { data: skills, error: se } = await supabase.from("skills").select("*").order("sort_order", { ascending: true });
+  
+  if (ce || se || !categories) return staticSkillCategories;
 
-    return categories.map(cat => ({
-      ...cat,
-      skills: skills.filter(s => s.category_id === cat.id)
-    }));
-  } catch {
-    return staticSkillCategories;
-  }
+  return categories.map(cat => ({
+    ...cat,
+    skills: skills ? skills.filter(s => s.category_id === cat.id) : []
+  }));
 }
 
 export async function getExperiences() {
-  try {
-    const supabase = createAdminClient();
-    if (!supabase) return staticExperiences;
-    const { data, error } = await supabase.from("experiences").select("*").order("sort_order", { ascending: true });
-    if (error || !data || data.length === 0) return staticExperiences;
-    return data;
-  } catch {
-    return staticExperiences;
-  }
+  const supabase = createAdminClient();
+  if (!supabase) return staticExperiences;
+  const { data, error } = await supabase.from("experiences").select("*").order("sort_order", { ascending: true });
+  return (error || !data || data.length === 0) ? staticExperiences : data;
 }
 
 export async function getEducation() {
-  try {
-    const supabase = createAdminClient();
-    if (!supabase) return staticEducation;
-    const { data, error } = await supabase.from("education").select("*").order("sort_order", { ascending: true });
-    if (error || !data || data.length === 0) return staticEducation;
-    return data.map(e => ({
-      ...e,
-      logoUrl: e.logo_url,
-    }));
-  } catch {
-    return staticEducation;
-  }
+  const supabase = createAdminClient();
+  if (!supabase) return staticEducation;
+  const { data, error } = await supabase.from("education").select("*").order("sort_order", { ascending: true });
+  if (error || !data || data.length === 0) return staticEducation;
+  return data.map(e => ({ ...e, logoUrl: e.logo_url }));
 }
 
 export async function getAchievements() {
-  try {
-    const supabase = createAdminClient();
-    if (!supabase) return staticAchievements;
-    const { data, error } = await supabase.from("achievements").select("*").order("sort_order", { ascending: true });
-    if (error || !data || data.length === 0) return staticAchievements;
-    return data.map(a => ({
-      ...a,
-      imageUrl: a.image_url,
-    }));
-  } catch {
-    return staticAchievements;
-  }
+  const supabase = createAdminClient();
+  if (!supabase) return staticAchievements;
+  const { data, error } = await supabase.from("achievements").select("*").order("sort_order", { ascending: true });
+  if (error || !data || data.length === 0) return staticAchievements;
+  return data.map(a => ({ ...a, imageUrl: a.image_url }));
 }
 
-// ─── Social Links ─────────────────────────────────────────────────────────────
-// End of file
+export async function getSocialLinks() {
+  const supabase = createAdminClient();
+  if (!supabase) return staticSocialLinks;
+  const { data, error } = await supabase.from("social_links").select("*").order("sort_order", { ascending: true });
+  return (error || !data || data.length === 0) ? staticSocialLinks : data;
+}

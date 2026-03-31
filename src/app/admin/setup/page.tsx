@@ -11,18 +11,13 @@ export default function TotpSetupPage() {
   const [status, setStatus] = useState<"idle" | "loading" | "error" | "success">("idle");
   const [errorMsg, setErrorMsg] = useState("");
   const [copied, setCopied] = useState(false);
+  const [verifyToken, setVerifyToken] = useState("");
+  const [verifying, setVerifying] = useState(false);
+  const [verifyStatus, setVerifyStatus] = useState<"idle" | "success" | "error">("idle");
+  const [verifyError, setVerifyError] = useState("");
 
-  useEffect(() => {
-    let cancelled = false;
-    (async () => {
-      const { isAdmin } = await checkAdminAuth();
-      if (cancelled) return;
-      if (!isAdmin) router.replace("/admin");
-    })();
-    return () => {
-      cancelled = true;
-    };
-  }, [router]);
+  // Note: We removed the admin redirect because this page is used for initial setup 
+  // before a session is established. It is protected by the TOTP_SETUP_KEY check in the API.
 
   const loadSetup = async () => {
     if (!setupKey) return;
@@ -49,6 +44,35 @@ export default function TotpSetupPage() {
     navigator.clipboard.writeText(data.base32);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
+  };
+
+  const handleVerify = async () => {
+    if (verifyToken.length !== 6 || !data?.base32) return;
+    setVerifying(true);
+    setVerifyStatus("idle");
+    try {
+      const res = await fetch("/api/admin/verify-setup", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          token: verifyToken,
+          secret: data.base32,
+          setupKey: setupKey,
+        }),
+      });
+      const json = await res.json();
+      if (json.success) {
+        setVerifyStatus("success");
+      } else {
+        setVerifyStatus("error");
+        setVerifyError(json.error || "Invalid code.");
+      }
+    } catch {
+      setVerifyStatus("error");
+      setVerifyError("Server connection failed.");
+    } finally {
+      setVerifying(false);
+    }
   };
 
   return (
@@ -117,6 +141,42 @@ export default function TotpSetupPage() {
 
                 <div className="bg-amber-50 dark:bg-amber-500/10 border border-amber-200 dark:border-amber-500/20 rounded-xl p-4 mt-2">
                   <p className="text-xs text-amber-700 dark:text-amber-400 font-semibold leading-relaxed">⚠️ Security: After setup, remove <code>TOTP_SETUP_KEY</code> from your environment variables to disable this page.</p>
+                </div>
+
+                {/* Verification Field */}
+                <div className="pt-6 border-t border-slate-100 dark:border-slate-800/50 space-y-4">
+                  <p className="text-sm font-bold text-slate-800 dark:text-white">Step 4 — Verify Code</p>
+                  <div className="space-y-3">
+                    <p className="text-xs text-slate-500">Enter the 6-digit code from your app to confirm it's working.</p>
+                    <div className="flex gap-2">
+                      <input
+                        type="text"
+                        maxLength={6}
+                        value={verifyToken}
+                        onChange={(e) => setVerifyToken(e.target.value.replace(/\D/g, ""))}
+                        placeholder="000000"
+                        className="flex-1 px-4 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-center font-mono text-xl tracking-widest outline-none focus:ring-2 focus:ring-purple-500/20"
+                      />
+                      <button
+                        onClick={handleVerify}
+                        disabled={verifyToken.length !== 6 || verifying}
+                        className="px-6 rounded-xl bg-purple-600 hover:bg-purple-500 disabled:opacity-50 text-white text-xs font-bold transition-all active:scale-95"
+                      >
+                        {verifying ? "..." : "Verify"}
+                      </button>
+                    </div>
+                    {verifyStatus === "success" && (
+                      <div className="flex items-center gap-2 text-green-500 text-xs font-bold bg-green-500/5 p-3 rounded-xl border border-green-500/20">
+                        <FiCheckCircle size={14} /> Verification successful! You can now login.
+                        <button onClick={() => router.push("/admin")} className="ml-auto underline">Login →</button>
+                      </div>
+                    )}
+                    {verifyStatus === "error" && (
+                      <div className="flex items-center gap-2 text-red-500 text-xs font-bold bg-red-500/5 p-3 rounded-xl border border-red-500/20">
+                        <FiAlertCircle size={14} /> {verifyError || "Invalid code. Try again."}
+                      </div>
+                    )}
+                  </div>
                 </div>
 
                 <button onClick={() => setData(null)} className="w-full text-xs text-slate-500 hover:text-slate-700 dark:hover:text-slate-400 transition-colors py-3 font-medium mt-2">

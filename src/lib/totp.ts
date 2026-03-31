@@ -10,7 +10,14 @@ import QRCode from "qrcode";
 export function verifyTOTP(token: string): boolean {
   const secret = process.env.TOTP_SECRET;
   if (!secret) return false;
+  return checkTOTP(token, secret);
+}
 
+/**
+ * Verify a 6-digit TOTP token against a specific secret.
+ */
+export function checkTOTP(token: string, secret: string): boolean {
+  if (!token || !secret) return false;
   return speakeasy.totp.verify({
     secret,
     encoding: "base32",

@@ -5,7 +5,13 @@ import { generateTOTPSecret, generateQRCode } from "@/lib/totp";
 export async function GET(req: NextRequest) {
   // Simple guard: require a setup key in query param
   const setupKey = req.nextUrl.searchParams.get("key");
-  if (setupKey !== process.env.TOTP_SETUP_KEY) {
+
+  // Robust check: If TOTP_SECRET is already set, disable this endpoint for security.
+  if (process.env.TOTP_SECRET) {
+    return NextResponse.json({ error: "2FA is already configured. Please remove TOTP_SECRET from environment to reset." }, { status: 403 });
+  }
+
+  if (setupKey !== process.env.TOTP_SETUP_KEY || !setupKey) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
