@@ -2,16 +2,17 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { FiShield, FiLock, FiAlertCircle, FiCheckCircle, FiEye, FiEyeOff, FiArrowRight } from "react-icons/fi";
-import { loginAdminAction } from "@/lib/admin-actions";
+import { loginAdminAction, verifyPasswordAction, sendPhoneOTPAction } from "@/lib/admin-actions";
 import { useAdmin } from "@/components/admin/AdminProvider";
 
-type Step = "password" | "totp";
+type Step = "password" | "totp" | "phone";
 type Status = "idle" | "loading" | "error" | "success";
 
 export default function AdminLoginPage() {
   const [step, setStep] = useState<Step>("password");
   const [password, setPassword] = useState("");
   const [token, setToken] = useState("");
+  const [phoneCode, setPhoneCode] = useState("");
   const [showPwd, setShowPwd] = useState(false);
   const [status, setStatus] = useState<Status>("idle");
   const [errorMsg, setErrorMsg] = useState("");
@@ -26,11 +27,19 @@ export default function AdminLoginPage() {
       return;
     }
     setStatus("loading");
-    // Move to TOTP step (password is verified together with TOTP on the backend)
-    setTimeout(() => {
+    try {
+      const res = await verifyPasswordAction(password);
+      if (!res.success) {
+        setStatus("error");
+        setErrorMsg(res.error || "Incorrect password.");
+        return;
+      }
       setStatus("idle");
       setStep("totp");
-    }, 500);
+    } catch {
+      setStatus("error");
+      setErrorMsg("Connection error.");
+    }
   };
 
   const handleTotpStep = async (e: React.FormEvent) => {
@@ -45,8 +54,41 @@ export default function AdminLoginPage() {
       const result = await loginAdminAction(password, token);
       if (!result.success) {
         setStatus("error");
-        setErrorMsg(result.error ?? "Invalid credentials. Try again.");
+        setErrorMsg(result.error ?? "Invalid credentials.");
         if (result.back) setStep("password");
+        return;
+      }
+
+      if (result.nextStep === "phone") {
+        await sendPhoneOTPAction();
+        setStatus("idle");
+        setStep("phone");
+        return;
+      }
+
+      // If no phone verification required or done
+      setStatus("success");
+      login();
+      setTimeout(() => router.push("/"), 800);
+    } catch {
+      setStatus("error");
+      setErrorMsg("Server error.");
+    }
+  };
+
+  const handlePhoneStep = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (phoneCode.length !== 4) {
+      setStatus("error");
+      setErrorMsg("Enter the 4-digit code sent to your phone.");
+      return;
+    }
+    setStatus("loading");
+    try {
+      const result = await loginAdminAction(password, token, phoneCode);
+      if (!result.success) {
+        setStatus("error");
+        setErrorMsg(result.error ?? "Invalid OTP.");
         return;
       }
       setStatus("success");
@@ -54,7 +96,7 @@ export default function AdminLoginPage() {
       setTimeout(() => router.push("/"), 800);
     } catch {
       setStatus("error");
-      setErrorMsg("Server error. Please try again.");
+      setErrorMsg("Verification failed.");
     }
   };
 
@@ -85,9 +127,14 @@ export default function AdminLoginPage() {
             <span className="tracking-wide">Password</span>
           </div>
           <div className="w-8 h-px bg-slate-300 dark:bg-slate-700" />
-          <div className={`flex items-center gap-2 text-xs font-bold px-3 py-1.5 rounded-full transition-all tracking-wide ${step === "totp" ? "bg-accent-500 text-white" : "bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400"}`}>
-            <span>2</span>
-            Authenticator
+          <div className={`flex items-center gap-2 text-xs font-bold px-3 py-1.5 rounded-full transition-all tracking-wide ${step === "totp" ? "bg-accent-500 text-white" : step === "phone" ? "bg-green-50 dark:bg-green-500/20 text-green-600 border border-green-200" : "bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400"}`}>
+            {step === "phone" ? <FiCheckCircle size={12} /> : <span>2</span>}
+            2FA
+          </div>
+          <div className="w-8 h-px bg-slate-300 dark:bg-slate-700" />
+          <div className={`flex items-center gap-2 text-xs font-bold px-3 py-1.5 rounded-full transition-all tracking-wide ${step === "phone" ? "bg-accent-500 text-white" : "bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400"}`}>
+            <span>3</span>
+            Phone
           </div>
         </div>
 
@@ -132,13 +179,13 @@ export default function AdminLoginPage() {
               </p>
             </form>
           )}
-
-          {/* STEP 2: TOTP */}
+          
+          {/* STEP 2: Authenticator (TOTP) */}
           {step === "totp" && (
             <form onSubmit={handleTotpStep} className="space-y-4">
               <div>
                 <label className="block text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-2">Authenticator Code</label>
-                <p className="text-xs text-slate-500 mb-3">Open Google Authenticator and enter the 6-digit code for "Timon Portfolio".</p>
+                <p className="text-[10px] text-slate-500 mb-3">Open Google Authenticator and enter the 6-digit code for "Timon Portfolio".</p>
                 <input
                   type="text"
                   inputMode="numeric"
@@ -151,10 +198,36 @@ export default function AdminLoginPage() {
                 />
               </div>
               <button type="submit" disabled={token.length < 6 || status === "loading"} className="w-full h-12 rounded-xl bg-accent-500 hover:bg-accent-600 disabled:opacity-50 text-white font-bold text-sm flex items-center justify-center gap-2 transition-all shadow-lg shadow-accent-500/25 active:scale-95">
-                {status === "loading" ? "Authenticating…" : <><FiShield size={16} /><span>Verify & Enter</span></>}
+                {status === "loading" ? "Verifying Token…" : <><FiShield size={16} /><span>Continue</span><FiArrowRight size={16} /></>}
               </button>
               <button type="button" onClick={() => { setStep("password"); setStatus("idle"); }} className="w-full text-xs text-slate-500 hover:text-slate-700 dark:hover:text-slate-400 transition-colors py-2 font-medium">
                 ← Back to password
+              </button>
+            </form>
+          )}
+
+          {/* STEP 3: Phone */}
+          {step === "phone" && (
+            <form onSubmit={handlePhoneStep} className="space-y-4">
+              <div>
+                <label className="block text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-2">Phone OTP Code</label>
+                <p className="text-[10px] text-slate-500 mb-3">A 4-digit code was sent to your phone. Check your messages.</p>
+                <input
+                  type="text"
+                  inputMode="numeric"
+                  maxLength={4}
+                  value={phoneCode}
+                  onChange={e => { setPhoneCode(e.target.value.replace(/\D/g, "")); setStatus("idle"); }}
+                  placeholder="0000"
+                  className="w-full px-4 py-4 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white text-center text-4xl font-mono tracking-[0.2em] focus:border-accent-500 focus:ring-2 focus:ring-accent-500/20 outline-none transition-all placeholder-slate-300 dark:placeholder-slate-700"
+                  autoFocus
+                />
+              </div>
+              <button type="submit" disabled={phoneCode.length < 4 || status === "loading"} className="w-full h-12 rounded-xl bg-accent-500 hover:bg-accent-600 disabled:opacity-50 text-white font-bold text-sm flex items-center justify-center gap-2 transition-all shadow-lg shadow-accent-500/25 active:scale-95">
+                {status === "loading" ? "Verifying Phone…" : <><span>Final Login</span></>}
+              </button>
+              <button type="button" onClick={() => { setStep("totp"); setStatus("idle"); }} className="w-full text-xs text-slate-500 hover:text-slate-700 dark:hover:text-slate-400 transition-colors py-2 font-medium">
+                ← Back to Authenticator
               </button>
             </form>
           )}

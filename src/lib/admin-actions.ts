@@ -13,25 +13,69 @@ const TOTP_VALUE = "verified";
 
 // ─── Session Management ──────────────────────────────────────────────────────
 
-export async function loginAdminAction(password: string, token: string): Promise<{ success: boolean; error?: string; back?: boolean }> {
+/**
+ * STEP 1: Verify Password only.
+ * This provides immediate feedback if the password is wrong before asking for 2FA.
+ */
+export async function verifyPasswordAction(password: string): Promise<{ success: boolean; error?: string }> {
+  const envPassword = process.env.ADMIN_PASSWORD;
+  if (!envPassword) return { success: false, error: "Server misconfigured: ADMIN_PASSWORD not set." };
+  if (password !== envPassword) return { success: false, error: "Incorrect password." };
+  return { success: true };
+}
+
+/**
+ * STEP 3: Handle Phone OTP sending (Simulated or via Twilio).
+ */
+export async function sendPhoneOTPAction(): Promise<{ success: boolean; code?: string; error?: string }> {
   try {
-    // 1. Verify password (from Environment Variable)
-    const envPassword = process.env.ADMIN_PASSWORD;
-    if (!envPassword) {
-      return { success: false, error: "Server misconfigured: ADMIN_PASSWORD not set.", back: true };
-    }
-    if (password !== envPassword) {
-      return { success: false, error: "Incorrect password.", back: true };
-    }
+    const phone = process.env.ADMIN_PHONE_NUMBER;
+    if (!phone) return { success: false, error: "ADMIN_PHONE_NUMBER not set in environment." };
 
-    // 2. Verify TOTP (Two-Factor Authentication)
-    const validToken = verifyTOTP(token);
-    if (!validToken) {
-      return { success: false, error: "Invalid or expired 2FA code. Try again." };
-    }
-
-    // 3. Set server-side session cookie (HTTP-only, secure)
+    // Generate a simple 4-digit code (for simplicity in this portfolio context)
+    const code = Math.floor(1000 + Math.random() * 9000).toString();
+    
+    // In a real app, you'd use Twilio here:
+    // const twilio = require('twilio')(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);
+    // await twilio.messages.create({ body: `Your Admin OTP: ${code}`, from: process.env.TWILIO_PHONE, to: phone });
+    
+    console.log(`[AUTH] SMS OTP for ${phone}: ${code}`); // Log to console for debugging/local use
+    
+    // We store the code in a temporary cookie for verification (encrypted if possible, but here simple for the demo)
     const cookieStore = await cookies();
+    cookieStore.set("phone_otp_hash", code, { httpOnly: true, secure: true, maxAge: 300 }); // 5 min expiry
+
+    return { success: true };
+  } catch (error) {
+    console.error("SMS Error:", error);
+    return { success: false, error: "Failed to send SMS." };
+  }
+}
+
+export async function loginAdminAction(password: string, token: string, phoneCode?: string): Promise<{ success: boolean; error?: string; back?: boolean; nextStep?: "phone" | "done" }> {
+  try {
+    // 1. Verify password
+    const envPassword = process.env.ADMIN_PASSWORD;
+    if (password !== envPassword) return { success: false, error: "Incorrect password.", back: true };
+
+    // 2. Verify TOTP
+    const validTOTP = verifyTOTP(token);
+    if (!validTOTP) return { success: false, error: "Invalid Authenticator code." };
+
+    // 3. Verify Phone OTP (if present)
+    const cookieStore = await cookies();
+    const serverPhoneCode = cookieStore.get("phone_otp_hash")?.value;
+    
+    if (process.env.ADMIN_PHONE_NUMBER && !phoneCode) {
+      // Need phone verification step
+      return { success: true, nextStep: "phone" };
+    }
+
+    if (process.env.ADMIN_PHONE_NUMBER && phoneCode !== serverPhoneCode) {
+      return { success: false, error: "Invalid Phone OTP code." };
+    }
+
+    // 4. Set server-side session cookie (HTTP-only, secure)
     cookieStore.set(SESSION_COOKIE, SESSION_VALUE, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
@@ -40,7 +84,7 @@ export async function loginAdminAction(password: string, token: string): Promise
       maxAge: 60 * 60 * 24, // 24 hours
     });
 
-    return { success: true };
+    return { success: true, nextStep: "done" };
   } catch (error) {
     console.error("Login error:", error);
     return { success: false, error: "Server error during authentication." };

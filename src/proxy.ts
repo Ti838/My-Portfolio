@@ -4,7 +4,7 @@ import type { NextRequest } from "next/server";
 const SESSION_COOKIE = "admin_session";
 const SESSION_VALUE = "authenticated";
 
-export function middleware(request: NextRequest) {
+export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   const session = request.cookies.get(SESSION_COOKIE);
