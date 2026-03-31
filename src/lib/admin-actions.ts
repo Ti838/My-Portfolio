@@ -3,7 +3,10 @@
 import { createAdminClient } from "@/lib/supabase";
 import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
+import { Resend } from "resend";
 import { verifyTOTP } from "@/lib/totp";
+
+const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
 
 const SESSION_COOKIE = "admin_session";
 const SESSION_VALUE = "authenticated";
@@ -14,68 +17,83 @@ const TOTP_VALUE = "verified";
 // ─── Session Management ──────────────────────────────────────────────────────
 
 /**
- * STEP 1: Verify Password only.
- * This provides immediate feedback if the password is wrong before asking for 2FA.
+ * STEP 1: Request Email OTP.
  */
-export async function verifyPasswordAction(password: string): Promise<{ success: boolean; error?: string }> {
-  const envPassword = process.env.ADMIN_PASSWORD;
-  if (!envPassword) return { success: false, error: "Server misconfigured: ADMIN_PASSWORD not set." };
-  if (password !== envPassword) return { success: false, error: "Incorrect password." };
-  return { success: true };
-}
-
-/**
- * STEP 3: Handle Phone OTP sending (Simulated or via Twilio).
- */
-export async function sendPhoneOTPAction(): Promise<{ success: boolean; code?: string; error?: string }> {
+export async function sendEmailOTPAction(email: string): Promise<{ success: boolean; error?: string }> {
   try {
-    const phone = process.env.ADMIN_PHONE_NUMBER;
-    if (!phone) return { success: false, error: "ADMIN_PHONE_NUMBER not set in environment." };
+    const supabase = createAdminClient();
+    if (!supabase) return { success: false, error: "Database not configured." };
 
-    // Generate a simple 4-digit code (for simplicity in this portfolio context)
-    const code = Math.floor(1000 + Math.random() * 9000).toString();
-    
-    // In a real app, you'd use Twilio here:
-    // const twilio = require('twilio')(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);
-    // await twilio.messages.create({ body: `Your Admin OTP: ${code}`, from: process.env.TWILIO_PHONE, to: phone });
-    
-    console.log(`[AUTH] SMS OTP for ${phone}: ${code}`); // Log to console for debugging/local use
-    
-    // We store the code in a temporary cookie for verification (encrypted if possible, but here simple for the demo)
-    const cookieStore = await cookies();
-    cookieStore.set("phone_otp_hash", code, { httpOnly: true, secure: true, maxAge: 300 }); // 5 min expiry
+    // 1. Verify if email is authorized
+    const { data: personalInfo } = await supabase.from("personal_info").select("email").eq("id", 1).single();
+    if (!personalInfo || personalInfo.email !== email) {
+      return { success: false, error: "Unauthorized email address." };
+    }
+
+    if (!resend) return { success: false, error: "Email service (Resend) not configured." };
+
+    // 2. Generate 6-digit OTP
+    const otp = Math.floor(100000 + Math.random() * 900000).toString();
+    const expiresAt = new Date(Date.now() + 10 * 60 * 1000).toISOString(); // 10 mins
+
+    // 3. Save to Supabase auth_otps
+    const { error: dbError } = await supabase.from("auth_otps").insert({
+      email,
+      otp_code: otp,
+      expires_at: expiresAt,
+    });
+
+    if (dbError) throw dbError;
+
+    // 4. Send Email via Resend
+    await resend.emails.send({
+      from: "Admin Auth <onboarding@resend.dev>",
+      to: email,
+      subject: "Your Admin Login Code",
+      text: `Your dynamic login code is: ${otp}\nThis code expires in 10 minutes.`,
+    });
 
     return { success: true };
   } catch (error) {
-    console.error("SMS Error:", error);
-    return { success: false, error: "Failed to send SMS." };
+    console.error("Email OTP Error:", error);
+    return { success: false, error: "Failed to send login code." };
   }
 }
 
-export async function loginAdminAction(password: string, token: string, phoneCode?: string): Promise<{ success: boolean; error?: string; back?: boolean; nextStep?: "phone" | "done" }> {
+/**
+ * STEP 2: Verify Email OTP & Authenticator combined.
+ */
+export async function loginAdminAction(email: string, emailOTP: string, totpToken: string): Promise<{ success: boolean; error?: string; nextStep?: "done" }> {
   try {
-    // 1. Verify password
-    const envPassword = process.env.ADMIN_PASSWORD;
-    if (password !== envPassword) return { success: false, error: "Incorrect password.", back: true };
+    const supabase = createAdminClient();
+    if (!supabase) return { success: false, error: "Database not configured." };
 
-    // 2. Verify TOTP
-    const validTOTP = verifyTOTP(token);
-    if (!validTOTP) return { success: false, error: "Invalid Authenticator code." };
+    // 1. Verify Email OTP from Supabase
+    const { data: otpRecord, error: otpError } = await supabase
+      .from("auth_otps")
+      .select("*")
+      .eq("email", email)
+      .eq("otp_code", emailOTP)
+      .gt("expires_at", new Date().toISOString())
+      .order("created_at", { ascending: false })
+      .limit(1)
+      .single();
 
-    // 3. Verify Phone OTP (if present)
-    const cookieStore = await cookies();
-    const serverPhoneCode = cookieStore.get("phone_otp_hash")?.value;
-    
-    if (process.env.ADMIN_PHONE_NUMBER && !phoneCode) {
-      // Need phone verification step
-      return { success: true, nextStep: "phone" };
+    if (otpError || !otpRecord) {
+      return { success: false, error: "Invalid or expired email code." };
     }
 
-    if (process.env.ADMIN_PHONE_NUMBER && phoneCode !== serverPhoneCode) {
-      return { success: false, error: "Invalid Phone OTP code." };
+    // 2. Verify TOTP (Two-Factor Authentication)
+    const validTOTP = verifyTOTP(totpToken);
+    if (!validTOTP) {
+      return { success: false, error: "Invalid Authenticator code." };
     }
+
+    // 3. Cleanup: Delete used OTP
+    await supabase.from("auth_otps").delete().eq("id", otpRecord.id);
 
     // 4. Set server-side session cookie (HTTP-only, secure)
+    const cookieStore = await cookies();
     cookieStore.set(SESSION_COOKIE, SESSION_VALUE, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",

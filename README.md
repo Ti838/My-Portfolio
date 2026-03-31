@@ -23,9 +23,10 @@ A professional, "Live-First" portfolio system built with **Next.js 14**, **Tailw
 - **Image Suite:** Resize, convert, compress, crop & rotate (client-side).
 - **PDF Toolkit:** Images→PDF, merge, extract/split by range, rotate (client-side).
 
-### 🔐 Secure Admin + Owner-only Downloads
-- **Admin (Password + 2FA):** `/admin` → `/admin/builder` for full CMS editing.
-- **Resume/CV (2FA-only unlock):** `/admin/download` lets you unlock preview/edit/download using only a TOTP code (no admin password).
+### 🔐 Advanced Multi-Factor Security
+- **Dynamic Email OTP:** Replaced fixed passwords with a 6-digit code sent to your authorized email via **Resend**.
+- **Authenticator App (TOTP):** Mandatory second factor using Google Authenticator for maximum security.
+- **Next.js 16 Proxy:** Migrated from `middleware.ts` to `proxy.ts` for future-proof route protection.
 
 ---
 
@@ -36,29 +37,36 @@ A professional, "Live-First" portfolio system built with **Next.js 14**, **Tailw
 npm install
 ```
 
-### 2. Environment Setup
+### 2. Database Setup (Supabase)
+Run the following SQL in your Supabase SQL Editor:
+```sql
+CREATE TABLE auth_otps (
+  id TIMESTAMP PRIMARY KEY DEFAULT NOW(),
+  email TEXT NOT NULL,
+  otp_code TEXT NOT NULL,
+  expires_at TIMESTAMPTZ NOT NULL
+);
+```
+
+### 3. Environment Setup
 Create a `.env.local` file with the following variables:
 ```env
 NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
 SUPABASE_SERVICE_ROLE_KEY=your_service_role_key
-ADMIN_PASSWORD=your_secure_password
+RESEND_API_KEY=re_123...
 TOTP_SECRET=your_2fa_secret
-```
-
-### 3. Run Development Server
-```bash
-npm run dev
+NOTIFICATION_EMAIL=your@email.com
 ```
 
 ---
 
-## 🎯 How to Use the Visual Builder
+## 🎯 Admin Login Flow
 
-1. **Access Admin Mode:** Navigate to `/admin` on your local or live site.
-2. **Authenticate:** Use your configured password and 2FA code.
-3. **Hover & Edit:** Once logged in, hovering over any section on the home page or sub-pages will reveal an "Edit" button.
-4. **Save & Preview:** Clicking "Edit" opens a dedicated modal for that section. Save your changes to see them reflect instantly.
+1. **Email Step:** Enter your registered email address (`/admin`).
+2. **OTP Step:** Enter the 6-digit code sent to your email inbox.
+3. **Authenticator Step:** Enter the 6-digit code from your Google Authenticator app.
+4. **Access Granted:** You can now use the **Click-to-Edit** feature on any live section.
 
 ## 📚 Documentation
 - Feature list (truthful): `FEATURES_SPEC.md`
