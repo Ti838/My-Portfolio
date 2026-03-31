@@ -25,8 +25,15 @@ export async function sendEmailOTPAction(email: string): Promise<{ success: bool
     if (!supabase) return { success: false, error: "Database not configured." };
 
     // 1. Verify if email is authorized
-    const { data: personalInfo } = await supabase.from("personal_info").select("email").eq("id", 1).single();
-    if (!personalInfo || personalInfo.email !== email) {
+    const { data: personalInfo, error: dbError } = await supabase.from("personal_info").select("email").eq("id", 1).single();
+    
+    console.log("[AUTH] Authorized Email Check:", {
+      inputEmail: email,
+      dbEmail: personalInfo?.email,
+      dbError: dbError?.message
+    });
+
+    if (dbError || !personalInfo || personalInfo.email.toLowerCase().trim() !== email.toLowerCase().trim()) {
       return { success: false, error: "Unauthorized email address." };
     }
 
@@ -37,13 +44,13 @@ export async function sendEmailOTPAction(email: string): Promise<{ success: bool
     const expiresAt = new Date(Date.now() + 10 * 60 * 1000).toISOString(); // 10 mins
 
     // 3. Save to Supabase auth_otps
-    const { error: dbError } = await supabase.from("auth_otps").insert({
+    const { error: insertError } = await supabase.from("auth_otps").insert({
       email,
       otp_code: otp,
       expires_at: expiresAt,
     });
 
-    if (dbError) throw dbError;
+    if (insertError) throw insertError;
 
     // 4. Send Email via Resend
     await resend.emails.send({
