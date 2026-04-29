@@ -6,6 +6,7 @@ interface GlowCardProps {
   className?: string;
   glowColor?: string;
   style?: CSSProperties;
+  onClick?: () => void;
 }
 
 export default function GlowCard({
@@ -13,6 +14,7 @@ export default function GlowCard({
   className = "",
   glowColor = "rgba(59, 130, 246, 0.15)",
   style,
+  onClick,
 }: GlowCardProps) {
   const cardRef = useRef<HTMLDivElement>(null);
   const [glowPosition, setGlowPosition] = useState({ x: 0, y: 0 });
@@ -34,6 +36,7 @@ export default function GlowCard({
       onMouseMove={handleMouseMove}
       onMouseEnter={() => setIsHovering(true)}
       onMouseLeave={() => setIsHovering(false)}
+      onClick={onClick}
       style={style}
     >
       {/* Glow effect */}
