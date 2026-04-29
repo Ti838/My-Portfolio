@@ -20,32 +20,48 @@ export default function AnnouncementBanner({ announcement }: AnnouncementProps) 
     return null;
   }
 
+  const adminOffset = isAdmin ? 40 : 0;
+  const navbarHeight = 72; // Adjusted for the restored navbar
+  const topPos = adminOffset + navbarHeight;
+
   return (
-    <div className="fixed top-6 left-1/2 -translate-x-1/2 z-[60] animate-in fade-in slide-in-from-top-4 duration-700 pointer-events-none">
-      <div className="glass-card py-2 px-4 rounded-full border border-accent-500/30 flex items-center gap-3 shadow-2xl pointer-events-auto bg-accent-500/10 backdrop-blur-xl">
-        <div className="relative flex items-center justify-center w-5 h-5">
-          <span className="absolute inset-0 rounded-full bg-accent-500/20 animate-ping"></span>
-          <FiBell size={12} className="text-accent-500" />
+    <div id="announcement-banner" style={{ top: `${topPos}px` }} className={`fixed left-0 w-full h-10 bg-accent-500 text-white z-[49] shadow-md flex items-center`}>
+      <div className="max-w-6xl mx-auto px-5 w-full flex items-center justify-between text-[10px] sm:text-xs font-bold uppercase tracking-wider">
+        <div className="flex-1 flex justify-center items-center gap-2 sm:gap-3">
+          <div className="relative flex items-center justify-center w-6 h-6 shrink-0">
+            <span className="absolute inset-0 rounded-full bg-white/30 animate-pulse"></span>
+            <span className="absolute inset-0 rounded-full border border-white/40 animate-ping" style={{ animationDuration: '3s' }}></span>
+            <div className="relative flex items-center justify-center w-5 h-5 bg-white text-accent-600 rounded-full shadow-sm">
+              <FiBell size={12} />
+            </div>
+          </div>
+          <span>{announcement.text}</span>
+          {isAdmin && (
+            <button 
+              onClick={() => window.dispatchEvent(new CustomEvent("open-admin-editor", { detail: "announcement" }))}
+              className="p-1 hover:bg-white/20 rounded-md transition-colors text-white/70 hover:text-white"
+              title="Edit Announcement"
+            >
+              <FiEdit3 size={14} />
+            </button>
+          )}
+          {announcement.link && (
+            <a 
+              href={announcement.link} 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1 underline underline-offset-2 hover:text-white/80 transition-colors"
+            >
+              Learn More <FiExternalLink size={12} />
+            </a>
+          )}
         </div>
-        <p className="text-[10px] font-black uppercase tracking-[0.15em] text-slate-700 dark:text-slate-200 whitespace-nowrap">
-          {announcement.text}
-        </p>
-        {announcement.link && (
-          <a 
-            href={announcement.link} 
-            target="_blank" 
-            rel="noopener noreferrer"
-            className="w-6 h-6 rounded-full bg-accent-500 text-white flex items-center justify-center hover:scale-110 transition-transform shadow-glow"
-          >
-            <FiExternalLink size={10} />
-          </a>
-        )}
-        <div className="h-4 w-[1px] bg-white/20 mx-1" />
         <button 
           onClick={() => setIsVisible(false)}
-          className="text-slate-400 hover:text-accent-500 transition-colors"
+          className="p-1 hover:bg-white/20 rounded-md transition-colors shrink-0 ml-4"
+          aria-label="Close announcement"
         >
-          <FiX size={14} />
+          <FiX size={16} />
         </button>
       </div>
     </div>
