@@ -31,7 +31,7 @@ export default function Navbar({ logoImage }: { logoImage?: string }) {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [showMore, setShowMore] = useState(false);
-  const moreRef = useRef<HTMLDivElement>(null);
+  const moreRef = useRef<HTMLLIElement>(null);
 
   useEffect(() => {
     setMounted(true);
