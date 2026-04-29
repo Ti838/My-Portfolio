@@ -17,7 +17,7 @@ export default async function ExperiencePage() {
   const experiences = await getExperiences();
   return (
     <EditableSection eventKey="experience" label="Experience">
-      <div className="pt-32 pb-24 min-h-screen relative overflow-hidden">
+      <div className="pt-32 pb-24 min-h-screen relative overflow-hidden mesh-gradient">
         <div className="max-w-4xl mx-auto px-5">
           {/* Header */}
           <ScrollReveal direction="left" className="mb-20">
@@ -27,7 +27,7 @@ export default async function ExperiencePage() {
 
           <div className="relative pl-12 lg:pl-20">
             {/* Animated Vertical line */}
-            <div className="absolute left-[18px] lg:left-[26px] top-0 bottom-0 w-[2px] bg-gradient-to-b from-accent-500 via-purple-500 to-transparent animate-draw-line" />
+            <div className="absolute left-[18px] lg:left-[26px] top-0 bottom-0 w-[2px] bg-gradient-to-b from-[var(--accent)] via-[var(--mesh-3)] to-transparent animate-draw-line" />
 
             <div className="space-y-16">
               {experiences.map((exp, i) => {
@@ -36,7 +36,7 @@ export default async function ExperiencePage() {
                   <div key={exp.id} className="relative">
                     {/* Pulsing Dot */}
                     <ScrollReveal direction="none" delay={i * 200}>
-                      <div className="absolute -left-12 lg:-left-20 w-10 lg:w-14 h-10 lg:h-14 rounded-full glass border-2 border-accent-500 flex items-center justify-center text-accent-500 z-10 shadow-glow animate-float-slow bg-white dark:bg-slate-900">
+                      <div className="absolute -left-12 lg:-left-20 w-10 lg:w-14 h-10 lg:h-14 rounded-full glass border-2 border-[var(--accent)] flex items-center justify-center text-[var(--accent)] z-10 shadow-[0_0_15px_var(--accent-glow)] animate-float-slow bg-[var(--surface)]">
                         <Icon size={exp.type === 'work' ? 24 : 20} />
                       </div>
                     </ScrollReveal>
@@ -45,22 +45,22 @@ export default async function ExperiencePage() {
                       <GlowCard className="glass-card p-10 group">
                         <div className="flex flex-wrap items-start justify-between gap-4 mb-6">
                           <div className="space-y-1">
-                            <h2 className="font-display font-900 text-3xl text-slate-900 dark:text-white group-hover:text-accent-500 transition-colors uppercase tracking-tighter">{exp.title}</h2>
-                            <p className="text-accent-500 font-bold uppercase tracking-widest text-xs">{exp.type}</p>
+                            <h2 className="font-mono font-bold text-3xl text-[var(--text-primary)] group-hover:text-[var(--accent)] transition-colors tracking-tight">{exp.title}</h2>
+                            <p className="text-[var(--accent)] font-mono font-bold uppercase tracking-widest text-xs">{exp.type}</p>
                           </div>
-                          <span className="px-6 py-2 rounded-full glass border-white/20 text-xs font-black uppercase tracking-widest text-slate-500 dark:text-slate-400">
+                          <span className="px-6 py-2 rounded-full glass border-[var(--border)] text-xs font-mono font-bold uppercase tracking-widest text-[var(--text-secondary)]">
                             {exp.duration}
                           </span>
                         </div>
                         
-                        <p className="text-slate-600 dark:text-slate-400 leading-relaxed text-lg mb-8">
+                        <p className="text-[var(--text-secondary)] leading-relaxed text-sm mb-8">
                           {exp.description}
                         </p>
                         
                         {exp.tags && (
                           <div className="flex flex-wrap gap-2">
                             {exp.tags.map((t: string) => (
-                              <span key={t} className="skill-pill py-2 px-4 text-[10px]">
+                              <span key={t} className="skill-pill">
                                 {t}
                               </span>
                             ))}

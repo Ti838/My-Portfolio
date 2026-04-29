@@ -65,13 +65,13 @@ export default function ContactPage() {
     }`;
 
   return (
-    <div className="pt-32 pb-24 min-h-screen relative overflow-hidden">
+    <div className="pt-32 pb-24 min-h-screen relative overflow-hidden mesh-gradient">
       <div className="max-w-6xl mx-auto px-5 relative z-10">
         {/* Header */}
         <ScrollReveal direction="left" className="mb-20">
           <span className="tag-pill mb-4">Let&apos;s Talk</span>
           <h1 className="section-title">Get in Touch</h1>
-          <p className="text-slate-600 dark:text-slate-400 mt-6 max-w-xl text-lg font-medium leading-relaxed">
+          <p className="text-[var(--text-secondary)] mt-6 max-w-xl text-lg leading-relaxed">
             Have a question, a project, or just want to say hello? I&apos;m always ready for a new challenge.
           </p>
         </ScrollReveal>
@@ -80,9 +80,9 @@ export default function ContactPage() {
           {/* Left Column - Info */}
           <div className="lg:col-span-2 space-y-12">
             <ScrollReveal direction="right" delay={200} className="space-y-4">
-              <h2 className="font-display font-900 text-3xl text-slate-900 dark:text-white uppercase tracking-tighter">Contact Info</h2>
-              <div className="flex items-center gap-3 text-lg text-slate-500 font-bold uppercase tracking-widest">
-                <FiMapPin className="text-accent-500 shadow-glow" /> Dhaka, Bangladesh
+              <h2 className="font-mono font-bold text-2xl text-[var(--text-primary)] uppercase tracking-wider">Contact Info</h2>
+              <div className="flex items-center gap-3 text-sm text-[var(--text-secondary)] font-mono font-bold uppercase tracking-widest">
+                <FiMapPin className="text-[var(--accent)]" /> Dhaka, Bangladesh
               </div>
             </ScrollReveal>
 
@@ -91,13 +91,13 @@ export default function ContactPage() {
                 <ScrollReveal key={label} direction="right" delay={300 + (i * 100)}>
                   <MagneticButton strength={0.1} className="w-full">
                     <a href={href} target="_blank" rel="noopener noreferrer"
-                      className="glass-card p-6 flex items-center gap-6 group hover:border-accent-500/50 transition-all">
-                      <div className="w-12 h-12 rounded-2xl bg-accent-500/10 text-accent-500 flex items-center justify-center group-hover:scale-110 transition-transform shadow-glow">
+                      className="glass-card p-6 flex items-center gap-6 group hover:border-[var(--accent)] transition-all">
+                      <div className="w-12 h-12 rounded-2xl bg-[var(--surface-tertiary)] text-[var(--accent)] flex items-center justify-center group-hover:scale-110 transition-transform">
                         <Icon size={20} />
                       </div>
                       <div className="text-left">
-                        <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">{label}</p>
-                        <p className="text-sm font-black text-slate-700 dark:text-slate-200 uppercase tracking-tight">{value}</p>
+                        <p className="text-[10px] font-mono font-bold text-[var(--text-muted)] uppercase tracking-widest mb-1">{label}</p>
+                        <p className="text-sm font-bold text-[var(--text-primary)] tracking-tight">{value}</p>
                       </div>
                     </a>
                   </MagneticButton>

@@ -28,13 +28,13 @@ const tools = [
 
 export default function ToolsPage() {
   return (
-    <div className="pt-32 pb-24 min-h-screen relative overflow-hidden">
+    <div className="pt-32 pb-24 min-h-screen relative overflow-hidden mesh-gradient">
       <div className="max-w-6xl mx-auto px-5 relative z-10">
         {/* Header */}
         <ScrollReveal direction="left" className="mb-20">
           <span className="tag-pill mb-4">The Utilities</span>
           <h1 className="section-title">Developer Tools</h1>
-          <p className="text-slate-600 dark:text-slate-400 mt-6 max-w-xl text-lg font-medium leading-relaxed">
+          <p className="text-[var(--text-secondary)] mt-6 max-w-xl text-lg leading-relaxed">
             Free, privacy-focused tools built to speed up your workflow. Everything processes strictly in your browser.
           </p>
         </ScrollReveal>
@@ -43,21 +43,21 @@ export default function ToolsPage() {
           {tools.map((tool, i) => (
             <ScrollReveal key={tool.title} delay={i * 100} direction="up">
               <Link href={tool.href} className="group h-full">
-                <GlowCard className="glass-card p-10 flex flex-col h-full group-hover:border-accent-500/50 transition-all">
+                <GlowCard className="glass-card p-10 flex flex-col h-full group-hover:border-[var(--accent)] transition-all">
                   <div className="flex items-center justify-between mb-8">
-                    <div className="w-16 h-16 rounded-[2rem] bg-accent-500/10 text-accent-500 flex items-center justify-center group-hover:scale-110 transition-transform shadow-glow">
+                    <div className="w-16 h-16 rounded-3xl bg-[var(--surface-tertiary)] text-[var(--accent)] flex items-center justify-center group-hover:scale-110 transition-transform shadow-sm">
                       <tool.icon size={32} />
                     </div>
-                    <span className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">{tool.category}</span>
+                    <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-[var(--text-muted)]">{tool.category}</span>
                   </div>
-                  <h2 className="font-display font-900 text-3xl text-slate-900 dark:text-white mb-4 group-hover:text-accent-500 transition-colors uppercase tracking-tighter leading-none">
+                  <h2 className="font-mono font-bold text-3xl text-[var(--text-primary)] mb-4 group-hover:text-[var(--accent)] transition-colors tracking-tight leading-none">
                     {tool.title}
                   </h2>
-                  <p className="text-lg text-slate-600 dark:text-slate-400 leading-relaxed font-medium mb-10 flex-1">
+                  <p className="text-sm text-[var(--text-secondary)] leading-relaxed mb-10 flex-1">
                     {tool.description}
                   </p>
                   <MagneticButton className="w-fit">
-                    <div className="btn-primary py-4 px-8 text-[10px] uppercase tracking-[0.2em] font-black group-hover:px-10 transition-all">
+                    <div className="btn-primary py-4 px-8 text-[10px] uppercase tracking-widest font-mono font-bold transition-all">
                       Launch Tool <FiArrowRight size={16} />
                     </div>
                   </MagneticButton>
@@ -67,12 +67,12 @@ export default function ToolsPage() {
           ))}
           
           <ScrollReveal direction="up" delay={300}>
-            <div className="glass-card p-10 border-dashed border-white/10 flex flex-col items-center justify-center text-center opacity-50 h-full">
-              <div className="w-16 h-16 rounded-full bg-slate-500/10 flex items-center justify-center text-slate-500 mb-6">
+            <div className="glass-card p-10 border-dashed border-[var(--border)] flex flex-col items-center justify-center text-center opacity-50 h-full">
+              <div className="w-16 h-16 rounded-3xl bg-[var(--surface-tertiary)] flex items-center justify-center text-[var(--text-muted)] mb-6">
                 <FiFileText size={32} />
               </div>
-              <h3 className="font-display font-900 text-xl text-slate-400 uppercase tracking-tighter">More Tools Soon</h3>
-              <p className="text-sm text-slate-500 font-medium mt-2 uppercase tracking-widest">In the Lab</p>
+              <h3 className="font-mono font-bold text-xl text-[var(--text-primary)] uppercase tracking-wider">More Tools Soon</h3>
+              <p className="text-sm text-[var(--text-secondary)] mt-2 uppercase tracking-widest">In the Lab</p>
             </div>
           </ScrollReveal>
         </div>

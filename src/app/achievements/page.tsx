@@ -10,7 +10,7 @@ export default async function AchievementsPage() {
   const achievements = await getAchievements();
 
   return (
-    <div className="pt-32 pb-24 min-h-screen relative overflow-hidden">
+    <div className="pt-32 pb-24 min-h-screen relative overflow-hidden mesh-gradient">
       <div className="max-w-6xl mx-auto px-5 relative z-10">
         <ScrollReveal direction="left" className="mb-20">
           <span className="tag-pill mb-4">The Recognition</span>

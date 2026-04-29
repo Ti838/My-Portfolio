@@ -28,10 +28,10 @@ export default function AchievementsClient({ achievements }: { achievements: Ach
           <MagneticButton key={key} strength={0.1}>
             <button
               onClick={() => setActive(key)}
-              className={`px-8 py-3 rounded-full text-xs font-black uppercase tracking-widest transition-all flex items-center gap-2 border ${
+              className={`px-8 py-3 rounded-full text-xs font-mono font-bold uppercase tracking-widest transition-all flex items-center gap-2 border ${
                 active === key
-                  ? "bg-accent-500 text-white border-accent-500 shadow-glow"
-                  : "glass text-slate-500 hover:text-accent-500 hover:border-accent-500/50"
+                  ? "bg-[var(--text-primary)] text-[var(--surface)] border-[var(--text-primary)] shadow-sm"
+                  : "glass text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:border-[var(--text-primary)]"
               }`}
             >
               <Icon size={14} /> {label}
@@ -44,8 +44,8 @@ export default function AchievementsClient({ achievements }: { achievements: Ach
         <ScrollReveal direction="up">
           <div className="text-center py-32 glass-card border-dashed">
             <p className="text-6xl mb-6 animate-float">🎤</p>
-            <h3 className="font-display font-900 text-2xl text-slate-900 dark:text-white uppercase tracking-tighter">Silence in the Studio</h3>
-            <p className="text-slate-500 dark:text-slate-400 mt-2 font-medium">Singing achievements are being mastered and will be added soon.</p>
+            <h3 className="font-mono font-bold text-2xl text-[var(--text-primary)] uppercase tracking-wider">Silence in the Studio</h3>
+            <p className="text-[var(--text-secondary)] mt-2">Singing achievements are being mastered and will be added soon.</p>
           </div>
         </ScrollReveal>
       ) : (
@@ -53,29 +53,29 @@ export default function AchievementsClient({ achievements }: { achievements: Ach
           {filtered.map((a, i) => (
             <ScrollReveal key={a.id} delay={i * 100} direction="up">
               <GlowCard className="glass-card overflow-hidden group cursor-pointer" onClick={() => setLightbox(a)}>
-                <div className="relative h-64 bg-white dark:bg-slate-800/50 overflow-hidden border-b border-white/10">
+                <div className="relative h-64 bg-white/50 dark:bg-black/20 overflow-hidden border-b border-[var(--border)]">
                   <Image 
                     src={a.imageUrl} 
                     alt={a.title} 
                     fill 
                     className="object-contain p-6 group-hover:scale-110 transition-transform duration-700" 
                   />
-                  <div className="absolute inset-0 bg-accent-500/0 group-hover:bg-accent-500/10 transition-all flex items-center justify-center backdrop-blur-0 group-hover:backdrop-blur-[2px]">
-                    <div className="opacity-0 scale-50 group-hover:opacity-100 group-hover:scale-100 transition-all duration-500 bg-white dark:bg-slate-900 w-12 h-12 rounded-full shadow-2xl flex items-center justify-center">
-                      <FiZoomIn size={20} className="text-accent-500" />
+                  <div className="absolute inset-0 bg-[var(--accent-glow)] opacity-0 group-hover:opacity-100 transition-all flex items-center justify-center backdrop-blur-0 group-hover:backdrop-blur-sm">
+                    <div className="scale-50 group-hover:scale-100 transition-transform duration-500 bg-[var(--surface)] w-12 h-12 rounded-full shadow-lg flex items-center justify-center">
+                      <FiZoomIn size={20} className="text-[var(--text-primary)]" />
                     </div>
                   </div>
                 </div>
                 <div className="p-8 space-y-4">
-                  <h3 className="font-display font-900 text-xl text-slate-900 dark:text-white leading-tight uppercase tracking-tighter group-hover:text-accent-500 transition-colors">
+                  <h3 className="font-mono font-bold text-lg text-[var(--text-primary)] leading-tight group-hover:text-[var(--accent)] transition-colors">
                     {a.title}
                   </h3>
-                  <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed font-medium line-clamp-3">
+                  <p className="text-sm text-[var(--text-secondary)] leading-relaxed line-clamp-3">
                     {a.description}
                   </p>
-                  <div className="flex items-center justify-between pt-4 border-t border-white/5">
-                    <span className="text-[10px] font-black uppercase tracking-[0.2em] text-accent-500">{a.date}</span>
-                    {a.issuer && <span className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">{a.issuer}</span>}
+                  <div className="flex items-center justify-between pt-4 border-t border-[var(--border)]">
+                    <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-[var(--accent)]">{a.date}</span>
+                    {a.issuer && <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-[var(--text-muted)]">{a.issuer}</span>}
                   </div>
                 </div>
               </GlowCard>
