@@ -9,7 +9,6 @@ import ScrollReveal from "@/components/ui/ScrollReveal";
 import GlowCard from "@/components/ui/GlowCard";
 import AnimatedCounter from "@/components/ui/AnimatedCounter";
 import MagneticButton from "@/components/ui/MagneticButton";
-import SplineScene from "@/components/ui/SplineScene";
 
 async function getLiveStats(params: { codeforcesHandle: string; githubUser: string; leetcodeUser: string }) {
   try {
@@ -70,16 +69,9 @@ export default async function HomePage() {
           <div className="absolute bottom-1/3 right-1/4 w-64 h-64 bg-indigo-400/10 rounded-full blur-[80px] animate-float pointer-events-none" />
 
           <div className="relative z-10 flex flex-col items-center text-center px-6 py-32 max-w-4xl mx-auto">
-            {/* 3D Interactive Desk */}
-            <ScrollReveal direction="none" delay={0}>
-              <div className="relative w-full max-w-5xl mx-auto h-[400px] sm:h-[500px] lg:h-[600px] mb-12 rounded-[32px] overflow-hidden bg-[var(--surface)]/20 backdrop-blur-sm border border-[var(--border)] shadow-2xl">
-                <SplineScene />
-              </div>
-            </ScrollReveal>
-
             {/* Handwritten greeting */}
-            <ScrollReveal direction="up" delay={200}>
-              <p className="font-display text-3xl lg:text-4xl text-[var(--accent)] mb-4">
+            <ScrollReveal direction="up" delay={0}>
+              <p className="font-display text-3xl lg:text-4xl text-[var(--accent)] mb-4 mt-12">
                 Hello, I&apos;m
               </p>
             </ScrollReveal>
