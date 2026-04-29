@@ -9,9 +9,7 @@ import ScrollReveal from "@/components/ui/ScrollReveal";
 import GlowCard from "@/components/ui/GlowCard";
 import AnimatedCounter from "@/components/ui/AnimatedCounter";
 import MagneticButton from "@/components/ui/MagneticButton";
-import dynamic from "next/dynamic";
-
-const SplineScene = dynamic(() => import("../components/ui/SplineScene"), { ssr: false });
+import SplineScene from "@/components/ui/SplineScene";
 
 async function getLiveStats(params: { codeforcesHandle: string; githubUser: string; leetcodeUser: string }) {
   try {
