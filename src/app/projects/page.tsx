@@ -35,17 +35,6 @@ export default async function ProjectsPage() {
                       )}
                       <h2 className="font-mono font-bold text-2xl text-[var(--text-primary)] group-hover:text-[var(--accent)] transition-colors">{p.title}</h2>
                     </div>
-                    <span
-                      className={`px-4 py-1.5 rounded-full text-[10px] font-mono uppercase tracking-widest border ${
-                        p.status === "completed"
-                          ? "bg-emerald-500/10 border-emerald-500/20 text-emerald-600 dark:text-emerald-400"
-                          : p.status === "in-progress"
-                          ? "bg-amber-500/10 border-amber-500/20 text-amber-600 dark:text-amber-400"
-                          : "bg-slate-500/10 border-slate-500/20 text-slate-600 dark:text-slate-400"
-                      }`}
-                    >
-                      {p.status === "in-progress" ? "In Progress" : p.status === "completed" ? "Live" : "Planned"}
-                    </span>
                   </div>
 
                   <p className="text-[var(--text-secondary)] leading-relaxed flex-1 text-sm">

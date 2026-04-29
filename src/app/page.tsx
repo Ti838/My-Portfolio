@@ -279,9 +279,6 @@ export default async function HomePage() {
                   <GlowCard className="glass-card p-8 h-full flex flex-col group">
                     <div className="flex items-start justify-between gap-4 mb-6">
                       <h3 className="font-mono font-bold text-xl text-[var(--text-primary)] group-hover:text-[var(--accent)] transition-colors">{p.title}</h3>
-                      <span className={`shrink-0 px-3 py-1 rounded-full text-[10px] font-mono tracking-wider border ${p.status === "in-progress" ? "bg-amber-500/10 border-amber-500/20 text-amber-600 dark:text-amber-400" : "bg-emerald-500/10 border-emerald-500/20 text-emerald-600 dark:text-emerald-400"}`}>
-                        {p.status === "in-progress" ? "wip" : "live"}
-                      </span>
                     </div>
                     <p className="text-[var(--text-secondary)] leading-relaxed mb-8 flex-grow text-sm">{p.description}</p>
                     <div className="flex flex-wrap gap-2 mt-auto">
