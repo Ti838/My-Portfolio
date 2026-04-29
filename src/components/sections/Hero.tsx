@@ -38,22 +38,22 @@ export default function Hero({ personalInfo }: { personalInfo: any }) {
 
           <ScrollReveal delay={200} direction="left">
             <div className="space-y-2">
-              <h1 className="font-display text-[clamp(3.5rem,8vw,6rem)] leading-[0.9] tracking-tighter text-white">
+              <h1 className="font-display text-[clamp(3.5rem,8vw,6rem)] leading-[1.1] tracking-tighter text-white">
                 {personalInfo?.name?.split(' ')[0] || "Timon"} <br/>
-                <span className="text-[var(--text-muted)]">{personalInfo?.name?.split(' ').slice(1).join(' ') || "Biswas"}</span>
+                <span className="text-slate-500">{personalInfo?.name?.split(' ').slice(1).join(' ') || "Biswas"}</span>
               </h1>
             </div>
           </ScrollReveal>
 
           <ScrollReveal delay={400} direction="left">
             <div className="space-y-6">
-              <div className="h-8 flex items-center font-mono text-lg md:text-xl text-[var(--accent)]">
+              <div className="h-8 flex items-center font-mono text-lg md:text-xl text-[var(--accent)] font-bold">
                 <TypeWriter 
                   words={["Competitive Programmer", "Full Stack Developer", "AI Enthusiast"]} 
                   typingSpeed={80}
                 />
               </div>
-              <p className="text-slate-400 text-sm md:text-base max-w-sm leading-relaxed">
+              <p className="text-slate-400 text-sm md:text-base max-w-sm leading-relaxed border-l-2 border-[var(--accent)]/30 pl-4">
                 CSE Student at SMUCT. Engineering intelligent software ecosystems with logic and creativity.
               </p>
             </div>
@@ -92,10 +92,10 @@ export default function Hero({ personalInfo }: { personalInfo: any }) {
           
           <div className="relative w-full h-full rounded-[40px] overflow-hidden shadow-2xl border border-white/10 bg-white/5 backdrop-blur-md group">
             <Image
-              src="/profile.jpg"
+              src={personalInfo?.profileImage || "/profile.jpg"}
               alt={personalInfo?.name || "Profile"}
               fill
-              className="object-cover object-[center_20%] group-hover:scale-105 transition-transform duration-1000 grayscale-[0.2] group-hover:grayscale-0"
+              className="object-cover object-center group-hover:scale-105 transition-transform duration-1000"
               priority
             />
             

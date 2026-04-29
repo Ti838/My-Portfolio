@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { FiArrowRight, FiDownload, FiGithub, FiLinkedin, FiCode, FiStar, FiMonitor, FiAward, FiMic, FiMusic, FiMessageCircle, FiTwitter, FiGlobe, FiLink, FiArrowUpRight } from "react-icons/fi";
+import { FiArrowRight, FiDownload, FiGithub, FiLinkedin, FiCode, FiStar, FiMonitor, FiAward, FiMic, FiMessageCircle, FiTwitter, FiGlobe, FiLink, FiArrowUpRight } from "react-icons/fi";
 import { getPersonalInfo, getAchievements, getSkills, getProjects, getTechColor, getSocialLinks } from "@/data/portfolio";
 import EditableSection from "@/components/admin/EditableSection";
 import TypeWriter from "@/components/ui/TypeWriter";
@@ -90,19 +90,21 @@ export default async function HomePage() {
                 <GlowCard className="h-full group bg-white/5 border-white/10 backdrop-blur-md">
                   <div className="p-6 h-full flex flex-col justify-between">
                     <div className="flex items-center justify-between mb-6">
-                      <div className="flex items-center gap-3">
-                        <div className="w-12 h-12 rounded-2xl bg-slate-900 flex items-center justify-center text-white border border-white/10 relative">
-                          <img src="https://cdn.simpleicons.org/github/white" alt="GitHub" className="w-6 h-6" />
-                          <div className="absolute -top-2 -right-2 px-1.5 py-0.5 bg-gradient-to-r from-blue-500 to-indigo-600 rounded-md text-[8px] font-black uppercase tracking-tighter shadow-lg border border-white/20">Pro</div>
-                        </div>
-                        <div>
-                          <div className="flex items-center gap-2">
-                            <h3 className="font-bold text-white">GitHub</h3>
-                            <span className="px-2 py-0.5 rounded-full bg-blue-500/20 border border-blue-500/30 text-[8px] text-blue-400 font-bold uppercase tracking-widest">Pro</span>
-                          </div>
-                          <p className="text-[10px] text-slate-500 uppercase tracking-widest">Open Source</p>
-                        </div>
-                      </div>
+            <div className="flex flex-col items-center justify-between mb-6">
+              <div className="flex items-center gap-4">
+                <div className="w-14 h-14 rounded-2xl bg-slate-900 flex items-center justify-center text-white border border-white/10 relative shadow-2xl">
+                  <img src="https://cdn.simpleicons.org/github/white" alt="GitHub" className="w-8 h-8" />
+                  <img src="https://img.shields.io/badge/PRO-black?style=flat-square&logo=github&logoColor=white&color=2ea44f" alt="Pro" className="absolute -bottom-2 -right-2 h-5 rounded-sm shadow-xl border border-white/20" />
+                </div>
+                <div>
+                  <div className="flex items-center gap-3">
+                    <h3 className="font-bold text-xl text-white">GitHub</h3>
+                    <img src="https://img.shields.io/badge/PRO-2ea44f?style=flat-square" alt="GitHub Pro" className="h-5 rounded-sm" />
+                  </div>
+                  <p className="text-[10px] text-slate-500 uppercase tracking-[0.2em] font-bold">Open Source Professional</p>
+                </div>
+              </div>
+            </div>
                       <span className="text-[var(--accent)]"><FiArrowUpRight size={20} /></span>
                     </div>
                     
@@ -254,7 +256,7 @@ export default async function HomePage() {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               {skillCategories.map((cat: any, i: number) => {
                 const Icon = {
-                  FiCode, FiMonitor, FiAward, FiMusic, FiTool: FiMonitor
+                  FiCode, FiMonitor, FiAward, FiMic, FiTool: FiMonitor
                 }[cat.icon as string] || FiCode;
 
                 return (
