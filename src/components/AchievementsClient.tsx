@@ -2,13 +2,16 @@
 import Image from "next/image";
 import { useState } from "react";
 import type { Achievement } from "@/types";
-import { FiX, FiZoomIn } from "react-icons/fi";
+import { FiX, FiZoomIn, FiAward, FiBookOpen, FiMusic, FiLayers } from "react-icons/fi";
+import ScrollReveal from "@/components/ui/ScrollReveal";
+import GlowCard from "@/components/ui/GlowCard";
+import MagneticButton from "@/components/ui/MagneticButton";
 
 const categories = [
-  { key: "all", label: "All" },
-  { key: "competitive-programming", label: "🏆 Competitive Programming" },
-  { key: "academic", label: "🎓 Academic" },
-  { key: "singing", label: "🎤 Singing" },
+  { key: "all", label: "All", icon: FiLayers },
+  { key: "competitive-programming", label: "Competition", icon: FiAward },
+  { key: "academic", label: "Academic", icon: FiBookOpen },
+  { key: "singing", label: "Singing", icon: FiMusic },
 ];
 
 export default function AchievementsClient({ achievements }: { achievements: Achievement[] }) {
@@ -20,51 +23,63 @@ export default function AchievementsClient({ achievements }: { achievements: Ach
 
   return (
     <>
-      <div className="flex flex-wrap gap-2 mb-10">
-        {categories.map(({ key, label }) => (
-          <button
-            key={key}
-            onClick={() => setActive(key)}
-            className={`px-4 py-2 rounded-full text-sm font-semibold transition-all ${
-              active === key
-                ? "bg-accent-500 text-white shadow-md"
-                : "bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700"
-            }`}
-          >
-            {label}
-          </button>
+      <ScrollReveal direction="up" delay={100} className="flex flex-wrap gap-4 mb-16">
+        {categories.map(({ key, label, icon: Icon }) => (
+          <MagneticButton key={key} strength={0.1}>
+            <button
+              onClick={() => setActive(key)}
+              className={`px-8 py-3 rounded-full text-xs font-black uppercase tracking-widest transition-all flex items-center gap-2 border ${
+                active === key
+                  ? "bg-accent-500 text-white border-accent-500 shadow-glow"
+                  : "glass text-slate-500 hover:text-accent-500 hover:border-accent-500/50"
+              }`}
+            >
+              <Icon size={14} /> {label}
+            </button>
+          </MagneticButton>
         ))}
-      </div>
+      </ScrollReveal>
 
       {filtered.length === 0 ? (
-        <div className="text-center py-20 text-slate-400">
-          <p className="text-4xl mb-3">🎤</p>
-          <p className="font-display font-700 text-slate-900 dark:text-white text-lg">Coming Soon</p>
-          <p className="text-sm mt-1">Singing achievements will be added here.</p>
-        </div>
+        <ScrollReveal direction="up">
+          <div className="text-center py-32 glass-card border-dashed">
+            <p className="text-6xl mb-6 animate-float">🎤</p>
+            <h3 className="font-display font-900 text-2xl text-slate-900 dark:text-white uppercase tracking-tighter">Silence in the Studio</h3>
+            <p className="text-slate-500 dark:text-slate-400 mt-2 font-medium">Singing achievements are being mastered and will be added soon.</p>
+          </div>
+        </ScrollReveal>
       ) : (
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filtered.map((a) => (
-            <div key={a.id} className="card-base overflow-hidden group cursor-pointer" onClick={() => setLightbox(a)}>
-              <div className="relative h-48 bg-slate-100 dark:bg-slate-800 overflow-hidden">
-                <Image src={a.imageUrl} alt={a.title} fill className="object-contain p-3 group-hover:scale-105 transition-transform duration-300" />
-                <div className="absolute inset-0 bg-accent-500/0 group-hover:bg-accent-500/10 transition-all flex items-center justify-center">
-                  <div className="opacity-0 group-hover:opacity-100 transition-opacity bg-white dark:bg-slate-800 p-2 rounded-full shadow-md">
-                    <FiZoomIn size={18} className="text-accent-500" />
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
+          {filtered.map((a, i) => (
+            <ScrollReveal key={a.id} delay={i * 100} direction="up">
+              <GlowCard className="glass-card overflow-hidden group cursor-pointer" onClick={() => setLightbox(a)}>
+                <div className="relative h-64 bg-white dark:bg-slate-800/50 overflow-hidden border-b border-white/10">
+                  <Image 
+                    src={a.imageUrl} 
+                    alt={a.title} 
+                    fill 
+                    className="object-contain p-6 group-hover:scale-110 transition-transform duration-700" 
+                  />
+                  <div className="absolute inset-0 bg-accent-500/0 group-hover:bg-accent-500/10 transition-all flex items-center justify-center backdrop-blur-0 group-hover:backdrop-blur-[2px]">
+                    <div className="opacity-0 scale-50 group-hover:opacity-100 group-hover:scale-100 transition-all duration-500 bg-white dark:bg-slate-900 w-12 h-12 rounded-full shadow-2xl flex items-center justify-center">
+                      <FiZoomIn size={20} className="text-accent-500" />
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div className="p-5">
-                <div className="flex items-center justify-between gap-2 mb-2">
-                  <h3 className="font-display font-700 text-slate-900 dark:text-white text-base leading-tight">{a.title}</h3>
+                <div className="p-8 space-y-4">
+                  <h3 className="font-display font-900 text-xl text-slate-900 dark:text-white leading-tight uppercase tracking-tighter group-hover:text-accent-500 transition-colors">
+                    {a.title}
+                  </h3>
+                  <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed font-medium line-clamp-3">
+                    {a.description}
+                  </p>
+                  <div className="flex items-center justify-between pt-4 border-t border-white/5">
+                    <span className="text-[10px] font-black uppercase tracking-[0.2em] text-accent-500">{a.date}</span>
+                    {a.issuer && <span className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">{a.issuer}</span>}
+                  </div>
                 </div>
-                <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">{a.description}</p>
-                <div className="flex items-center justify-between mt-4">
-                  <span className="text-[10px] font-mono text-accent-500">{a.date}</span>
-                  {a.issuer && <span className="text-[10px] text-slate-400 dark:text-slate-500">{a.issuer}</span>}
-                </div>
-              </div>
-            </div>
+              </GlowCard>
+            </ScrollReveal>
           ))}
         </div>
       )}
@@ -72,29 +87,31 @@ export default function AchievementsClient({ achievements }: { achievements: Ach
       {/* Lightbox */}
       {lightbox && (
         <div
-          className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4"
+          className="fixed inset-0 z-[60] bg-slate-900/90 backdrop-blur-xl flex items-center justify-center p-6 animate-in fade-in duration-300"
           onClick={() => setLightbox(null)}
         >
           <div
-            className="relative bg-white dark:bg-slate-900 rounded-2xl overflow-hidden max-w-3xl w-full shadow-2xl"
+            className="relative glass-card overflow-hidden max-w-4xl w-full shadow-[0_0_100px_rgba(0,0,0,0.5)] border-white/20 animate-in zoom-in-95 duration-300"
             onClick={(e) => e.stopPropagation()}
           >
             <button
               onClick={() => setLightbox(null)}
-              aria-label="Close"
-              className="absolute top-4 right-4 z-10 w-8 h-8 rounded-full bg-black/20 hover:bg-black/40 flex items-center justify-center text-white transition-colors"
+              className="absolute top-6 right-6 z-20 w-12 h-12 rounded-full glass border-white/20 hover:bg-white/10 flex items-center justify-center text-white transition-all hover:rotate-90"
             >
-              <FiX size={16} />
+              <FiX size={20} />
             </button>
-            <div className="relative h-72 sm:h-96 bg-slate-100 dark:bg-slate-800">
-              <Image src={lightbox.imageUrl} alt={lightbox.title} fill className="object-contain p-4" />
-            </div>
-            <div className="p-6">
-              <h2 className="font-display font-700 text-xl text-slate-900 dark:text-white mb-2">{lightbox.title}</h2>
-              <p className="text-sm text-slate-600 dark:text-slate-400">{lightbox.description}</p>
-              <div className="flex items-center gap-4 mt-4 text-xs text-slate-500">
-                <span>📅 {lightbox.date}</span>
-                {lightbox.issuer && <span>🏛️ {lightbox.issuer}</span>}
+            <div className="grid lg:grid-cols-2">
+              <div className="relative h-72 lg:h-[500px] bg-white p-8 flex items-center justify-center">
+                <Image src={lightbox.imageUrl} alt={lightbox.title} fill className="object-contain p-4 lg:p-10" />
+              </div>
+              <div className="p-10 flex flex-col justify-center space-y-6">
+                <span className="tag-pill text-xs self-start uppercase tracking-widest">{lightbox.category}</span>
+                <h2 className="font-display font-900 text-4xl text-slate-900 dark:text-white uppercase tracking-tighter leading-none">{lightbox.title}</h2>
+                <p className="text-lg text-slate-600 dark:text-slate-400 font-medium leading-relaxed">{lightbox.description}</p>
+                <div className="flex items-center gap-8 pt-6 border-t border-white/10 text-xs font-black uppercase tracking-widest text-slate-500">
+                  <span className="flex items-center gap-2"><FiAward className="text-accent-500" /> {lightbox.date}</span>
+                  {lightbox.issuer && <span className="flex items-center gap-2"><FiBookOpen className="text-accent-500" /> {lightbox.issuer}</span>}
+                </div>
               </div>
             </div>
           </div>

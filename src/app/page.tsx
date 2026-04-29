@@ -4,6 +4,11 @@ import Link from "next/link";
 import { FiArrowRight, FiDownload, FiGithub, FiLinkedin, FiCode, FiStar, FiMonitor, FiAward, FiMic, FiMessageCircle, FiTwitter, FiGlobe, FiLink } from "react-icons/fi";
 import { getPersonalInfo, getAchievements, getSkills, getProjects, getTechColor, getSocialLinks } from "@/data/portfolio";
 import EditableSection from "@/components/admin/EditableSection";
+import TypeWriter from "@/components/ui/TypeWriter";
+import ScrollReveal from "@/components/ui/ScrollReveal";
+import GlowCard from "@/components/ui/GlowCard";
+import AnimatedCounter from "@/components/ui/AnimatedCounter";
+import MagneticButton from "@/components/ui/MagneticButton";
 
 async function getLiveStats(params: { codeforcesHandle: string; githubUser: string; leetcodeUser: string }) {
   try {
@@ -88,143 +93,172 @@ export default async function HomePage() {
     <>
       {/* ── Hero ─────────────────────────────────────────────────────────────── */}
       <EditableSection eventKey="hero" label="Hero Section">
-        <section className="relative pt-24 pb-16 lg:pt-36 lg:pb-20 overflow-hidden bg-white dark:bg-slate-900">
-        {/* Dot grid bg */}
-        <div className="absolute inset-0 dot-grid-bg opacity-60 dark:opacity-30 pointer-events-none" />
-        {/* Blue glow */}
-        <div className="absolute top-1/2 right-1/4 w-96 h-96 -translate-y-1/2 bg-accent-400/10 dark:bg-accent-600/10 rounded-full blur-3xl pointer-events-none" />
+        <section className="relative min-h-screen flex items-center pt-20 pb-16 lg:pt-32 overflow-hidden mesh-gradient">
+        {/* Animated Background Mesh */}
+        <div className="absolute inset-0 dot-grid-bg opacity-30 pointer-events-none" />
+        
+        {/* Floating background elements */}
+        <div className="absolute top-1/4 -left-20 w-96 h-96 bg-accent-500/10 rounded-full blur-[120px] animate-float-slow" />
+        <div className="absolute bottom-1/4 -right-20 w-80 h-80 bg-purple-500/10 rounded-full blur-[100px] animate-float" />
 
-        <div className="max-w-6xl mx-auto px-5 w-full grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
-          {/* Text */}
-          <div className="space-y-7 animate-fade-up">
-            {personalInfo.stats?.location_public === false ? null : (
-              <span className="tag-pill">📍 {personalInfo.stats?.location_label || personalInfo.location || "Bangladesh"}</span>
-            )}
+        <div className="max-w-6xl mx-auto px-5 w-full grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+          {/* Text Content */}
+          <div className="space-y-8 relative z-10">
+            <ScrollReveal direction="left" delay={100}>
+              {personalInfo.stats?.location_public !== false && (
+                <div className="inline-flex items-center gap-2 py-2 px-4 rounded-full bg-white/40 dark:bg-slate-800/40 backdrop-blur-md border border-white/20 shadow-sm">
+                  <span className="relative flex h-2 w-2">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent-400 opacity-75"></span>
+                    <span className="relative inline-flex rounded-full h-2 w-2 bg-accent-500"></span>
+                  </span>
+                  <span className="text-xs font-black uppercase tracking-widest text-slate-600 dark:text-slate-300">
+                    📍 {personalInfo.stats?.location_label || personalInfo.location || "Bangladesh"}
+                  </span>
+                </div>
+              )}
+            </ScrollReveal>
 
-            <h1 className="font-display text-5xl lg:text-6xl font-900 text-slate-900 dark:text-white leading-[1.1] tracking-tight">
-              Hi, I&apos;m{" "}
-              <span className="text-accent-500">{personalInfo.name.split(" ")[0]}</span>{" "}
-              <br className="hidden sm:block" />
-              {personalInfo.name.split(" ").slice(1).join(" ")}
-            </h1>
+            <ScrollReveal direction="up" delay={200}>
+              <h1 className="font-display text-6xl lg:text-8xl font-900 text-slate-900 dark:text-white leading-[0.95] tracking-tight">
+                Hi, I&apos;m <br />
+                <span className="text-accent-500">{personalInfo.name.split(" ")[0]}</span>{" "}
+                <span className="text-slate-400/30 dark:text-white/10">{personalInfo.name.split(" ").slice(1).join(" ")}</span>
+              </h1>
+            </ScrollReveal>
 
-            <p className="text-lg text-slate-600 dark:text-slate-400 max-w-lg leading-relaxed">
-              {personalInfo.tagline}
-            </p>
+            <ScrollReveal direction="up" delay={300}>
+              <div className="text-xl lg:text-2xl font-bold text-slate-600 dark:text-slate-400 max-w-lg leading-relaxed flex flex-wrap gap-x-2">
+                I am a <TypeWriter 
+                  words={["Creative Developer", "Competitive Programmer", "UI/UX Enthusiast", "Vocalist"]} 
+                  className="text-accent-500 underline decoration-accent-500/30 underline-offset-4"
+                />
+              </div>
+            </ScrollReveal>
+
+            <ScrollReveal direction="up" delay={400}>
+              <p className="text-lg text-slate-500 dark:text-slate-400 max-w-md">
+                {personalInfo.tagline}
+              </p>
+            </ScrollReveal>
 
             {/* CTA buttons */}
-            <div className="flex flex-wrap gap-3 pt-2">
-              <Link href="/contact" className="btn-primary">
-                Let&apos;s Collaborate <FiArrowRight size={16} />
-              </Link>
-              <Link href="/projects" className="btn-outline">
-                View Projects
-              </Link>
-              <a
-                href="/admin/download"
-                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-sm font-semibold hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors"
-              >
-                <FiDownload size={15} /> Resume
-              </a>
-            </div>
+            <ScrollReveal direction="up" delay={500}>
+              <div className="flex flex-wrap gap-4 pt-4">
+                <MagneticButton>
+                  <Link href="/contact" className="btn-primary py-4 px-10 text-sm uppercase tracking-widest font-black">
+                    Start a Project <FiArrowRight size={18} />
+                  </Link>
+                </MagneticButton>
+                
+                <MagneticButton>
+                  <a
+                    href="/admin/download"
+                    className="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-white/50 dark:bg-slate-800/50 backdrop-blur-md text-slate-700 dark:text-slate-300 text-xs font-black uppercase tracking-widest border border-white/20 hover:bg-white dark:hover:bg-slate-800 transition-all shadow-lg hover:shadow-xl"
+                  >
+                    <FiDownload size={16} /> Get Resume
+                  </a>
+                </MagneticButton>
+              </div>
+            </ScrollReveal>
 
-            {/* Socials row */}
-            <div className="flex items-center gap-5 pt-2">
-              {socialLinks.map((link: any) => {
+            {/* Socials */}
+            <ScrollReveal direction="up" delay={600} className="flex items-center gap-6 pt-8">
+              {socialLinks.map((link: any, i: number) => {
                 const Icon = {
                   FiGithub, FiLinkedin, FiCode, FiMessageCircle, FiTwitter, FiGlobe, FiMail: (props: any) => <span {...props}>@</span>
                 }[link.icon as string] || FiLink;
                 return (
-                  <a 
-                    key={link.id || link.label}
-                    href={link.url} 
-                    target={link.url.startsWith("mailto") ? undefined : "_blank"} 
-                    rel="noopener noreferrer" 
-                    aria-label={link.label}
-                    className="text-slate-500 hover:text-accent-500 hover:scale-110 transition-all"
-                  >
-                    <Icon size={22} />
-                  </a>
+                  <MagneticButton key={link.id || link.label} strength={0.2}>
+                    <a 
+                      href={link.url} 
+                      target={link.url.startsWith("mailto") ? undefined : "_blank"} 
+                      rel="noopener noreferrer" 
+                      aria-label={link.label}
+                      className="text-slate-400 hover:text-accent-500 transition-colors transform hover:scale-125 block"
+                    >
+                      <Icon size={24} />
+                    </a>
+                  </MagneticButton>
                 );
               })}
-            </div>
+            </ScrollReveal>
           </div>
 
-          {/* Photo + stats */}
-          <div className="flex flex-col items-center gap-8 animate-fade-up" style={{ animationDelay: "0.15s" }}>
-            {/* Profile image */}
-            <div className="relative">
-              <div className="absolute -inset-3 rounded-full bg-gradient-to-br from-accent-400/30 to-accent-600/10 blur-xl" />
-              <div className="relative w-60 h-60 lg:w-72 lg:h-72 rounded-full overflow-hidden border-4 border-white dark:border-slate-800 shadow-xl">
-                <Image
-                  src={personalInfo.profileImage || "/images/profile.jpg"}
-                  alt={personalInfo.name}
-                  fill
-                  className="object-cover"
-                  priority
-                />
-              </div>
-              {/* ICPC badge */}
-              <a href={personalInfo.stats?.icpc_certificate_url || "#"} target={personalInfo.stats?.icpc_certificate_url ? "_blank" : "_self"} rel="noopener noreferrer" className="absolute -bottom-3 -right-3 bg-white dark:bg-slate-800 rounded-xl px-3 py-1.5 shadow-lg border border-slate-100 dark:border-slate-700 flex items-center gap-2 hover:scale-105 transition-transform cursor-pointer group">
-                <span className="text-lg group-hover:rotate-12 transition-transform">🏆</span>
-                <div>
-                  <p className="text-[10px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">ICPC 2024</p>
-                  <p className="text-xs font-bold text-slate-900 dark:text-white">Honorable Mention</p>
+          {/* Profile Visuals */}
+          <ScrollReveal direction="right" delay={300} className="relative">
+            <div className="relative z-10 flex flex-col items-center">
+              {/* Profile image with organic animation */}
+              <div className="relative group">
+                <div className="absolute -inset-8 bg-gradient-to-tr from-accent-500 to-purple-500 rounded-full blur-3xl opacity-20 group-hover:opacity-40 transition-opacity animate-pulse" />
+                <div className="relative w-72 h-72 lg:w-96 lg:h-96 animate-morph overflow-hidden border-8 border-white/20 dark:border-slate-800/50 shadow-2xl backdrop-blur-sm">
+                  <Image
+                    src={personalInfo.profileImage || "/images/profile.jpg"}
+                    alt={personalInfo.name}
+                    fill
+                    className="object-cover scale-110 group-hover:scale-100 transition-transform duration-1000"
+                    priority
+                  />
                 </div>
-              </a>
-            </div>
+                
+                {/* Floating ICPC Badge */}
+                <ScrollReveal direction="none" delay={800} className="absolute -bottom-6 -right-6">
+                  <MagneticButton strength={0.4}>
+                    <div className="glass-card p-4 flex items-center gap-3 shadow-xl border-white/20 animate-float">
+                      <div className="w-12 h-12 rounded-xl bg-accent-500 flex items-center justify-center text-white text-2xl">
+                        🏆
+                      </div>
+                      <div>
+                        <p className="text-[10px] font-black text-accent-500 uppercase tracking-tighter">ICPC 2024</p>
+                        <p className="text-xs font-black text-slate-900 dark:text-white uppercase">Honorable Mention</p>
+                      </div>
+                    </div>
+                  </MagneticButton>
+                </ScrollReveal>
+              </div>
 
-            {/* Stats grid (CP Profiles) */}
-            <div className="grid grid-cols-2 gap-3 w-full max-w-sm">
-              {cpProfiles.map(({ label, username, url, color, bg, stats, badge }) => (
-                <a 
-                  key={label} 
-                  href={url} 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className={`card-base p-4 flex flex-col items-center justify-center gap-1.5 hover:scale-105 transition-all text-center group cursor-pointer border hover:border-accent-200 dark:hover:border-accent-800 relative`}
-                >
-                  <div className="flex items-center gap-2">
-                    <span className={`text-[10px] font-bold uppercase tracking-widest opacity-60`}>{label}</span>
-                    {badge && (
-                      <span className="flex items-center gap-1 border border-[#a855f7] text-[#a855f7] rounded-full px-1.5 py-[1px] text-[8px] font-bold tracking-wider relative overflow-hidden group-hover:shadow-[0_0_10px_rgba(168,85,247,0.4)] transition-all">
-                        <FiStar size={8} /> {badge}
-                      </span>
-                    )}
-                  </div>
-                  <div className={`px-3 py-1 rounded-full ${bg}`}>
-                    <span className={`text-sm font-bold ${color}`}>{username}</span>
-                  </div>
-                  {stats && (
-                    <span className="text-[10px] font-semibold text-slate-500 dark:text-slate-400 mt-1">
-                      {stats}
-                    </span>
-                  )}
-                  <div className="absolute top-2 right-2 flex gap-0.5 opacity-0 group-hover:opacity-100 transition-opacity">
-                    <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></span>
-                  </div>
-                </a>
-              ))}
+              {/* Stats Grid Overlay */}
+              <div className="grid grid-cols-3 gap-4 w-full max-w-lg mt-16 px-4">
+                {[
+                  { label: "CF Rating", value: liveStats.cfRating, suffix: "", color: "text-blue-500" },
+                  { label: "Solved", value: liveStats.cfSolved + liveStats.lcSolved, suffix: "+", color: "text-emerald-500" },
+                  { label: "Repos", value: liveStats.ghRepos, suffix: "", color: "text-purple-500" }
+                ].map((stat, i) => (
+                  <ScrollReveal key={stat.label} direction="up" delay={700 + (i * 100)}>
+                    <div className="glass-card p-4 text-center">
+                      <p className="text-[10px] font-black uppercase tracking-widest text-slate-500 mb-1">{stat.label}</p>
+                      <AnimatedCounter 
+                        target={stat.value} 
+                        suffix={stat.suffix} 
+                        className={`text-2xl font-black ${stat.color} font-display`} 
+                      />
+                    </div>
+                  </ScrollReveal>
+                ))}
+              </div>
             </div>
-          </div>
+          </ScrollReveal>
         </div>
       </section>
       </EditableSection>
 
       {/* ── Quick About ──────────────────────────────────────────────────────── */}
       <EditableSection eventKey="bio" label="Quick About">
-        <section className="bg-slate-50 dark:bg-slate-800/40 py-16 lg:py-20 px-5">
+        <section className="py-24 lg:py-32 px-5 relative overflow-hidden">
         <div className="max-w-6xl mx-auto grid md:grid-cols-3 gap-8">
           {[
-            { icon: <div className="p-3 bg-blue-50 dark:bg-blue-900/20 text-blue-500 rounded-2xl w-fit"><FiMonitor size={24} /></div>, title: "Developer", desc: "Building the Philomedis Medical App, Jerry AI Assistant, and Web applications. Experienced in Android (Java), Dart, PHP, and Python. Always shifting ideas into real-world code." },
-            { icon: <div className="p-3 bg-amber-50 dark:bg-amber-900/20 text-amber-500 rounded-2xl w-fit"><FiAward size={24} /></div>, title: "Competitive Programmer", desc: "ICPC Asia Dhaka 2024 Honorable Mention. Active on Codeforces & LeetCode." },
-            { icon: <div className="p-3 bg-purple-50 dark:bg-purple-900/20 text-purple-500 rounded-2xl w-fit"><FiMic size={24} /></div>, title: "Vocalist", desc: "Performed at college events. Passionate about emotional vocal delivery and stage presence." },
-          ].map(({ icon, title, desc }) => (
-            <div key={title} className="card-base p-7 flex flex-col items-start hover:-translate-y-1 transition-transform">
-              {icon}
-              <h3 className="font-display font-700 text-lg text-slate-900 dark:text-white mt-4 mb-2">{title}</h3>
-              <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">{desc}</p>
-            </div>
+            { icon: <FiMonitor size={28} />, title: "The Developer", desc: "Crafting digital experiences with precision. Currently focusing on Jerry AI & Philomedis Medical App while mastering full-stack ecosystems." },
+            { icon: <FiCode size={28} />, title: "The Programmer", desc: "Fueled by logic and problem-solving. ICPC Honorable Mention and active solver on Codeforces & LeetCode." },
+            { icon: <FiMic size={28} />, title: "The Artist", desc: "Passionate vocalist bringing soul to the stage. Merging creative expression with technical excellence." },
+          ].map((item, i) => (
+            <ScrollReveal key={item.title} delay={i * 150} direction="up">
+              <GlowCard className="glass-card p-10 h-full flex flex-col items-center text-center group">
+                <div className="mb-6 p-5 bg-accent-500/10 text-accent-500 rounded-2xl group-hover:scale-110 group-hover:rotate-6 transition-all duration-500 shadow-glow">
+                  {item.icon}
+                </div>
+                <h3 className="font-display font-900 text-xl text-slate-900 dark:text-white mb-4 uppercase tracking-tighter">{item.title}</h3>
+                <p className="text-sm text-slate-500 dark:text-slate-400 leading-relaxed">{item.desc}</p>
+              </GlowCard>
+            </ScrollReveal>
           ))}
         </div>
       </section>
@@ -232,50 +266,58 @@ export default async function HomePage() {
 
       {/* ── Featured Projects ─────────────────────────────────────────────────── */}
       <EditableSection eventKey="projects" label="Projects Section">
-        <section id="projects" className="py-16 lg:py-20 px-5 bg-white dark:bg-slate-900">
+        <section id="projects" className="py-24 lg:py-32 px-5 relative overflow-hidden">
         <div className="max-w-6xl mx-auto">
-          <div className="flex items-end justify-between mb-12">
-            <div>
-              <span className="tag-pill mb-3">Work</span>
+          <div className="flex flex-col md:flex-row items-start md:items-end justify-between mb-16 gap-6">
+            <ScrollReveal direction="left">
+              <span className="tag-pill mb-4">Latest Works</span>
               <h2 className="section-title">Featured Projects</h2>
-            </div>
-            <Link href="/projects" className="btn-outline text-sm py-2 px-5 hidden sm:flex">
-              All Projects <FiArrowRight size={14} />
-            </Link>
+            </ScrollReveal>
+            <ScrollReveal direction="right">
+              <Link href="/projects" className="btn-outline text-xs uppercase tracking-widest font-black py-3 px-8 group">
+                All Projects <FiArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
+              </Link>
+            </ScrollReveal>
           </div>
-          <div className="grid md:grid-cols-2 gap-6">
-            {projects.filter((p) => p.featured).map((p) => (
-              <div key={p.id} className="card-base p-7 flex flex-col gap-4">
-                <div className="flex items-start justify-between gap-3">
-                  <h3 className="font-display font-700 text-slate-900 dark:text-white text-lg">{p.title}</h3>
-                  <span className={`tag-pill text-[10px] shrink-0 ${p.status === "in-progress" ? "bg-amber-50 text-amber-600" : "bg-green-50 text-green-600"}`}>
-                    {p.status === "in-progress" ? "In Progress" : "Live"}
-                  </span>
-                </div>
-                <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">{p.description}</p>
-                <div className="flex flex-wrap gap-2 mt-auto">
-                  {p.techStack.map((t: string) => (
-                    <span
-                      key={t}
-                      className={`px-3 py-1 rounded-full text-xs font-semibold ${getTechColor(t)}`}
-                    >
-                      {t}
-                    </span>))}
-                </div>
-                <div className="flex gap-3 pt-1">
-                  {p.githubUrl && (
-                    <a href={p.githubUrl} target="_blank" rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-600 dark:text-slate-400 hover:text-accent-500 transition-colors">
-                      <FiGithub size={13} /> GitHub
-                    </a>
-                  )}
-                  {p.liveUrl && (
-                    <a href={p.liveUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 text-xs font-semibold text-accent-500 hover:text-accent-600 transition-colors">
-                      <FiArrowRight size={13} /> Live Demo
-                    </a>
-                  )}
-                </div>
-              </div>
+          
+          <div className="grid md:grid-cols-2 gap-8">
+            {projects.filter((p) => p.featured).map((p, i) => (
+              <ScrollReveal key={p.id} delay={i * 100} direction="up">
+                <GlowCard className="glass-card p-8 h-full flex flex-col group">
+                  <div className="flex items-start justify-between gap-4 mb-6">
+                    <div className="space-y-1">
+                      <h3 className="font-display font-900 text-slate-900 dark:text-white text-2xl group-hover:text-accent-500 transition-colors">{p.title}</h3>
+                      <div className="flex gap-2">
+                         {p.githubUrl && (
+                          <a href={p.githubUrl} target="_blank" rel="noopener noreferrer" className="p-2 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-500 hover:text-accent-500 transition-colors">
+                            <FiGithub size={16} />
+                          </a>
+                        )}
+                        {p.liveUrl && (
+                          <a href={p.liveUrl} target="_blank" rel="noopener noreferrer" className="p-2 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-500 hover:text-accent-500 transition-colors">
+                            <FiGlobe size={16} />
+                          </a>
+                        )}
+                      </div>
+                    </div>
+                    <span className={`px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest border ${p.status === "in-progress" ? "bg-amber-500/10 border-amber-500/20 text-amber-500" : "bg-emerald-500/10 border-emerald-500/20 text-emerald-500"}`}>
+                      {p.status === "in-progress" ? "In Progress" : "Live"}
+                    </span>
+                  </div>
+                  
+                  <p className="text-slate-500 dark:text-slate-400 leading-relaxed mb-8 flex-grow">
+                    {p.description}
+                  </p>
+                  
+                  <div className="flex flex-wrap gap-2 mt-auto">
+                    {p.techStack.map((t: string) => (
+                      <span key={t} className="skill-pill">
+                        {t}
+                      </span>
+                    ))}
+                  </div>
+                </GlowCard>
+              </ScrollReveal>
             ))}
           </div>
         </div>
@@ -283,25 +325,27 @@ export default async function HomePage() {
       </EditableSection>
 
       {/* ── Skills ──────────────────────────────────────────────────────────── */}
-      <EditableSection eventKey="bio" label="Skills Section">
-        <section id="skills" className="py-16 lg:py-20 px-5 bg-slate-50 dark:bg-slate-800/40">
+      <EditableSection eventKey="skills" label="Skills Section">
+        <section id="skills" className="py-24 lg:py-32 px-5 bg-slate-50/50 dark:bg-slate-800/20 relative">
           <div className="max-w-6xl mx-auto">
-            <div className="mb-12">
-              <span className="tag-pill mb-3">Expertise</span>
-              <h2 className="section-title">Technical Skills</h2>
-            </div>
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-              {skillCategories.map((cat) => (
-                <div key={cat.category} className="card-base p-6">
-                  <h3 className="font-display font-700 text-slate-900 dark:text-white mb-4">{cat.category}</h3>
-                  <div className="flex flex-wrap gap-2">
-                    {cat.skills.map((s: { name: string; level: number }) => (
-                      <span key={s.name} className="px-3 py-1.5 bg-slate-100 dark:bg-slate-700 rounded-lg text-xs font-semibold text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-600">
-                        {s.name}
-                      </span>
-                    ))}
+            <ScrollReveal className="mb-16">
+              <span className="tag-pill mb-4">Mastery</span>
+              <h2 className="section-title">Technical Stack</h2>
+            </ScrollReveal>
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+              {skillCategories.map((cat, i) => (
+                <ScrollReveal key={cat.category} delay={i * 100} direction="up">
+                  <div className="glass-card p-8 h-full">
+                    <h3 className="font-display font-900 text-slate-900 dark:text-white mb-6 uppercase tracking-widest text-sm border-b border-white/10 pb-4">{cat.category}</h3>
+                    <div className="flex flex-wrap gap-2">
+                      {cat.skills.map((s: { name: string; level: number }) => (
+                        <span key={s.name} className="skill-pill">
+                          {s.name}
+                        </span>
+                      ))}
+                    </div>
                   </div>
-                </div>
+                </ScrollReveal>
               ))}
             </div>
           </div>
@@ -309,39 +353,44 @@ export default async function HomePage() {
       </EditableSection>
 
       {/* ── Experience ───────────────────────────────────────────────────────── */}
-      <EditableSection eventKey="bio" label="Work Experience">
-        <section id="experience" className="py-16 lg:py-20 px-5 bg-white dark:bg-slate-900">
+      <EditableSection eventKey="experience" label="Work Experience">
+        <section id="experience" className="py-24 lg:py-32 px-5">
           <div className="max-w-6xl mx-auto">
-            <div className="mb-12">
-              <span className="tag-pill mb-3">Story</span>
-              <h2 className="section-title">Work & Experience</h2>
-            </div>
-            {/* Experience details would go here. Providing a robust layout. */}
-            <div className="grid gap-8">
-              <div className="p-6 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-800">
-                <p className="text-slate-500 italic text-center">Customize your work history in the visual builder.</p>
+            <ScrollReveal className="mb-16">
+              <span className="tag-pill mb-4">Trajectory</span>
+              <h2 className="section-title">Experience</h2>
+            </ScrollReveal>
+            <ScrollReveal direction="up" delay={200}>
+              <div className="glass-card p-12 text-center border-dashed border-2">
+                <p className="text-slate-400 italic">Experience details are coming soon. Visit the <Link href="/experience" className="text-accent-500 underline">Experience Page</Link> for more info.</p>
               </div>
-            </div>
+            </ScrollReveal>
           </div>
         </section>
       </EditableSection>
 
       {/* ── Achievements ─────────────────────────────────────────────────────── */}
       <EditableSection eventKey="achievements" label="Achievements">
-        <section id="achievements" className="py-16 lg:py-20 px-5 bg-slate-50 dark:bg-slate-800/40">
+        <section id="achievements" className="py-24 lg:py-32 px-5 bg-slate-50/50 dark:bg-slate-800/20">
           <div className="max-w-6xl mx-auto text-center">
-            <h2 className="section-title mb-12">Academic & CP Achievements</h2>
+            <ScrollReveal className="mb-16">
+              <h2 className="section-title">Achievements</h2>
+            </ScrollReveal>
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 text-left">
-              {achievements.map((a) => (
-                <div key={a.id} className="card-base p-6">
-                  <div className="flex items-center gap-3 mb-3">
-                    <FiAward className="text-accent-500" size={20} />
-                    <span className="text-[10px] font-bold uppercase tracking-widest text-slate-500">{a.category}</span>
-                  </div>
-                  <h3 className="font-700 text-slate-900 dark:text-white mb-2 leading-tight">{a.title}</h3>
-                  <p className="text-xs text-slate-500 dark:text-slate-400 line-clamp-3 mb-3">{a.description}</p>
-                  <p className="text-[10px] font-bold text-slate-400">{a.date}</p>
-                </div>
+              {achievements.slice(0, 4).map((a, i) => (
+                <ScrollReveal key={a.id} delay={i * 100} direction="up">
+                  <GlowCard className="glass-card p-8 h-full">
+                    <div className="flex items-center gap-3 mb-6">
+                      <div className="w-10 h-10 rounded-full bg-accent-500/10 flex items-center justify-center text-accent-500">
+                        <FiAward size={20} />
+                      </div>
+                      <span className="text-[10px] font-black uppercase tracking-widest text-slate-500">{a.category}</span>
+                    </div>
+                    <h3 className="font-display font-900 text-slate-900 dark:text-white mb-4 leading-tight group-hover:text-accent-500 transition-colors">{a.title}</h3>
+                    <p className="text-sm text-slate-500 dark:text-slate-400 line-clamp-3 mb-4">{a.description}</p>
+                    <p className="text-[10px] font-black text-accent-500 uppercase tracking-widest">{a.date}</p>
+                  </GlowCard>
+                </ScrollReveal>
               ))}
             </div>
           </div>
@@ -349,17 +398,27 @@ export default async function HomePage() {
       </EditableSection>
 
       {/* ── CTA Banner ───────────────────────────────────────────────────────── */}
-      <EditableSection eventKey="bio" label="Collaboration Banner">
-        <section className="py-12 lg:py-16 px-5 bg-accent-500 dark:bg-accent-600">
-          <div className="max-w-3xl mx-auto text-center text-white space-y-5">
-            <h2 className="font-display font-900 text-3xl lg:text-4xl">Let&apos;s build something great together</h2>
-            <p className="text-accent-100 text-lg">Open to collaborations, projects, and opportunities.</p>
-            <Link
-              href="/contact"
-              className="inline-flex items-center gap-2 px-8 py-3.5 bg-white text-accent-600 font-700 rounded-full hover:bg-accent-50 transition-colors shadow-lg"
-            >
-              Get in Touch <FiArrowRight size={16} />
-            </Link>
+      <EditableSection eventKey="cta" label="Collaboration Banner">
+        <section className="py-24 lg:py-32 px-5 relative overflow-hidden">
+          <div className="absolute inset-0 bg-accent-500 animate-gradient" />
+          <div className="absolute top-0 left-0 w-full h-full bg-[url('/images/noise.png')] opacity-20 pointer-events-none" />
+          <div className="max-w-3xl mx-auto text-center text-white relative z-10 space-y-8">
+            <ScrollReveal>
+              <h2 className="font-display font-900 text-4xl lg:text-6xl tracking-tight leading-none">Let&apos;s build something <br /> legendary together</h2>
+            </ScrollReveal>
+            <ScrollReveal delay={200}>
+              <p className="text-accent-100 text-xl font-medium opacity-80">Open to collaborations, ambitious projects, and worldwide opportunities.</p>
+            </ScrollReveal>
+            <ScrollReveal delay={400}>
+              <MagneticButton>
+                <Link
+                  href="/contact"
+                  className="inline-flex items-center gap-3 px-12 py-5 bg-white text-accent-600 font-black uppercase tracking-widest text-xs rounded-full hover:scale-105 transition-all shadow-2xl hover:shadow-accent-500/50"
+                >
+                  Start a Conversation <FiArrowRight size={18} />
+                </Link>
+              </MagneticButton>
+            </ScrollReveal>
           </div>
         </section>
       </EditableSection>

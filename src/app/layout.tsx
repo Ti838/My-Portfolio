@@ -6,6 +6,7 @@ import { Toaster } from "react-hot-toast";
 import { AdminProvider } from "@/components/admin/AdminProvider";
 import HeaderStack from "@/components/layout/HeaderStack";
 import AdminModalsRenderer from "@/components/admin/AdminModalsRenderer";
+import AnimatedBackground from "@/components/ui/AnimatedBackground";
 import { getPersonalInfo, getProjects, getAchievements, getExperiences, getEducation, getSkills, getSocialLinks } from "@/data/portfolio";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -75,9 +76,10 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           }}
         />
       </head>
-      <body suppressHydrationWarning className="noise-bg antialiased">
+      <body suppressHydrationWarning className="noise-bg antialiased selection:bg-accent-500/20">
         <ThemeProvider attribute="class" defaultTheme="light" enableSystem={false}>
           <AdminProvider>
+            <AnimatedBackground />
             <HeaderStack personalInfo={personalInfo} />
             <AdminModalsRenderer 
               personalInfo={personalInfo} 
@@ -89,7 +91,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
               skillCategories={skillData}
               socialLinks={socialLinks}
             />
-            <main className="min-h-screen">{children}</main>
+            <main className="min-h-screen relative z-10">{children}</main>
             <Footer socialLinks={socialLinks} tagline={personalInfo?.tagline} />
             <Toaster
               position="bottom-right"

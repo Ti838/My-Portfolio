@@ -45,47 +45,39 @@ export default function Navbar({ logoImage }: { logoImage?: string }) {
   return (
     <header
       style={{ top: `${adminOffset}px` }}
-      className={`fixed left-0 right-0 z-50 transition-all duration-300 ${
+      className={`fixed left-0 right-0 z-50 transition-all duration-500 ${
         scrolled
-          ? "bg-white/90 dark:bg-slate-900/90 backdrop-blur-md shadow-sm border-b border-slate-100 dark:border-slate-800"
+          ? "glass shadow-lg border-b border-white/10"
           : "bg-transparent"
       }`}
     >
       <nav className="max-w-6xl mx-auto px-5 h-16 flex items-center justify-between">
         <div className="flex items-center gap-4">
           <Link href="/" className="flex items-center gap-2 group relative">
-            <div className="relative w-8 h-8 rounded-lg overflow-hidden border border-slate-200 dark:border-slate-700 shadow-sm group-hover:scale-105 transition-transform">
+            <div className="relative w-9 h-9 rounded-xl overflow-hidden border border-white/20 shadow-md group-hover:scale-110 group-hover:rotate-3 transition-all duration-500">
               <Image src={logoImage || "/images/logo.png"} alt="Logo" fill className="object-cover" />
             </div>
-            <span className="font-display font-900 text-xl tracking-tight text-slate-900 dark:text-white">
-              Timon<span className="text-accent-500">.</span>
+            <span className="font-display font-900 text-2xl tracking-tighter text-slate-900 dark:text-white">
+              Timon<span className="text-accent-500 animate-pulse">.</span>
             </span>
-            {isAdmin && (
-              <button 
-                onClick={(e) => {
-                  e.preventDefault();
-                  window.dispatchEvent(new CustomEvent("open-admin-editor", { detail: "hero" }));
-                }}
-                className="absolute -right-6 top-1/2 -translate-y-1/2 p-1 bg-accent-500 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity shadow-lg z-[60]"
-              >
-                <FiEdit3 size={10} />
-              </button>
-            )}
           </Link>
-          <div className="hidden lg:flex items-center gap-1 ml-4 py-1 px-3 bg-slate-50 dark:bg-slate-800/50 rounded-full border border-slate-200/50 dark:border-slate-700/50">
+          <div className="hidden lg:flex items-center gap-1 ml-6 py-1.5 px-1.5 bg-white/50 dark:bg-slate-800/40 backdrop-blur-md rounded-full border border-white/20 shadow-inner">
             <ul className="flex items-center gap-1">
               {navLinks.map((l) => {
                 const active = pathname === l.href;
                 return (
-                  <li key={l.href}>
+                  <li key={l.href} className="relative">
                     <Link
                       href={l.href}
-                      className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-all ${
+                      className={`px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider transition-all duration-300 ${
                         active
-                          ? "bg-accent-50 dark:bg-accent-900/30 text-accent-600 dark:text-accent-400"
-                          : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800"
+                          ? "text-white"
+                          : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
                       }`}
                     >
+                      {active && (
+                        <div className="absolute inset-0 bg-accent-500 rounded-full -z-10 shadow-lg shadow-accent-500/20 animate-scale-in" />
+                      )}
                       {l.label}
                     </Link>
                   </li>
@@ -96,11 +88,10 @@ export default function Navbar({ logoImage }: { logoImage?: string }) {
         </div>
 
         {/* Right side */}
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-3">
           {mounted && (
             <button
               onClick={() => {
-                // Suppress transitions for one frame to prevent flicker
                 document.documentElement.classList.add("no-transitions");
                 setTheme(theme === "dark" ? "light" : "dark");
                 requestAnimationFrame(() => {
@@ -110,39 +101,39 @@ export default function Navbar({ logoImage }: { logoImage?: string }) {
                 });
               }}
               aria-label="Toggle theme"
-              className="w-9 h-9 rounded-lg flex items-center justify-center text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+              className="w-10 h-10 rounded-xl flex items-center justify-center text-slate-500 dark:text-slate-400 hover:bg-white/80 dark:hover:bg-slate-800 transition-all border border-transparent hover:border-white/20 hover:shadow-md"
             >
-              {theme === "dark" ? <FiSun size={17} /> : <FiMoon size={17} />}
+              {theme === "dark" ? <FiSun size={18} className="animate-spin-slow" /> : <FiMoon size={18} />}
             </button>
           )}
-          <Link href="/contact" className="hidden lg:flex btn-primary text-sm py-2 px-5">
+          <Link href="/contact" className="hidden lg:flex btn-primary text-xs py-2.5 px-6 uppercase tracking-widest font-black shadow-accent-500/30">
             Hire Me
           </Link>
           {/* Mobile hamburger */}
           <button
             onClick={() => setOpen(!open)}
             aria-label="Toggle menu"
-            className="lg:hidden w-9 h-9 rounded-lg flex items-center justify-center text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+            className="lg:hidden w-10 h-10 rounded-xl flex items-center justify-center text-slate-600 dark:text-slate-300 hover:bg-white/80 dark:hover:bg-slate-800 transition-all border border-white/20"
           >
-            {open ? <FiX size={19} /> : <FiMenu size={19} />}
+            {open ? <FiX size={20} /> : <FiMenu size={20} />}
           </button>
         </div>
       </nav>
 
       {/* Mobile drawer */}
       {open && (
-        <div className="lg:hidden bg-white dark:bg-slate-900 border-b border-slate-100 dark:border-slate-800 px-5 pb-5 pt-2">
-          <ul className="flex flex-col gap-1">
-            {navLinks.map((l) => {
+        <div className="lg:hidden glass border-b border-white/10 px-5 pb-6 pt-2 animate-fade-in">
+          <ul className="flex flex-col gap-2">
+            {navLinks.map((l, i) => {
               const active = pathname === l.href;
               return (
-                <li key={l.href}>
+                <li key={l.href} className="animate-fade-up" style={{ animationDelay: `${i * 0.05}s` }}>
                   <Link
                     href={l.href}
-                    className={`block px-3 py-2.5 rounded-lg text-sm font-medium transition-all ${
+                    className={`block px-4 py-3 rounded-xl text-sm font-bold uppercase tracking-widest transition-all ${
                       active
-                        ? "bg-accent-50 dark:bg-accent-900/30 text-accent-600 dark:text-accent-400"
-                        : "text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800"
+                        ? "bg-accent-500 text-white shadow-lg shadow-accent-500/20"
+                        : "text-slate-700 dark:text-slate-300 hover:bg-white/50 dark:hover:bg-slate-800"
                     }`}
                   >
                     {l.label}
@@ -150,8 +141,8 @@ export default function Navbar({ logoImage }: { logoImage?: string }) {
                 </li>
               );
             })}
-            <li className="pt-2">
-              <Link href="/contact" className="btn-primary w-full justify-center text-sm py-2.5">
+            <li className="pt-3 animate-fade-up" style={{ animationDelay: `${navLinks.length * 0.05}s` }}>
+              <Link href="/contact" className="btn-primary w-full justify-center text-xs py-3.5 uppercase tracking-widest font-black">
                 Hire Me
               </Link>
             </li>
