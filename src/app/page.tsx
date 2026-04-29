@@ -9,6 +9,7 @@ import ScrollReveal from "@/components/ui/ScrollReveal";
 import GlowCard from "@/components/ui/GlowCard";
 import AnimatedCounter from "@/components/ui/AnimatedCounter";
 import MagneticButton from "@/components/ui/MagneticButton";
+import SplineScene from "@/components/ui/SplineScene";
 
 async function getLiveStats(params: { codeforcesHandle: string; githubUser: string; leetcodeUser: string }) {
   try {
@@ -69,19 +70,10 @@ export default async function HomePage() {
           <div className="absolute bottom-1/3 right-1/4 w-64 h-64 bg-indigo-400/10 rounded-full blur-[80px] animate-float pointer-events-none" />
 
           <div className="relative z-10 flex flex-col items-center text-center px-6 py-32 max-w-4xl mx-auto">
-            {/* Profile Image — organic morph shape */}
+            {/* 3D Interactive Desk */}
             <ScrollReveal direction="none" delay={0}>
-              <div className="relative group mb-12">
-                <div className="absolute -inset-4 bg-gradient-to-tr from-blue-400/20 to-indigo-400/20 rounded-full blur-3xl opacity-50 group-hover:opacity-80 transition-opacity duration-1000" />
-                <div className="relative w-40 h-40 lg:w-48 lg:h-48 animate-morph overflow-hidden shadow-2xl">
-                  <Image
-                    src={personalInfo.profileImage || "/images/profile.jpg"}
-                    alt={personalInfo.name}
-                    fill
-                    className="object-cover scale-110 group-hover:scale-100 transition-transform duration-[2s]"
-                    priority
-                  />
-                </div>
+              <div className="relative w-full max-w-5xl mx-auto h-[400px] sm:h-[500px] lg:h-[600px] mb-12 rounded-[32px] overflow-hidden bg-[var(--surface)]/20 backdrop-blur-sm border border-[var(--border)] shadow-2xl">
+                <SplineScene />
               </div>
             </ScrollReveal>
 
