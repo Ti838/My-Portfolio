@@ -91,11 +91,15 @@ export default async function HomePage() {
                   <div className="p-6 h-full flex flex-col justify-between">
                     <div className="flex items-center justify-between mb-6">
                       <div className="flex items-center gap-3">
-                        <div className="w-12 h-12 rounded-2xl bg-slate-900 flex items-center justify-center text-white border border-white/10">
-                          <FiGithub size={24} />
+                        <div className="w-12 h-12 rounded-2xl bg-slate-900 flex items-center justify-center text-white border border-white/10 relative">
+                          <img src="https://cdn.simpleicons.org/github/white" alt="GitHub" className="w-6 h-6" />
+                          <div className="absolute -top-2 -right-2 px-1.5 py-0.5 bg-gradient-to-r from-blue-500 to-indigo-600 rounded-md text-[8px] font-black uppercase tracking-tighter shadow-lg border border-white/20">Pro</div>
                         </div>
                         <div>
-                          <h3 className="font-bold text-white">GitHub</h3>
+                          <div className="flex items-center gap-2">
+                            <h3 className="font-bold text-white">GitHub</h3>
+                            <span className="px-2 py-0.5 rounded-full bg-blue-500/20 border border-blue-500/30 text-[8px] text-blue-400 font-bold uppercase tracking-widest">Pro</span>
+                          </div>
                           <p className="text-[10px] text-slate-500 uppercase tracking-widest">Open Source</p>
                         </div>
                       </div>
@@ -126,15 +130,15 @@ export default async function HomePage() {
                   <div className="p-6 h-full flex flex-col justify-between">
                     <div className="flex items-center justify-between mb-6">
                       <div className="flex items-center gap-3">
-                        <div className="w-12 h-12 rounded-2xl bg-blue-500/10 flex items-center justify-center text-blue-500 font-bold border border-blue-500/20">
-                          CF
+                        <div className="w-12 h-12 rounded-2xl bg-white flex items-center justify-center border border-white/10 p-2 overflow-hidden shadow-lg shadow-blue-500/10">
+                          <img src="https://cdn.simpleicons.org/codeforces" alt="Codeforces" className="w-full h-full object-contain" />
                         </div>
                         <div>
                           <h3 className="font-bold text-white">Codeforces</h3>
                           <p className="text-[10px] text-slate-500 uppercase tracking-widest">Competitive</p>
                         </div>
                       </div>
-                      <span className="text-blue-500"><FiAward size={20} /></span>
+                      <span className="text-blue-400"><FiAward size={20} /></span>
                     </div>
                     
                     <div className="space-y-4">
@@ -162,8 +166,8 @@ export default async function HomePage() {
                   <div className="p-6 h-full flex flex-col justify-between">
                     <div className="flex items-center justify-between mb-6">
                       <div className="flex items-center gap-3">
-                        <div className="w-12 h-12 rounded-2xl bg-amber-500/10 flex items-center justify-center text-amber-500 border border-amber-500/20">
-                          <FiCode size={24} />
+                        <div className="w-12 h-12 rounded-2xl bg-[#2a2a2a] flex items-center justify-center border border-white/10 p-2 shadow-lg shadow-amber-500/10">
+                          <img src="https://cdn.simpleicons.org/leetcode/amber" alt="LeetCode" className="w-full h-full object-contain" />
                         </div>
                         <div>
                           <h3 className="font-bold text-white">LeetCode</h3>
@@ -191,11 +195,13 @@ export default async function HomePage() {
               {/* Toph & VJudge Badges */}
               <ScrollReveal direction="up" delay={400} className="md:col-span-2 lg:col-span-3">
                 <div className="flex flex-wrap items-center justify-center gap-6 py-10 border-t border-white/5 mt-8">
-                  <div className="flex items-center gap-4 px-8 py-4 rounded-2xl bg-white/5 border border-white/10 hover:border-[var(--accent)] transition-all group backdrop-blur-md">
+                  <div className="flex items-center gap-4 px-8 py-4 rounded-2xl bg-white/5 border border-white/10 hover:border-green-500 transition-all group backdrop-blur-md">
+                    <img src="https://toph.co/favicon.ico" alt="Toph" className="w-6 h-6 rounded-md" />
                     <span className="font-bold text-white">Toph</span>
                     <img src={`https://img.shields.io/badge/Toph-${personalInfo.stats?.toph_handle || "Timon"}-green?style=for-the-badge`} alt="Toph Badge" className="h-6" />
                   </div>
                   <div className="flex items-center gap-4 px-8 py-4 rounded-2xl bg-white/5 border border-white/10 hover:border-red-500 transition-all group backdrop-blur-md">
+                    <img src="https://vjudge.net/static/images/logo.ico" alt="VJudge" className="w-6 h-6 rounded-md bg-white" />
                     <span className="font-bold text-white">VJudge</span>
                     <img src={`https://img.shields.io/badge/VJudge-${personalInfo.stats?.vjudge_handle || "Timon"}-red?style=for-the-badge`} alt="VJudge Badge" className="h-6" />
                   </div>
