@@ -65,7 +65,7 @@ export default function Hero({ personalInfo }: { personalInfo: any }) {
             <div className="h-8 flex items-center justify-center font-mono text-sm md:text-lg text-[var(--text-secondary)] tracking-tight">
               <TypeWriter 
                 words={["Competitive Programmer", "Full Stack Developer", "AI Enthusiast", "Vocalist"]} 
-                delay={80}
+                typingSpeed={80}
               />
             </div>
             <p className="text-[var(--text-muted)] max-w-sm text-sm md:text-base leading-relaxed">
