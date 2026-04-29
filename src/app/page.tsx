@@ -9,6 +9,7 @@ import ScrollReveal from "@/components/ui/ScrollReveal";
 import GlowCard from "@/components/ui/GlowCard";
 import AnimatedCounter from "@/components/ui/AnimatedCounter";
 import MagneticButton from "@/components/ui/MagneticButton";
+import AwardsList from "@/components/sections/AwardsList";
 
 async function getLiveStats(params: { codeforcesHandle: string; githubUser: string; leetcodeUser: string }) {
   try {
@@ -362,23 +363,7 @@ export default async function HomePage() {
             <ScrollReveal className="mb-16 text-center">
               <h2 className="section-title">Awards</h2>
             </ScrollReveal>
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-              {achievements.slice(0, 4).map((a, i) => (
-                <ScrollReveal key={a.id} delay={i * 100} direction="up">
-                  <GlowCard className="glass-card p-8 h-full">
-                    <div className="flex items-center gap-3 mb-6">
-                      <div className="w-10 h-10 rounded-full bg-[var(--surface-tertiary)] border border-[var(--border)] flex items-center justify-center text-[var(--accent)]">
-                        <FiAward size={18} />
-                      </div>
-                      <span className="font-mono text-[10px] uppercase tracking-wider text-[var(--text-muted)]">{a.category}</span>
-                    </div>
-                    <h3 className="font-mono font-bold text-[var(--text-primary)] mb-3 leading-tight text-sm">{a.title}</h3>
-                    <p className="text-xs text-[var(--text-secondary)] line-clamp-3 mb-4">{a.description}</p>
-                    <p className="font-mono text-[10px] text-[var(--accent)] uppercase tracking-wider">{a.date}</p>
-                  </GlowCard>
-                </ScrollReveal>
-              ))}
-            </div>
+            <AwardsList achievements={achievements} />
           </div>
         </section>
       </EditableSection>
