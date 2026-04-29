@@ -10,9 +10,9 @@ const config: Config = {
   theme: {
     extend: {
       fontFamily: {
-        sans: ["var(--font-geist-sans)", "system-ui", "sans-serif"],
-        mono: ["var(--font-geist-mono)", "monospace"],
-        display: ["'Cabinet Grotesk'", "sans-serif"],
+        sans: ["'Inter'", "system-ui", "sans-serif"],
+        mono: ["'Space Mono'", "'JetBrains Mono'", "monospace"],
+        display: ["'Caveat'", "cursive"],
       },
       colors: {
         accent: {
