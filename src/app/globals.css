@@ -1,46 +1,57 @@
-@import url('https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800;900&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&family=JetBrains+Mono:wght@400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400;500;600;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* ── Design Tokens ─────────────────────────────────────────────────────────── */
+/* ── Design Tokens (Your Blue + PlantPot Layout) ──────────────────────────── */
 :root {
   --accent: #3b82f6;
   --accent-light: #60a5fa;
   --accent-dark: #1d4ed8;
-  --accent-glow: rgba(59, 130, 246, 0.4);
-  --surface: #ffffff;
-  --surface-secondary: #f8fafc;
-  --surface-tertiary: #f1f5f9;
-  --border: #e2e8f0;
-  --text-primary: #0f172a;
-  --text-secondary: #475569;
-  --text-muted: #94a3b8;
-  --radius: 16px;
-  --radius-lg: 24px;
-  --shadow-sm: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
-  --shadow-md: 0 4px 16px rgba(0,0,0,0.08);
-  --shadow-lg: 0 12px 40px rgba(0,0,0,0.12);
-  --shadow-accent: 0 4px 24px rgba(59,130,246,0.18);
-  --shadow-glow: 0 0 40px rgba(59,130,246,0.15);
-  --glass-bg: rgba(255, 255, 255, 0.7);
-  --glass-border: rgba(255, 255, 255, 0.3);
+  --accent-glow: rgba(59, 130, 246, 0.3);
+  --surface: #faf9f7;
+  --surface-secondary: #f3f1ed;
+  --surface-tertiary: #eae6e0;
+  --border: #e0dbd3;
+  --text-primary: #1a1a1a;
+  --text-secondary: #5c5c5c;
+  --text-muted: #9c9c9c;
+  --radius: 24px;
+  --radius-lg: 32px;
+  --shadow-sm: 0 2px 8px rgba(0,0,0,0.04);
+  --shadow-md: 0 8px 32px rgba(0,0,0,0.06);
+  --shadow-lg: 0 16px 48px rgba(0,0,0,0.08);
+  --shadow-accent: 0 8px 32px rgba(59, 130, 246, 0.12);
+  --shadow-glow: 0 0 40px rgba(59, 130, 246, 0.1);
+  --glass-bg: rgba(250, 249, 247, 0.75);
+  --glass-border: rgba(224, 219, 211, 0.5);
+
+  /* PlantPot-style mesh gradient — using blues */
+  --mesh-1: #dbeafe;
+  --mesh-2: #f5f0ea;
+  --mesh-3: #e0e7ff;
+  --mesh-4: #f0fdf4;
 }
 
 .dark {
-  --surface: #0a0f1e;
-  --surface-secondary: #111827;
-  --surface-tertiary: #1e293b;
-  --border: #1e293b;
-  --text-primary: #f8fafc;
-  --text-secondary: #94a3b8;
-  --text-muted: #475569;
-  --shadow-sm: 0 1px 3px rgba(0,0,0,0.3);
-  --shadow-md: 0 4px 16px rgba(0,0,0,0.4);
-  --shadow-lg: 0 12px 40px rgba(0,0,0,0.5);
-  --glass-bg: rgba(17, 24, 39, 0.7);
-  --glass-border: rgba(30, 41, 59, 0.5);
+  --surface: #0a0a0a;
+  --surface-secondary: #111111;
+  --surface-tertiary: #1a1a1a;
+  --border: #222222;
+  --text-primary: #f0ede8;
+  --text-secondary: #8a8a8a;
+  --text-muted: #4a4a4a;
+  --shadow-sm: 0 2px 8px rgba(0,0,0,0.3);
+  --shadow-md: 0 8px 32px rgba(0,0,0,0.4);
+  --shadow-lg: 0 16px 48px rgba(0,0,0,0.5);
+  --glass-bg: rgba(17, 17, 17, 0.8);
+  --glass-border: rgba(34, 34, 34, 0.6);
+
+  --mesh-1: #0c1929;
+  --mesh-2: #111111;
+  --mesh-3: #0f0f20;
+  --mesh-4: #0a130e;
 }
 
 /* ── Base ──────────────────────────────────────────────────────────────────── */
@@ -54,75 +65,60 @@ html {
 }
 
 body {
-  font-family: 'DM Sans', system-ui, sans-serif;
+  font-family: 'Inter', system-ui, sans-serif;
   background: var(--surface);
   color: var(--text-primary);
-  line-height: 1.7;
-  transition: background 0.5s cubic-bezier(0.4, 0, 0.2, 1), color 0.3s;
+  line-height: 1.8;
+  font-weight: 400;
+  transition: background 0.6s cubic-bezier(0.4, 0, 0.2, 1), color 0.4s;
   overflow-x: hidden;
   max-width: 100vw;
 }
 
 /* ── Typography ────────────────────────────────────────────────────────────── */
-.font-display { font-family: 'Cabinet Grotesk', sans-serif; }
-.font-mono    { font-family: 'JetBrains Mono', monospace; }
+.font-display  { font-family: 'Caveat', cursive; }
+.font-mono     { font-family: 'Space Mono', 'JetBrains Mono', monospace; }
+.font-body     { font-family: 'Inter', sans-serif; }
 
 h1, h2, h3, h4 {
-  font-family: 'Cabinet Grotesk', sans-serif;
-  font-weight: 800;
-  letter-spacing: -0.02em;
-  line-height: 1.15;
+  font-family: 'Space Mono', monospace;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  line-height: 1.2;
 }
 
-/* ── Section titles ────────────────────────────────────────────────────────── */
+/* ── Section titles (handwritten Caveat like PlantPot) ─────────────────────── */
 .section-title {
-  font-family: 'Cabinet Grotesk', sans-serif;
-  font-size: clamp(2rem, 4vw, 3rem);
-  font-weight: 900;
+  font-family: 'Caveat', cursive;
+  font-size: clamp(3rem, 6vw, 5rem);
+  font-weight: 700;
   color: var(--text-primary);
   position: relative;
   display: inline-block;
 }
 
-.section-title::after {
-  content: '';
-  display: block;
-  width: 48px;
-  height: 4px;
-  background: linear-gradient(90deg, var(--accent), var(--accent-light));
-  border-radius: 9999px;
-  margin-top: 10px;
-  animation: expandWidth 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-  transform-origin: left;
-}
-
-@keyframes expandWidth {
-  from { transform: scaleX(0); }
-  to { transform: scaleX(1); }
-}
-
-/* ── Accent dot used in section tags ──────────────────────────────────────── */
+/* ── Tag pill ──────────────────────────────────────────────────────────────── */
 .tag-pill {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  padding: 4px 14px;
-  background: rgba(59,130,246,0.08);
-  color: var(--accent);
+  gap: 8px;
+  padding: 6px 16px;
+  background: var(--surface-secondary);
+  color: var(--text-secondary);
   border-radius: 9999px;
-  font-size: 0.78rem;
-  font-weight: 600;
+  font-family: 'Space Mono', monospace;
+  font-size: 0.7rem;
+  font-weight: 400;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  border: 1px solid rgba(59,130,246,0.15);
-  backdrop-filter: blur(4px);
+  border: 1px solid var(--border);
 }
 
 /* ── Glassmorphism ─────────────────────────────────────────────────────────── */
 .glass {
   background: var(--glass-bg);
-  backdrop-filter: blur(20px) saturate(180%);
-  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
   border: 1px solid var(--glass-border);
 }
 
@@ -131,125 +127,83 @@ h1, h2, h3, h4 {
   backdrop-filter: blur(16px) saturate(150%);
   -webkit-backdrop-filter: blur(16px) saturate(150%);
   border: 1px solid var(--glass-border);
-  border-radius: var(--radius);
-  box-shadow: var(--shadow-sm), 0 0 0 1px rgba(255,255,255,0.05) inset;
-  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .glass-card:hover {
-  box-shadow: var(--shadow-accent), 0 0 0 1px rgba(59,130,246,0.1) inset;
+  box-shadow: var(--shadow-md);
   transform: translateY(-4px);
-  border-color: rgba(59,130,246,0.25);
+  border-color: var(--accent);
 }
 
 /* ── Cards ─────────────────────────────────────────────────────────────────── */
 .card-base {
   background: var(--surface-secondary);
   border: 1px solid var(--border);
-  border-radius: var(--radius);
+  border-radius: var(--radius-lg);
   box-shadow: var(--shadow-sm);
-  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
   position: relative;
   overflow: hidden;
 }
 
-.card-base::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  opacity: 0;
-  transition: opacity 0.4s;
-  background: linear-gradient(135deg, rgba(59,130,246,0.03), transparent 60%);
-  pointer-events: none;
-}
-
 .card-base:hover {
-  box-shadow: var(--shadow-accent);
+  box-shadow: var(--shadow-md);
   transform: translateY(-4px);
-  border-color: rgba(59,130,246,0.3);
-}
-
-.card-base:hover::before {
-  opacity: 1;
+  border-color: var(--accent);
 }
 
 /* ── Buttons ───────────────────────────────────────────────────────────────── */
 .btn-primary {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  padding: 12px 28px;
-  background: linear-gradient(135deg, var(--accent), var(--accent-dark));
-  color: #fff;
+  gap: 10px;
+  padding: 14px 32px;
+  background: var(--text-primary);
+  color: var(--surface);
   border-radius: 9999px;
-  font-weight: 600;
-  font-size: 0.95rem;
-  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-  box-shadow: 0 2px 12px var(--accent-glow);
+  font-family: 'Space Mono', monospace;
+  font-weight: 700;
+  font-size: 0.8rem;
+  letter-spacing: 0.02em;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
   position: relative;
   overflow: hidden;
 }
 
-.btn-primary::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(135deg, transparent, rgba(255,255,255,0.15), transparent);
-  transform: translateX(-100%);
-  transition: transform 0.6s;
-}
-
 .btn-primary:hover {
   transform: translateY(-2px) scale(1.02);
-  box-shadow: 0 6px 24px var(--accent-glow);
-}
-
-.btn-primary:hover::before {
-  transform: translateX(100%);
+  box-shadow: var(--shadow-lg);
+  opacity: 0.85;
 }
 
 .btn-outline {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  padding: 11px 27px;
-  border: 1.5px solid var(--accent);
-  color: var(--accent);
+  gap: 10px;
+  padding: 13px 31px;
+  border: 1.5px solid var(--border);
+  color: var(--text-primary);
   border-radius: 9999px;
-  font-weight: 600;
-  font-size: 0.95rem;
-  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-  position: relative;
-  overflow: hidden;
-}
-
-.btn-outline::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: var(--accent);
-  border-radius: inherit;
-  transform: scaleX(0);
-  transform-origin: right;
-  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-  z-index: -1;
+  font-family: 'Space Mono', monospace;
+  font-weight: 700;
+  font-size: 0.8rem;
+  letter-spacing: 0.02em;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .btn-outline:hover {
-  color: #fff;
+  background: var(--text-primary);
+  color: var(--surface);
   transform: translateY(-2px);
-  border-color: transparent;
-}
-
-.btn-outline:hover::before {
-  transform: scaleX(1);
-  transform-origin: left;
+  border-color: var(--text-primary);
 }
 
 /* ── Progress bars ─────────────────────────────────────────────────────────── */
 .progress-track {
-  height: 6px;
+  height: 4px;
   background: var(--border);
   border-radius: 9999px;
   overflow: hidden;
@@ -257,22 +211,9 @@ h1, h2, h3, h4 {
 
 .progress-fill {
   height: 100%;
-  background: linear-gradient(90deg, var(--accent), var(--accent-light));
+  background: var(--accent);
   border-radius: 9999px;
   transition: width 1.2s cubic-bezier(0.16, 1, 0.3, 1);
-  position: relative;
-}
-
-.progress-fill::after {
-  content: '';
-  position: absolute;
-  right: 0;
-  top: -1px;
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: var(--accent-light);
-  box-shadow: 0 0 8px var(--accent-glow);
 }
 
 /* ── Timeline ──────────────────────────────────────────────────────────────── */
@@ -281,16 +222,16 @@ h1, h2, h3, h4 {
   left: 18px;
   top: 0;
   bottom: 0;
-  width: 2px;
-  background: linear-gradient(to bottom, var(--accent), var(--accent-light), transparent);
+  width: 1px;
+  background: var(--border);
 }
 
 .timeline-dot {
   width: 38px;
   height: 38px;
   border-radius: 50%;
-  background: var(--surface-secondary);
-  border: 2px solid var(--accent);
+  background: var(--surface);
+  border: 2px solid var(--border);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -298,18 +239,27 @@ h1, h2, h3, h4 {
   flex-shrink: 0;
   position: relative;
   z-index: 1;
-  box-shadow: 0 0 0 4px var(--surface), 0 0 16px var(--accent-glow);
   transition: all 0.3s;
 }
 
 .timeline-dot:hover {
-  transform: scale(1.15);
-  box-shadow: 0 0 0 4px var(--surface), 0 0 24px var(--accent-glow);
+  transform: scale(1.1);
+  border-color: var(--accent);
+}
+
+/* ── Mesh Gradient Background (PlantPot-inspired with your blue) ───────────── */
+.mesh-gradient {
+  background:
+    radial-gradient(ellipse at 0% 0%, var(--mesh-1) 0%, transparent 50%),
+    radial-gradient(ellipse at 100% 0%, var(--mesh-2) 0%, transparent 50%),
+    radial-gradient(ellipse at 100% 100%, var(--mesh-3) 0%, transparent 50%),
+    radial-gradient(ellipse at 0% 100%, var(--mesh-4) 0%, transparent 50%),
+    var(--surface);
 }
 
 /* ── Animations ────────────────────────────────────────────────────────────── */
 @keyframes fadeUp {
-  from { opacity: 0; transform: translateY(30px); }
+  from { opacity: 0; transform: translateY(40px); }
   to   { opacity: 1; transform: translateY(0); }
 }
 
@@ -318,25 +268,20 @@ h1, h2, h3, h4 {
   to   { opacity: 1; }
 }
 
-@keyframes shimmer {
-  0%   { background-position: -200% center; }
-  100% { background-position:  200% center; }
-}
-
 @keyframes float {
   0%, 100% { transform: translateY(0px); }
-  50%      { transform: translateY(-12px); }
+  50%      { transform: translateY(-16px); }
 }
 
 @keyframes floatSlow {
   0%, 100% { transform: translateY(0px) rotate(0deg); }
-  33%      { transform: translateY(-8px) rotate(1deg); }
-  66%      { transform: translateY(-4px) rotate(-1deg); }
+  33%      { transform: translateY(-10px) rotate(1deg); }
+  66%      { transform: translateY(-6px) rotate(-1deg); }
 }
 
 @keyframes glowPulse {
   0%, 100% { box-shadow: 0 0 20px var(--accent-glow); }
-  50%      { box-shadow: 0 0 40px var(--accent-glow), 0 0 60px rgba(59,130,246,0.1); }
+  50%      { box-shadow: 0 0 40px var(--accent-glow); }
 }
 
 @keyframes gradientShift {
@@ -346,7 +291,7 @@ h1, h2, h3, h4 {
 }
 
 @keyframes scaleIn {
-  from { opacity: 0; transform: scale(0.9); }
+  from { opacity: 0; transform: scale(0.95); }
   to   { opacity: 1; transform: scale(1); }
 }
 
@@ -387,76 +332,31 @@ h1, h2, h3, h4 {
   to   { height: 100%; }
 }
 
-@keyframes ripple {
-  0%   { transform: scale(0); opacity: 0.5; }
-  100% { transform: scale(4); opacity: 0; }
-}
-
 @keyframes reverseSpin {
   from { transform: rotate(360deg); }
   to   { transform: rotate(0deg); }
 }
 
-.animate-reverse-spin {
-  animation: reverseSpin 15s linear infinite;
+@keyframes shimmer {
+  0%   { background-position: -200% center; }
+  100% { background-position:  200% center; }
 }
 
-.animate-spin-slow {
-  animation: rotateGlow 15s linear infinite;
-}
-
-.animate-fade-up {
-  animation: fadeUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
-}
-
-.animate-fade-in {
-  animation: fadeIn 0.5s ease both;
-}
-
-.animate-float {
-  animation: float 6s ease-in-out infinite;
-}
-
-.animate-float-slow {
-  animation: floatSlow 8s ease-in-out infinite;
-}
-
-.animate-glow-pulse {
-  animation: glowPulse 3s ease-in-out infinite;
-}
-
-.animate-gradient {
-  background-size: 200% 200%;
-  animation: gradientShift 4s ease infinite;
-}
-
-.animate-scale-in {
-  animation: scaleIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
-}
-
-.animate-slide-left {
-  animation: slideInLeft 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
-}
-
-.animate-slide-right {
-  animation: slideInRight 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
-}
-
-.animate-blur-in {
-  animation: blurIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
-}
-
-.animate-blink {
-  animation: blink 1s step-end infinite;
-}
-
-.animate-morph {
-  animation: morphBlob 8s ease-in-out infinite;
-}
-
-.animate-draw-line {
-  animation: drawLine 1.5s cubic-bezier(0.16, 1, 0.3, 1) both;
-}
+.animate-reverse-spin { animation: reverseSpin 20s linear infinite; }
+.animate-spin-slow { animation: rotateGlow 20s linear infinite; }
+.animate-fade-up { animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) both; }
+.animate-fade-in { animation: fadeIn 0.6s ease both; }
+.animate-float { animation: float 6s ease-in-out infinite; }
+.animate-float-slow { animation: floatSlow 10s ease-in-out infinite; }
+.animate-glow-pulse { animation: glowPulse 4s ease-in-out infinite; }
+.animate-gradient { background-size: 200% 200%; animation: gradientShift 6s ease infinite; }
+.animate-scale-in { animation: scaleIn 0.7s cubic-bezier(0.16, 1, 0.3, 1) both; }
+.animate-slide-left { animation: slideInLeft 0.7s cubic-bezier(0.16, 1, 0.3, 1) both; }
+.animate-slide-right { animation: slideInRight 0.7s cubic-bezier(0.16, 1, 0.3, 1) both; }
+.animate-blur-in { animation: blurIn 1s cubic-bezier(0.16, 1, 0.3, 1) both; }
+.animate-blink { animation: blink 1s step-end infinite; }
+.animate-morph { animation: morphBlob 10s ease-in-out infinite; }
+.animate-draw-line { animation: drawLine 1.5s cubic-bezier(0.16, 1, 0.3, 1) both; }
 
 .shimmer-text {
   background: linear-gradient(90deg, var(--text-primary) 0%, var(--accent) 50%, var(--text-primary) 100%);
@@ -467,60 +367,15 @@ h1, h2, h3, h4 {
   animation: shimmer 4s linear infinite;
 }
 
-/* ── Animated gradient border ──────────────────────────────────────────────── */
-.gradient-border {
-  position: relative;
-}
-
-.gradient-border::before {
-  content: '';
-  position: absolute;
-  inset: -2px;
-  border-radius: inherit;
-  background: conic-gradient(
-    from 0deg,
-    var(--accent),
-    var(--accent-light),
-    #a78bfa,
-    var(--accent-light),
-    var(--accent)
-  );
-  animation: rotateGlow 4s linear infinite;
-  z-index: -1;
-  opacity: 0;
-  transition: opacity 0.4s;
-}
-
-.gradient-border:hover::before {
-  opacity: 1;
-}
-
-/* ── Animated mesh gradient background ─────────────────────────────────────── */
-.mesh-gradient {
-  background: 
-    radial-gradient(at 20% 80%, rgba(59, 130, 246, 0.08) 0%, transparent 50%),
-    radial-gradient(at 80% 20%, rgba(168, 85, 247, 0.06) 0%, transparent 50%),
-    radial-gradient(at 50% 50%, rgba(59, 130, 246, 0.03) 0%, transparent 70%);
-  animation: gradientShift 10s ease infinite;
-  background-size: 200% 200%;
-}
-
-.dark .mesh-gradient {
-  background: 
-    radial-gradient(at 20% 80%, rgba(59, 130, 246, 0.12) 0%, transparent 50%),
-    radial-gradient(at 80% 20%, rgba(168, 85, 247, 0.08) 0%, transparent 50%),
-    radial-gradient(at 50% 50%, rgba(59, 130, 246, 0.05) 0%, transparent 70%);
-}
-
 /* ── Scrollbar ─────────────────────────────────────────────────────────────── */
-::-webkit-scrollbar { width: 5px; }
-::-webkit-scrollbar-track { background: var(--surface); }
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 9999px; }
 ::-webkit-scrollbar-thumb:hover { background: var(--accent); }
 
 /* ── Selection ─────────────────────────────────────────────────────────────── */
 ::selection {
-  background: rgba(59,130,246,0.2);
+  background: rgba(59, 130, 246, 0.15);
   color: var(--text-primary);
 }
 
@@ -536,19 +391,62 @@ h1, h2, h3, h4 {
   position: fixed;
   inset: 0;
   pointer-events: none;
-  opacity: 0.02;
+  opacity: 0.015;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
   background-size: 200px 200px;
   z-index: 9999;
 }
 
-/* ── Grid dot background ───────────────────────────────────────────────────── */
+/* ── Dot grid background ───────────────────────────────────────────────────── */
 .dot-grid-bg {
   background-image: radial-gradient(circle, var(--border) 1px, transparent 1px);
-  background-size: 28px 28px;
+  background-size: 32px 32px;
 }
 
-/* ── Stagger animation delays ──────────────────────────────────────────────── */
+/* ── Skill pill ──────────────────────────────────────────────────────────── */
+.skill-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 18px;
+  background: var(--surface-tertiary);
+  border: 1px solid var(--border);
+  border-radius: 9999px;
+  font-family: 'Space Mono', monospace;
+  font-size: 0.72rem;
+  font-weight: 400;
+  color: var(--text-secondary);
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  cursor: default;
+}
+
+.skill-pill:hover {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: white;
+  transform: translateY(-2px);
+}
+
+/* ── Prevent theme-switch flicker ──────────────────────────────────────────── */
+.no-transitions,
+.no-transitions *,
+.no-transitions *::before,
+.no-transitions *::after {
+  transition: none !important;
+  animation: none !important;
+}
+
+/* ── Page transition ───────────────────────────────────────────────────────── */
+main {
+  animation: fadeUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* ── Handwritten accent ──────────────────────────────────────────────────── */
+.handwritten {
+  font-family: 'Caveat', cursive;
+  font-weight: 700;
+}
+
+/* ── Stagger delays ──────────────────────────────────────────────────────── */
 .stagger-1 { animation-delay: 0.05s; }
 .stagger-2 { animation-delay: 0.1s; }
 .stagger-3 { animation-delay: 0.15s; }
@@ -565,42 +463,4 @@ h1, h2, h3, h4 {
 .hover-lift:hover {
   transform: translateY(-6px);
   box-shadow: var(--shadow-lg);
-}
-
-/* ── Skill pill animation ──────────────────────────────────────────────────── */
-.skill-pill {
-  display: inline-flex;
-  align-items: center;
-  padding: 8px 16px;
-  background: var(--surface-tertiary);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  font-size: 0.85rem;
-  font-weight: 600;
-  color: var(--text-secondary);
-  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-  cursor: default;
-}
-
-.skill-pill:hover {
-  background: rgba(59, 130, 246, 0.1);
-  border-color: rgba(59, 130, 246, 0.3);
-  color: var(--accent);
-  transform: translateY(-2px) scale(1.02);
-  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.1);
-}
-
-/* ── Prevent theme-switch flicker ──────────────────────────────────────────── */
-/* Applied via JS for one frame when toggling theme */
-.no-transitions,
-.no-transitions *,
-.no-transitions *::before,
-.no-transitions *::after {
-  transition: none !important;
-  animation: none !important;
-}
-
-/* ── Page transition ───────────────────────────────────────────────────────── */
-main {
-  animation: fadeUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
 }

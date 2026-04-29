@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { FiArrowRight, FiDownload, FiGithub, FiLinkedin, FiCode, FiStar, FiMonitor, FiAward, FiMic, FiMessageCircle, FiTwitter, FiGlobe, FiLink } from "react-icons/fi";
+import { FiArrowRight, FiDownload, FiGithub, FiLinkedin, FiCode, FiStar, FiMonitor, FiAward, FiMic, FiMessageCircle, FiTwitter, FiGlobe, FiLink, FiArrowUpRight } from "react-icons/fi";
 import { getPersonalInfo, getAchievements, getSkills, getProjects, getTechColor, getSocialLinks } from "@/data/portfolio";
 import EditableSection from "@/components/admin/EditableSection";
 import TypeWriter from "@/components/ui/TypeWriter";
@@ -50,8 +50,6 @@ export default async function HomePage() {
   const codeforcesHandle = personalInfo.stats?.codeforces_handle || "Timon15";
   const githubUser = personalInfo.stats?.github_user || "Ti838";
   const leetcodeUser = personalInfo.stats?.leetcode_user || "zPb5WFxojz";
-  const tophUser = personalInfo.stats?.toph_user || codeforcesHandle;
-  const vjudgeUser = personalInfo.stats?.vjudge_user || codeforcesHandle;
 
   const [achievements, skillCategories, projects, liveStats, socialLinks] = await Promise.all([
     getAchievements(),
@@ -61,122 +59,95 @@ export default async function HomePage() {
     getSocialLinks()
   ]);
 
-  const cpProfiles = [
-    { 
-      label: "Codeforces", username: codeforcesHandle, url: `https://codeforces.com/profile/${encodeURIComponent(codeforcesHandle)}`, 
-      color: "text-blue-500", bg: "bg-blue-50 dark:bg-blue-900/20",
-      stats: personalInfo.stats?.codeforces_stats || `Rating: ${liveStats.cfRating} • Solved: ${liveStats.cfSolved} • Contests: ${liveStats.cfContests}`
-    },
-    { 
-      label: "LeetCode", username: leetcodeUser, url: `https://leetcode.com/u/${encodeURIComponent(leetcodeUser)}/`, 
-      color: "text-amber-500", bg: "bg-amber-50 dark:bg-amber-900/20",
-      stats: personalInfo.stats?.leetcode_stats || `Solved: ${liveStats.lcSolved}`
-    },
-    { 
-      label: "GitHub", username: githubUser, url: `https://github.com/${encodeURIComponent(githubUser)}`, 
-      color: "text-slate-800 dark:text-white", bg: "bg-slate-100 dark:bg-slate-800",
-      stats: personalInfo.stats?.github_stats || `${liveStats.ghRepos} Public Repositories`, badge: "PRO"
-    },
-    { 
-      label: "Toph", username: tophUser, url: `https://toph.co/u/${encodeURIComponent(tophUser)}`, 
-      color: "text-sky-500", bg: "bg-sky-50 dark:bg-sky-900/20",
-      stats: personalInfo.stats?.toph_stats || "Active Profile"
-    },
-    { 
-      label: "VJudge", username: vjudgeUser, url: `https://vjudge.net/user/${encodeURIComponent(vjudgeUser)}`, 
-      color: "text-orange-500", bg: "bg-orange-50 dark:bg-orange-900/20",
-      stats: personalInfo.stats?.vjudge_stats || "Active Profile"
-    },
-  ];
-
   return (
     <>
-      {/* ── Hero ─────────────────────────────────────────────────────────────── */}
+      {/* ── Hero — PlantPot-inspired centered layout with mesh gradient ────── */}
       <EditableSection eventKey="hero" label="Hero Section">
-        <section className="relative min-h-screen flex items-center pt-20 pb-16 lg:pt-32 overflow-hidden mesh-gradient">
-        {/* Animated Background Mesh */}
-        <div className="absolute inset-0 dot-grid-bg opacity-30 pointer-events-none" />
-        
-        {/* Floating background elements */}
-        <div className="absolute top-1/4 -left-20 w-96 h-96 bg-accent-500/10 rounded-full blur-[120px] animate-float-slow" />
-        <div className="absolute bottom-1/4 -right-20 w-80 h-80 bg-purple-500/10 rounded-full blur-[100px] animate-float" />
+        <section className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden mesh-gradient">
+          {/* Floating orbs */}
+          <div className="absolute top-1/3 left-1/4 w-72 h-72 bg-blue-400/10 rounded-full blur-[100px] animate-float-slow pointer-events-none" />
+          <div className="absolute bottom-1/3 right-1/4 w-64 h-64 bg-indigo-400/10 rounded-full blur-[80px] animate-float pointer-events-none" />
 
-        <div className="max-w-6xl mx-auto px-5 w-full grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-          {/* Text Content */}
-          <div className="space-y-8 relative z-10">
-            <ScrollReveal direction="left" delay={100}>
-              {personalInfo.stats?.location_public !== false && (
-                <div className="inline-flex items-center gap-2 py-2 px-4 rounded-full bg-white/40 dark:bg-slate-800/40 backdrop-blur-md border border-white/20 shadow-sm">
-                  <span className="relative flex h-2 w-2">
-                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent-400 opacity-75"></span>
-                    <span className="relative inline-flex rounded-full h-2 w-2 bg-accent-500"></span>
-                  </span>
-                  <span className="text-xs font-black uppercase tracking-widest text-slate-600 dark:text-slate-300">
-                    📍 {personalInfo.stats?.location_label || personalInfo.location || "Bangladesh"}
-                  </span>
+          <div className="relative z-10 flex flex-col items-center text-center px-6 py-32 max-w-4xl mx-auto">
+            {/* Profile Image — organic morph shape */}
+            <ScrollReveal direction="none" delay={0}>
+              <div className="relative group mb-12">
+                <div className="absolute -inset-4 bg-gradient-to-tr from-blue-400/20 to-indigo-400/20 rounded-full blur-3xl opacity-50 group-hover:opacity-80 transition-opacity duration-1000" />
+                <div className="relative w-40 h-40 lg:w-48 lg:h-48 animate-morph overflow-hidden shadow-2xl">
+                  <Image
+                    src={personalInfo.profileImage || "/images/profile.jpg"}
+                    alt={personalInfo.name}
+                    fill
+                    className="object-cover scale-110 group-hover:scale-100 transition-transform duration-[2s]"
+                    priority
+                  />
                 </div>
-              )}
+              </div>
             </ScrollReveal>
 
+            {/* Handwritten greeting */}
             <ScrollReveal direction="up" delay={200}>
-              <h1 className="font-display text-6xl lg:text-8xl font-900 text-slate-900 dark:text-white leading-[0.95] tracking-tight">
-                Hi, I&apos;m <br />
-                <span className="text-accent-500">{personalInfo.name.split(" ")[0]}</span>{" "}
-                <span className="text-slate-400/30 dark:text-white/10">{personalInfo.name.split(" ").slice(1).join(" ")}</span>
+              <p className="font-display text-3xl lg:text-4xl text-[var(--accent)] mb-4">
+                Hello, I&apos;m
+              </p>
+            </ScrollReveal>
+
+            {/* Name */}
+            <ScrollReveal direction="up" delay={300}>
+              <h1 className="font-mono text-5xl lg:text-7xl xl:text-8xl font-bold text-[var(--text-primary)] leading-[1.1] tracking-tight mb-6">
+                {personalInfo.name}
               </h1>
             </ScrollReveal>
 
-            <ScrollReveal direction="up" delay={300}>
-              <div className="text-xl lg:text-2xl font-bold text-slate-600 dark:text-slate-400 max-w-lg leading-relaxed flex flex-wrap gap-x-2">
-                I am a <TypeWriter 
-                  words={["Creative Developer", "Competitive Programmer", "UI/UX Enthusiast", "Vocalist"]} 
-                  className="text-accent-500 underline decoration-accent-500/30 underline-offset-4"
+            {/* Typewriter role */}
+            <ScrollReveal direction="up" delay={400}>
+              <div className="font-mono text-lg lg:text-xl text-[var(--text-muted)] mb-8">
+                <TypeWriter
+                  words={["Developer", "Competitive Programmer", "UI/UX Enthusiast", "Vocalist"]}
+                  className="text-[var(--text-secondary)]"
                 />
               </div>
             </ScrollReveal>
 
-            <ScrollReveal direction="up" delay={400}>
-              <p className="text-lg text-slate-500 dark:text-slate-400 max-w-md">
+            {/* Bio */}
+            <ScrollReveal direction="up" delay={500}>
+              <p className="text-[var(--text-secondary)] text-lg max-w-xl leading-relaxed mb-12">
                 {personalInfo.tagline}
               </p>
             </ScrollReveal>
 
             {/* CTA buttons */}
-            <ScrollReveal direction="up" delay={500}>
-              <div className="flex flex-wrap gap-4 pt-4">
+            <ScrollReveal direction="up" delay={600}>
+              <div className="flex flex-wrap items-center justify-center gap-4">
                 <MagneticButton>
-                  <Link href="/contact" className="btn-primary py-4 px-10 text-sm uppercase tracking-widest font-black">
-                    Start a Project <FiArrowRight size={18} />
+                  <Link href="/contact" className="btn-primary">
+                    Get in touch <FiArrowRight size={16} />
                   </Link>
                 </MagneticButton>
-                
                 <MagneticButton>
-                  <a
-                    href="/admin/download"
-                    className="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-white/50 dark:bg-slate-800/50 backdrop-blur-md text-slate-700 dark:text-slate-300 text-xs font-black uppercase tracking-widest border border-white/20 hover:bg-white dark:hover:bg-slate-800 transition-all shadow-lg hover:shadow-xl"
-                  >
-                    <FiDownload size={16} /> Get Resume
+                  <a href="/admin/download" className="btn-outline">
+                    <FiDownload size={16} /> Resume
                   </a>
                 </MagneticButton>
               </div>
             </ScrollReveal>
 
-            {/* Socials */}
-            <ScrollReveal direction="up" delay={600} className="flex items-center gap-6 pt-8">
-              {socialLinks.map((link: any, i: number) => {
+            {/* Social icons */}
+            <ScrollReveal direction="up" delay={700} className="flex items-center gap-6 mt-12">
+              {socialLinks.map((link: any) => {
                 const Icon = {
                   FiGithub, FiLinkedin, FiCode, FiMessageCircle, FiTwitter, FiGlobe, FiMail: (props: any) => <span {...props}>@</span>
                 }[link.icon as string] || FiLink;
                 return (
                   <MagneticButton key={link.id || link.label} strength={0.2}>
-                    <a 
-                      href={link.url} 
-                      target={link.url.startsWith("mailto") ? undefined : "_blank"} 
-                      rel="noopener noreferrer" 
+                    <a
+                      href={link.url}
+                      target={link.url.startsWith("mailto") ? undefined : "_blank"}
+                      rel="noopener noreferrer"
                       aria-label={link.label}
-                      className="text-slate-400 hover:text-accent-500 transition-colors transform hover:scale-125 block"
+                      className="text-[var(--text-muted)] hover:text-[var(--accent)] transition-colors"
                     >
-                      <Icon size={24} />
+                      <Icon size={20} />
                     </a>
                   </MagneticButton>
                 );
@@ -184,164 +155,138 @@ export default async function HomePage() {
             </ScrollReveal>
           </div>
 
-          {/* Profile Visuals */}
-          <ScrollReveal direction="right" delay={300} className="relative">
-            <div className="relative z-10 flex flex-col items-center">
-              {/* Profile image with organic animation */}
-              <div className="relative group">
-                <div className="absolute -inset-8 bg-gradient-to-tr from-accent-500 to-purple-500 rounded-full blur-3xl opacity-20 group-hover:opacity-40 transition-opacity animate-pulse" />
-                <div className="relative w-72 h-72 lg:w-96 lg:h-96 animate-morph overflow-hidden border-8 border-white/20 dark:border-slate-800/50 shadow-2xl backdrop-blur-sm">
-                  <Image
-                    src={personalInfo.profileImage || "/images/profile.jpg"}
-                    alt={personalInfo.name}
-                    fill
-                    className="object-cover scale-110 group-hover:scale-100 transition-transform duration-1000"
-                    priority
-                  />
-                </div>
-                
-                {/* Floating ICPC Badge */}
-                <ScrollReveal direction="none" delay={800} className="absolute -bottom-6 -right-6">
-                  <MagneticButton strength={0.4}>
-                    <div className="glass-card p-4 flex items-center gap-3 shadow-xl border-white/20 animate-float">
-                      <div className="w-12 h-12 rounded-xl bg-accent-500 flex items-center justify-center text-white text-2xl">
-                        🏆
-                      </div>
-                      <div>
-                        <p className="text-[10px] font-black text-accent-500 uppercase tracking-tighter">ICPC 2024</p>
-                        <p className="text-xs font-black text-slate-900 dark:text-white uppercase">Honorable Mention</p>
-                      </div>
-                    </div>
-                  </MagneticButton>
-                </ScrollReveal>
-              </div>
-
-              {/* Stats Grid Overlay */}
-              <div className="grid grid-cols-3 gap-4 w-full max-w-lg mt-16 px-4">
-                {[
-                  { label: "CF Rating", value: liveStats.cfRating, suffix: "", color: "text-blue-500" },
-                  { label: "Solved", value: liveStats.cfSolved + liveStats.lcSolved, suffix: "+", color: "text-emerald-500" },
-                  { label: "Repos", value: liveStats.ghRepos, suffix: "", color: "text-purple-500" }
-                ].map((stat, i) => (
-                  <ScrollReveal key={stat.label} direction="up" delay={700 + (i * 100)}>
-                    <div className="glass-card p-4 text-center">
-                      <p className="text-[10px] font-black uppercase tracking-widest text-slate-500 mb-1">{stat.label}</p>
-                      <AnimatedCounter 
-                        target={stat.value} 
-                        suffix={stat.suffix} 
-                        className={`text-2xl font-black ${stat.color} font-display`} 
-                      />
-                    </div>
-                  </ScrollReveal>
-                ))}
-              </div>
-            </div>
-          </ScrollReveal>
-        </div>
-      </section>
-      </EditableSection>
-
-      {/* ── Quick About ──────────────────────────────────────────────────────── */}
-      <EditableSection eventKey="bio" label="Quick About">
-        <section className="py-24 lg:py-32 px-5 relative overflow-hidden">
-        <div className="max-w-6xl mx-auto grid md:grid-cols-3 gap-8">
-          {[
-            { icon: <FiMonitor size={28} />, title: "The Developer", desc: "Crafting digital experiences with precision. Currently focusing on Jerry AI & Philomedis Medical App while mastering full-stack ecosystems." },
-            { icon: <FiCode size={28} />, title: "The Programmer", desc: "Fueled by logic and problem-solving. ICPC Honorable Mention and active solver on Codeforces & LeetCode." },
-            { icon: <FiMic size={28} />, title: "The Artist", desc: "Passionate vocalist bringing soul to the stage. Merging creative expression with technical excellence." },
-          ].map((item, i) => (
-            <ScrollReveal key={item.title} delay={i * 150} direction="up">
-              <GlowCard className="glass-card p-10 h-full flex flex-col items-center text-center group">
-                <div className="mb-6 p-5 bg-accent-500/10 text-accent-500 rounded-2xl group-hover:scale-110 group-hover:rotate-6 transition-all duration-500 shadow-glow">
-                  {item.icon}
-                </div>
-                <h3 className="font-display font-900 text-xl text-slate-900 dark:text-white mb-4 uppercase tracking-tighter">{item.title}</h3>
-                <p className="text-sm text-slate-500 dark:text-slate-400 leading-relaxed">{item.desc}</p>
-              </GlowCard>
-            </ScrollReveal>
-          ))}
-        </div>
-      </section>
-      </EditableSection>
-
-      {/* ── Featured Projects ─────────────────────────────────────────────────── */}
-      <EditableSection eventKey="projects" label="Projects Section">
-        <section id="projects" className="py-24 lg:py-32 px-5 relative overflow-hidden">
-        <div className="max-w-6xl mx-auto">
-          <div className="flex flex-col md:flex-row items-start md:items-end justify-between mb-16 gap-6">
-            <ScrollReveal direction="left">
-              <span className="tag-pill mb-4">Latest Works</span>
-              <h2 className="section-title">Featured Projects</h2>
-            </ScrollReveal>
-            <ScrollReveal direction="right">
-              <Link href="/projects" className="btn-outline text-xs uppercase tracking-widest font-black py-3 px-8 group">
-                All Projects <FiArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
-              </Link>
-            </ScrollReveal>
+          {/* Bottom copyright like PlantPot */}
+          <div className="absolute bottom-8 left-0 right-0 text-center">
+            <p className="font-mono text-[10px] text-[var(--text-muted)] tracking-widest">
+              © {new Date().getFullYear()} timon.dev
+            </p>
           </div>
-          
-          <div className="grid md:grid-cols-2 gap-8">
-            {projects.filter((p) => p.featured).map((p, i) => (
-              <ScrollReveal key={p.id} delay={i * 100} direction="up">
-                <GlowCard className="glass-card p-8 h-full flex flex-col group">
-                  <div className="flex items-start justify-between gap-4 mb-6">
-                    <div className="space-y-1">
-                      <h3 className="font-display font-900 text-slate-900 dark:text-white text-2xl group-hover:text-accent-500 transition-colors">{p.title}</h3>
-                      <div className="flex gap-2">
-                         {p.githubUrl && (
-                          <a href={p.githubUrl} target="_blank" rel="noopener noreferrer" className="p-2 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-500 hover:text-accent-500 transition-colors">
-                            <FiGithub size={16} />
-                          </a>
-                        )}
-                        {p.liveUrl && (
-                          <a href={p.liveUrl} target="_blank" rel="noopener noreferrer" className="p-2 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-500 hover:text-accent-500 transition-colors">
-                            <FiGlobe size={16} />
-                          </a>
-                        )}
-                      </div>
-                    </div>
-                    <span className={`px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest border ${p.status === "in-progress" ? "bg-amber-500/10 border-amber-500/20 text-amber-500" : "bg-emerald-500/10 border-emerald-500/20 text-emerald-500"}`}>
-                      {p.status === "in-progress" ? "In Progress" : "Live"}
-                    </span>
-                  </div>
-                  
-                  <p className="text-slate-500 dark:text-slate-400 leading-relaxed mb-8 flex-grow">
-                    {p.description}
+        </section>
+      </EditableSection>
+
+      {/* ── Stats Strip ────────────────────────────────────────────────────── */}
+      <EditableSection eventKey="stats" label="Stats">
+        <section className="py-16 px-6 border-y border-[var(--border)]">
+          <div className="max-w-5xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-8">
+            {[
+              { label: "CF Rating", value: liveStats.cfRating, suffix: "", color: "text-blue-500" },
+              { label: "Problems Solved", value: liveStats.cfSolved + liveStats.lcSolved, suffix: "+", color: "text-emerald-500" },
+              { label: "Repositories", value: liveStats.ghRepos, suffix: "", color: "text-violet-500" },
+              { label: "Contests", value: liveStats.cfContests, suffix: "", color: "text-amber-500" },
+            ].map((stat, i) => (
+              <ScrollReveal key={stat.label} direction="up" delay={i * 100}>
+                <div className="text-center space-y-2">
+                  <AnimatedCounter
+                    target={stat.value}
+                    suffix={stat.suffix}
+                    className={`text-4xl lg:text-5xl font-bold font-mono ${stat.color}`}
+                  />
+                  <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-[var(--text-muted)]">
+                    {stat.label}
                   </p>
-                  
-                  <div className="flex flex-wrap gap-2 mt-auto">
-                    {p.techStack.map((t: string) => (
-                      <span key={t} className="skill-pill">
-                        {t}
-                      </span>
-                    ))}
-                  </div>
-                </GlowCard>
+                </div>
               </ScrollReveal>
             ))}
           </div>
-        </div>
-      </section>
+        </section>
+      </EditableSection>
+
+      {/* ── Quick About ──────────────────────────────────────────────────── */}
+      <EditableSection eventKey="bio" label="Quick About">
+        <section className="py-32 px-6">
+          <div className="max-w-5xl mx-auto">
+            <ScrollReveal>
+              <h2 className="section-title mb-4">What I do</h2>
+            </ScrollReveal>
+            <div className="grid md:grid-cols-3 gap-8 mt-16">
+              {[
+                { icon: <FiMonitor size={28} />, title: "Development", desc: "Crafting digital experiences with precision. Currently focusing on Jerry AI & Philomedis while mastering full-stack ecosystems." },
+                { icon: <FiCode size={28} />, title: "Problem Solving", desc: "Fueled by logic. ICPC Honorable Mention and active solver on Codeforces & LeetCode." },
+                { icon: <FiMic size={28} />, title: "Creative Arts", desc: "Passionate vocalist bringing soul to the stage. Merging creative expression with technical excellence." },
+              ].map((item, i) => (
+                <ScrollReveal key={item.title} delay={i * 150} direction="up">
+                  <GlowCard className="glass-card p-10 h-full flex flex-col group">
+                    <div className="mb-6 w-14 h-14 rounded-2xl bg-[var(--surface-secondary)] border border-[var(--border)] flex items-center justify-center text-[var(--accent)] group-hover:scale-110 transition-transform duration-500">
+                      {item.icon}
+                    </div>
+                    <h3 className="font-mono font-bold text-lg text-[var(--text-primary)] mb-3">{item.title}</h3>
+                    <p className="text-sm text-[var(--text-secondary)] leading-relaxed">{item.desc}</p>
+                  </GlowCard>
+                </ScrollReveal>
+              ))}
+            </div>
+          </div>
+        </section>
+      </EditableSection>
+
+      {/* ── Featured Projects ─────────────────────────────────────────────── */}
+      <EditableSection eventKey="projects" label="Projects Section">
+        <section id="projects" className="py-32 px-6 bg-[var(--surface-secondary)]">
+          <div className="max-w-5xl mx-auto">
+            <div className="flex flex-col md:flex-row items-start md:items-end justify-between mb-16 gap-6">
+              <ScrollReveal direction="left">
+                <span className="tag-pill mb-4">selected work</span>
+                <h2 className="section-title">Projects</h2>
+              </ScrollReveal>
+              <ScrollReveal direction="right">
+                <Link href="/projects" className="btn-outline text-xs group">
+                  View all <FiArrowUpRight size={14} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                </Link>
+              </ScrollReveal>
+            </div>
+
+            <div className="grid md:grid-cols-2 gap-8">
+              {projects.filter((p) => p.featured).map((p, i) => (
+                <ScrollReveal key={p.id} delay={i * 100} direction="up">
+                  <GlowCard className="glass-card p-8 h-full flex flex-col group">
+                    <div className="flex items-start justify-between gap-4 mb-6">
+                      <h3 className="font-mono font-bold text-xl text-[var(--text-primary)] group-hover:text-[var(--accent)] transition-colors">{p.title}</h3>
+                      <span className={`shrink-0 px-3 py-1 rounded-full text-[10px] font-mono tracking-wider border ${p.status === "in-progress" ? "bg-amber-500/10 border-amber-500/20 text-amber-600 dark:text-amber-400" : "bg-emerald-500/10 border-emerald-500/20 text-emerald-600 dark:text-emerald-400"}`}>
+                        {p.status === "in-progress" ? "wip" : "live"}
+                      </span>
+                    </div>
+                    <p className="text-[var(--text-secondary)] leading-relaxed mb-8 flex-grow text-sm">{p.description}</p>
+                    <div className="flex flex-wrap gap-2 mt-auto">
+                      {p.techStack.map((t: string) => (
+                        <span key={t} className="skill-pill text-[10px]">{t}</span>
+                      ))}
+                    </div>
+                    <div className="flex gap-3 mt-6 pt-6 border-t border-[var(--border)]">
+                      {p.githubUrl && (
+                        <a href={p.githubUrl} target="_blank" rel="noopener noreferrer" className="font-mono text-xs text-[var(--text-muted)] hover:text-[var(--accent)] transition-colors flex items-center gap-1">
+                          <FiGithub size={14} /> source
+                        </a>
+                      )}
+                      {p.liveUrl && (
+                        <a href={p.liveUrl} target="_blank" rel="noopener noreferrer" className="font-mono text-xs text-[var(--text-muted)] hover:text-[var(--accent)] transition-colors flex items-center gap-1">
+                          <FiGlobe size={14} /> live
+                        </a>
+                      )}
+                    </div>
+                  </GlowCard>
+                </ScrollReveal>
+              ))}
+            </div>
+          </div>
+        </section>
       </EditableSection>
 
       {/* ── Skills ──────────────────────────────────────────────────────────── */}
       <EditableSection eventKey="skills" label="Skills Section">
-        <section id="skills" className="py-24 lg:py-32 px-5 bg-slate-50/50 dark:bg-slate-800/20 relative">
-          <div className="max-w-6xl mx-auto">
+        <section id="skills" className="py-32 px-6">
+          <div className="max-w-5xl mx-auto">
             <ScrollReveal className="mb-16">
-              <span className="tag-pill mb-4">Mastery</span>
-              <h2 className="section-title">Technical Stack</h2>
+              <span className="tag-pill mb-4">mastery</span>
+              <h2 className="section-title">Tech Stack</h2>
             </ScrollReveal>
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
               {skillCategories.map((cat, i) => (
                 <ScrollReveal key={cat.category} delay={i * 100} direction="up">
                   <div className="glass-card p-8 h-full">
-                    <h3 className="font-display font-900 text-slate-900 dark:text-white mb-6 uppercase tracking-widest text-sm border-b border-white/10 pb-4">{cat.category}</h3>
+                    <h3 className="font-mono font-bold text-sm text-[var(--text-primary)] mb-6 pb-4 border-b border-[var(--border)] uppercase tracking-wider">{cat.category}</h3>
                     <div className="flex flex-wrap gap-2">
                       {cat.skills.map((s: { name: string; level: number }) => (
-                        <span key={s.name} className="skill-pill">
-                          {s.name}
-                        </span>
+                        <span key={s.name} className="skill-pill">{s.name}</span>
                       ))}
                     </div>
                   </div>
@@ -352,43 +297,26 @@ export default async function HomePage() {
         </section>
       </EditableSection>
 
-      {/* ── Experience ───────────────────────────────────────────────────────── */}
-      <EditableSection eventKey="experience" label="Work Experience">
-        <section id="experience" className="py-24 lg:py-32 px-5">
-          <div className="max-w-6xl mx-auto">
-            <ScrollReveal className="mb-16">
-              <span className="tag-pill mb-4">Trajectory</span>
-              <h2 className="section-title">Experience</h2>
-            </ScrollReveal>
-            <ScrollReveal direction="up" delay={200}>
-              <div className="glass-card p-12 text-center border-dashed border-2">
-                <p className="text-slate-400 italic">Experience details are coming soon. Visit the <Link href="/experience" className="text-accent-500 underline">Experience Page</Link> for more info.</p>
-              </div>
-            </ScrollReveal>
-          </div>
-        </section>
-      </EditableSection>
-
-      {/* ── Achievements ─────────────────────────────────────────────────────── */}
+      {/* ── Achievements ─────────────────────────────────────────────────── */}
       <EditableSection eventKey="achievements" label="Achievements">
-        <section id="achievements" className="py-24 lg:py-32 px-5 bg-slate-50/50 dark:bg-slate-800/20">
-          <div className="max-w-6xl mx-auto text-center">
-            <ScrollReveal className="mb-16">
-              <h2 className="section-title">Achievements</h2>
+        <section id="achievements" className="py-32 px-6 bg-[var(--surface-secondary)]">
+          <div className="max-w-5xl mx-auto">
+            <ScrollReveal className="mb-16 text-center">
+              <h2 className="section-title">Awards</h2>
             </ScrollReveal>
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 text-left">
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
               {achievements.slice(0, 4).map((a, i) => (
                 <ScrollReveal key={a.id} delay={i * 100} direction="up">
                   <GlowCard className="glass-card p-8 h-full">
                     <div className="flex items-center gap-3 mb-6">
-                      <div className="w-10 h-10 rounded-full bg-accent-500/10 flex items-center justify-center text-accent-500">
-                        <FiAward size={20} />
+                      <div className="w-10 h-10 rounded-full bg-[var(--surface-tertiary)] border border-[var(--border)] flex items-center justify-center text-[var(--accent)]">
+                        <FiAward size={18} />
                       </div>
-                      <span className="text-[10px] font-black uppercase tracking-widest text-slate-500">{a.category}</span>
+                      <span className="font-mono text-[10px] uppercase tracking-wider text-[var(--text-muted)]">{a.category}</span>
                     </div>
-                    <h3 className="font-display font-900 text-slate-900 dark:text-white mb-4 leading-tight group-hover:text-accent-500 transition-colors">{a.title}</h3>
-                    <p className="text-sm text-slate-500 dark:text-slate-400 line-clamp-3 mb-4">{a.description}</p>
-                    <p className="text-[10px] font-black text-accent-500 uppercase tracking-widest">{a.date}</p>
+                    <h3 className="font-mono font-bold text-[var(--text-primary)] mb-3 leading-tight text-sm">{a.title}</h3>
+                    <p className="text-xs text-[var(--text-secondary)] line-clamp-3 mb-4">{a.description}</p>
+                    <p className="font-mono text-[10px] text-[var(--accent)] uppercase tracking-wider">{a.date}</p>
                   </GlowCard>
                 </ScrollReveal>
               ))}
@@ -397,25 +325,24 @@ export default async function HomePage() {
         </section>
       </EditableSection>
 
-      {/* ── CTA Banner ───────────────────────────────────────────────────────── */}
+      {/* ── CTA Banner ───────────────────────────────────────────────────── */}
       <EditableSection eventKey="cta" label="Collaboration Banner">
-        <section className="py-24 lg:py-32 px-5 relative overflow-hidden">
-          <div className="absolute inset-0 bg-accent-500 animate-gradient" />
-          <div className="absolute top-0 left-0 w-full h-full bg-[url('/images/noise.png')] opacity-20 pointer-events-none" />
-          <div className="max-w-3xl mx-auto text-center text-white relative z-10 space-y-8">
+        <section className="py-32 px-6 mesh-gradient">
+          <div className="max-w-3xl mx-auto text-center space-y-8">
             <ScrollReveal>
-              <h2 className="font-display font-900 text-4xl lg:text-6xl tracking-tight leading-none">Let&apos;s build something <br /> legendary together</h2>
+              <h2 className="font-display text-6xl lg:text-8xl text-[var(--text-primary)]">
+                Let&apos;s work together
+              </h2>
             </ScrollReveal>
             <ScrollReveal delay={200}>
-              <p className="text-accent-100 text-xl font-medium opacity-80">Open to collaborations, ambitious projects, and worldwide opportunities.</p>
+              <p className="text-[var(--text-secondary)] text-lg max-w-md mx-auto">
+                Open to collaborations, ambitious projects, and worldwide opportunities.
+              </p>
             </ScrollReveal>
             <ScrollReveal delay={400}>
               <MagneticButton>
-                <Link
-                  href="/contact"
-                  className="inline-flex items-center gap-3 px-12 py-5 bg-white text-accent-600 font-black uppercase tracking-widest text-xs rounded-full hover:scale-105 transition-all shadow-2xl hover:shadow-accent-500/50"
-                >
-                  Start a Conversation <FiArrowRight size={18} />
+                <Link href="/contact" className="btn-primary">
+                  Start a conversation <FiArrowRight size={16} />
                 </Link>
               </MagneticButton>
             </ScrollReveal>

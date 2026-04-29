@@ -6,7 +6,7 @@ import { Toaster } from "react-hot-toast";
 import { AdminProvider } from "@/components/admin/AdminProvider";
 import HeaderStack from "@/components/layout/HeaderStack";
 import AdminModalsRenderer from "@/components/admin/AdminModalsRenderer";
-import AnimatedBackground from "@/components/ui/AnimatedBackground";
+
 import { getPersonalInfo, getProjects, getAchievements, getExperiences, getEducation, getSkills, getSocialLinks } from "@/data/portfolio";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -66,7 +66,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link
-          href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800;900&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,400&family=JetBrains+Mono:wght@400;500&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;500;600;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap"
           rel="stylesheet"
         />
       {/* Blocking theme script - prevents FOUC/flicker on load */}
@@ -79,7 +79,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       <body suppressHydrationWarning className="noise-bg antialiased selection:bg-accent-500/20">
         <ThemeProvider attribute="class" defaultTheme="light" enableSystem={false}>
           <AdminProvider>
-            <AnimatedBackground />
+
             <HeaderStack personalInfo={personalInfo} />
             <AdminModalsRenderer 
               personalInfo={personalInfo} 
@@ -91,12 +91,12 @@ export default async function RootLayout({ children }: { children: React.ReactNo
               skillCategories={skillData}
               socialLinks={socialLinks}
             />
-            <main className="min-h-screen relative z-10">{children}</main>
+            <main className="min-h-screen relative">{children}</main>
             <Footer socialLinks={socialLinks} tagline={personalInfo?.tagline} />
             <Toaster
               position="bottom-right"
               toastOptions={{
-                style: { borderRadius: "10px", fontFamily: "'DM Sans', sans-serif" },
+                style: { borderRadius: "16px", fontFamily: "'Inter', sans-serif" },
               }}
             />
           </AdminProvider>
