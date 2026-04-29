@@ -148,29 +148,83 @@ export default async function HomePage() {
         </section>
       </EditableSection>
 
-      {/* ── Stats Strip ────────────────────────────────────────────────────── */}
-      <EditableSection eventKey="stats" label="Stats">
-        <section className="py-16 px-6 border-y border-[var(--border)]">
-          <div className="max-w-5xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-8">
-            {[
-              { label: "CF Rating", value: liveStats.cfRating, suffix: "", color: "text-blue-500" },
-              { label: "Problems Solved", value: liveStats.cfSolved + liveStats.lcSolved, suffix: "+", color: "text-emerald-500" },
-              { label: "Repositories", value: liveStats.ghRepos, suffix: "", color: "text-violet-500" },
-              { label: "Contests", value: liveStats.cfContests, suffix: "", color: "text-amber-500" },
-            ].map((stat, i) => (
-              <ScrollReveal key={stat.label} direction="up" delay={i * 100}>
-                <div className="text-center space-y-2">
-                  <AnimatedCounter
-                    target={stat.value}
-                    suffix={stat.suffix}
-                    className={`text-4xl lg:text-5xl font-bold font-mono ${stat.color}`}
-                  />
-                  <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-[var(--text-muted)]">
-                    {stat.label}
-                  </p>
-                </div>
-              </ScrollReveal>
-            ))}
+      {/* ── Developer Pulse — Multi-platform stats ──────────────────────────── */}
+      <EditableSection eventKey="stats" label="Developer Stats">
+        <section className="py-24 px-6 relative overflow-hidden">
+          {/* Subtle background glow */}
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-[var(--accent)]/5 blur-[120px] rounded-full pointer-events-none" />
+          
+          <div className="max-w-6xl mx-auto relative z-10">
+            <ScrollReveal direction="up">
+              <div className="flex flex-col items-center text-center mb-16">
+                <span className="tag-pill mb-4">live stats</span>
+                <h2 className="text-3xl font-mono font-bold text-[var(--text-primary)]">Coding Identity</h2>
+              </div>
+            </ScrollReveal>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+              {[
+                { 
+                  label: "Codeforces", 
+                  title: "CF Rating", 
+                  value: liveStats.cfRating, 
+                  icon: <FiCode className="text-blue-500" />,
+                  detail: `${liveStats.cfContests} Contests Played`,
+                  color: "from-blue-500/10 to-blue-500/5",
+                  border: "border-blue-500/20"
+                },
+                { 
+                  label: "LeetCode", 
+                  title: "Solved", 
+                  value: liveStats.lcSolved, 
+                  icon: <FiStar className="text-amber-500" />,
+                  detail: "Data Structures & Algorithms",
+                  color: "from-amber-500/10 to-amber-500/5",
+                  border: "border-amber-500/20"
+                },
+                { 
+                  label: "GitHub", 
+                  title: "Repositories", 
+                  value: liveStats.ghRepos, 
+                  icon: <FiGithub className="text-violet-500" />,
+                  detail: "Open Source Projects",
+                  color: "from-violet-500/10 to-violet-500/5",
+                  border: "border-violet-500/20"
+                },
+                { 
+                  label: "Overall", 
+                  title: "Total Solved", 
+                  value: liveStats.cfSolved + liveStats.lcSolved, 
+                  icon: <FiAward className="text-emerald-500" />,
+                  detail: "Across Platforms",
+                  color: "from-emerald-500/10 to-emerald-500/5",
+                  border: "border-emerald-500/20"
+                }
+              ].map((stat, i) => (
+                <ScrollReveal key={stat.label} direction="up" delay={i * 100}>
+                  <div className={`p-8 rounded-[32px] border ${stat.border} bg-gradient-to-br ${stat.color} backdrop-blur-sm h-full group hover:scale-[1.02] transition-all duration-500`}>
+                    <div className="flex items-center justify-between mb-8">
+                      <div className="p-3 rounded-2xl bg-[var(--surface)] shadow-sm text-xl">
+                        {stat.icon}
+                      </div>
+                      <span className="font-mono text-[10px] uppercase tracking-widest text-[var(--text-muted)] group-hover:text-[var(--text-primary)] transition-colors">
+                        {stat.label}
+                      </span>
+                    </div>
+                    <div className="mb-2">
+                      <AnimatedCounter
+                        target={stat.value}
+                        className="text-4xl font-bold font-mono text-[var(--text-primary)]"
+                      />
+                    </div>
+                    <h3 className="font-mono text-xs font-bold text-[var(--text-secondary)] mb-4">{stat.title}</h3>
+                    <p className="font-mono text-[10px] text-[var(--text-muted)] opacity-60">
+                      {stat.detail}
+                    </p>
+                  </div>
+                </ScrollReveal>
+              ))}
+            </div>
           </div>
         </section>
       </EditableSection>
