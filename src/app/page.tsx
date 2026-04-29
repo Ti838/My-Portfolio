@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { FiArrowRight, FiDownload, FiGithub, FiLinkedin, FiCode, FiStar, FiMonitor, FiAward, FiMic, FiMessageCircle, FiTwitter, FiGlobe, FiLink, FiArrowUpRight } from "react-icons/fi";
+import { FiArrowRight, FiDownload, FiGithub, FiLinkedin, FiCode, FiStar, FiMonitor, FiAward, FiMic, FiMusic, FiMessageCircle, FiTwitter, FiGlobe, FiLink, FiArrowUpRight } from "react-icons/fi";
 import { getPersonalInfo, getAchievements, getSkills, getProjects, getTechColor, getSocialLinks } from "@/data/portfolio";
 import EditableSection from "@/components/admin/EditableSection";
 import TypeWriter from "@/components/ui/TypeWriter";
@@ -380,12 +380,12 @@ export default async function HomePage() {
         <section className="py-32 px-6 mesh-gradient">
           <div className="max-w-3xl mx-auto text-center space-y-8">
             <ScrollReveal>
-              <h2 className="font-display text-6xl lg:text-8xl text-[var(--text-primary)]">
+              <h2 className="font-display text-6xl lg:text-8xl text-white">
                 Let&apos;s work together
               </h2>
             </ScrollReveal>
             <ScrollReveal delay={200}>
-              <p className="text-[var(--text-secondary)] text-lg max-w-md mx-auto">
+              <p className="text-slate-400 text-lg max-w-md mx-auto">
                 Open to collaborations, ambitious projects, and worldwide opportunities.
               </p>
             </ScrollReveal>
