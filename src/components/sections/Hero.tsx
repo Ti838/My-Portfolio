@@ -67,7 +67,7 @@ export default function Hero({ personalInfo }: { personalInfo: any }) {
               </Link>
             </MagneticButton>
             <MagneticButton>
-              <a href="/resume.pdf" className="btn-outline px-10 py-4 text-[10px] uppercase tracking-widest font-black border-slate-700 text-slate-300 hover:border-[var(--accent)]">
+              <a href="/resume.pdf" className="btn-outline px-10 py-4 text-[10px] uppercase tracking-widest font-black hover:border-[var(--accent)]">
                 Download CV
               </a>
             </MagneticButton>
@@ -86,7 +86,7 @@ export default function Hero({ personalInfo }: { personalInfo: any }) {
                 rel="noopener noreferrer"
                 whileHover={{ scale: 1.1, y: -5 }}
                 whileTap={{ scale: 0.9 }}
-                className="w-12 h-12 rounded-xl flex items-center justify-center glass-card border-white/10 text-[var(--text-secondary)] hover:text-[var(--accent)] hover:border-[var(--accent)]/50 transition-all shadow-xl"
+                className="w-12 h-12 rounded-xl flex items-center justify-center glass-card text-[var(--text-secondary)] hover:text-[var(--accent)] hover:border-[var(--accent)]/50 transition-all shadow-xl"
               >
                 <social.icon size={20} />
               </motion.a>
@@ -103,9 +103,9 @@ export default function Hero({ personalInfo }: { personalInfo: any }) {
           <div className="absolute inset-0 bg-[var(--accent)]/10 blur-[60px] rounded-full scale-90" />
           
           {/* Glass Frame */}
-          <div className="absolute inset-0 border border-white/10 rounded-[40px] translate-x-4 translate-y-4 backdrop-blur-sm" />
+          <div className="absolute inset-0 border border-[var(--border)] rounded-[40px] translate-x-4 translate-y-4 backdrop-blur-sm" />
           
-          <div className="relative w-full h-full rounded-[40px] overflow-hidden shadow-2xl border border-white/10 bg-white/5 backdrop-blur-md group">
+          <div className="relative w-full h-full rounded-[40px] overflow-hidden shadow-2xl border border-[var(--border)] bg-[var(--surface-secondary)] backdrop-blur-md group">
             <Image
               src={personalInfo?.profileImage && personalInfo.profileImage !== "" ? personalInfo.profileImage : "/profile.jpg"}
               alt={personalInfo?.name || "Profile"}
@@ -116,17 +116,17 @@ export default function Hero({ personalInfo }: { personalInfo: any }) {
             />
             
             {/* Cinematic Gradient Overlay */}
-            <div className="absolute inset-0 bg-gradient-to-t from-[#020617]/80 via-transparent to-transparent opacity-60" />
+            <div className="absolute inset-0 bg-gradient-to-t from-[var(--surface)]/80 via-transparent to-transparent opacity-60" />
           </div>
 
           {/* Precision Badge */}
-          <div className="absolute -bottom-4 -left-4 bg-[#0f172a]/90 border border-white/10 px-5 py-3 rounded-2xl shadow-2xl flex items-center gap-3 backdrop-blur-xl">
+          <div className="absolute -bottom-4 -left-4 bg-[var(--surface-secondary)]/90 border border-[var(--border)] px-5 py-3 rounded-2xl shadow-2xl flex items-center gap-3 backdrop-blur-xl">
             <div className="w-8 h-8 rounded-full bg-[var(--accent)] flex items-center justify-center text-white text-[10px] font-black shadow-[0_0_15px_rgba(var(--accent-rgb),0.5)]">
               CF
             </div>
             <div>
-              <p className="text-[8px] font-mono uppercase tracking-widest text-slate-400 leading-none mb-1">Ranked</p>
-              <p className="text-[10px] font-bold text-white leading-none">Competitive Programmer</p>
+              <p className="text-[8px] font-mono uppercase tracking-widest text-[var(--text-muted)] leading-none mb-1">Ranked</p>
+              <p className="text-[10px] font-bold text-[var(--text-primary)] leading-none">Competitive Programmer</p>
             </div>
           </div>
         </motion.div>
@@ -135,7 +135,7 @@ export default function Hero({ personalInfo }: { personalInfo: any }) {
 
       {/* Side Scroll Indicator */}
       <div className="absolute right-8 bottom-12 hidden md:flex flex-col items-center gap-4">
-        <span className="font-mono text-[8px] uppercase tracking-[0.4em] text-slate-500 rotate-90 origin-right whitespace-nowrap">Scroll for More</span>
+        <span className="font-mono text-[8px] uppercase tracking-[0.4em] text-[var(--text-muted)] rotate-90 origin-right whitespace-nowrap">Scroll for More</span>
         <div className="w-[1px] h-20 bg-gradient-to-b from-[var(--accent)] to-transparent" />
       </div>
     </section>

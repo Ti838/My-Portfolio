@@ -8,6 +8,18 @@ const nextConfig = {
         hostname: "finxktktqzuvrvwqkixj.supabase.co",
         pathname: "/storage/v1/object/public/**",
       },
+      {
+        protocol: "https",
+        hostname: "github-readme-stats.vercel.app",
+      },
+      {
+        protocol: "https",
+        hostname: "img.shields.io",
+      },
+      {
+        protocol: "https",
+        hostname: "cdn.simpleicons.org",
+      },
     ],
   },
   async headers() {

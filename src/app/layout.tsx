@@ -79,7 +79,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           }}
         />
       </head>
-      <body suppressHydrationWarning className="antialiased selection:bg-accent-500/20 bg-[#020617]">
+      <body suppressHydrationWarning className="antialiased selection:bg-accent-500/20" style={{ background: 'var(--surface)' }}>
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false}>
           <AdminProvider>
             <SmoothScroll>

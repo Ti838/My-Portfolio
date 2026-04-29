@@ -79,9 +79,9 @@ export default async function HomePage() {
           <div className="max-w-6xl mx-auto relative z-10">
             <ScrollReveal direction="up">
               <div className="flex flex-col items-center text-center mb-16">
-                <span className="tag-pill mb-4 font-mono text-[10px] tracking-[0.2em] uppercase border-white/10 bg-white/5 backdrop-blur-md">verified metrics</span>
-                <h2 className="text-4xl md:text-5xl font-display font-bold text-white mb-4">Coding Identity</h2>
-                <p className="text-slate-400 max-w-xl text-sm">Real-time statistics and badges across major competitive programming and development platforms.</p>
+                <span className="tag-pill mb-4 font-mono text-[10px] tracking-[0.2em] uppercase">verified metrics</span>
+                <h2 className="text-4xl md:text-5xl font-display font-bold text-[var(--text-primary)] mb-4">Coding Identity</h2>
+                <p className="text-[var(--text-secondary)] max-w-xl text-sm">Real-time statistics and badges across major competitive programming and development platforms.</p>
               </div>
             </ScrollReveal>
 
@@ -89,20 +89,20 @@ export default async function HomePage() {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {/* GitHub Card - Featured */}
               <ScrollReveal direction="up" delay={100} className="md:col-span-2 lg:col-span-1">
-                <GlowCard className="h-full group bg-white/5 border-white/10 backdrop-blur-md">
+                <GlowCard className="h-full group glass-card">
                   <div className="p-6 h-full flex flex-col justify-between">
                     <div className="flex items-center justify-between mb-6">
                       <div className="flex items-center gap-4">
-                        <div className="w-14 h-14 rounded-2xl bg-slate-900 flex items-center justify-center text-white border border-white/10 relative shadow-2xl">
-                          <img src="https://cdn.simpleicons.org/github/white" alt="GitHub" className="w-8 h-8" />
-                          <img src="https://img.shields.io/badge/PRO-black?style=flat-square&logo=github&logoColor=white&color=2ea44f" alt="Pro" className="absolute -bottom-2 -right-2 h-5 rounded-sm shadow-xl border border-white/20" />
+                        <div className="w-14 h-14 rounded-2xl bg-[var(--surface-tertiary)] flex items-center justify-center text-[var(--text-primary)] border border-[var(--border)] relative shadow-2xl">
+                          <img src="https://cdn.simpleicons.org/github" alt="GitHub" className="w-8 h-8 dark:invert" />
+                          <img src="https://img.shields.io/badge/PRO-black?style=flat-square&logo=github&logoColor=white&color=2ea44f" alt="Pro" className="absolute -bottom-2 -right-2 h-5 rounded-sm shadow-xl border border-[var(--border)]" />
                         </div>
                         <div>
                           <div className="flex items-center gap-3">
-                            <h3 className="font-bold text-xl text-white">GitHub</h3>
+                            <h3 className="font-bold text-xl text-[var(--text-primary)]">GitHub</h3>
                             <img src="https://img.shields.io/badge/PRO-2ea44f?style=flat-square" alt="GitHub Pro" className="h-5 rounded-sm" />
                           </div>
-                          <p className="text-[10px] text-slate-500 uppercase tracking-[0.2em] font-bold">Open Source Professional</p>
+                          <p className="text-[10px] text-[var(--text-muted)] uppercase tracking-[0.2em] font-bold">Open Source Professional</p>
                         </div>
                       </div>
                       <span className="text-[var(--accent)]"><ExternalLink size={20} /></span>
@@ -128,16 +128,16 @@ export default async function HomePage() {
 
               {/* Codeforces Card */}
               <ScrollReveal direction="up" delay={200}>
-                <GlowCard className="h-full group bg-white/5 border-white/10 backdrop-blur-md">
+                <GlowCard className="h-full group glass-card">
                   <div className="p-6 h-full flex flex-col justify-between">
                     <div className="flex items-center justify-between mb-6">
                       <div className="flex items-center gap-3">
-                        <div className="w-12 h-12 rounded-2xl bg-white flex items-center justify-center border border-white/10 p-2 overflow-hidden shadow-lg shadow-blue-500/10">
+                        <div className="w-12 h-12 rounded-2xl bg-[var(--surface-tertiary)] flex items-center justify-center border border-[var(--border)] p-2 overflow-hidden shadow-lg shadow-blue-500/10">
                           <img src="https://cdn.simpleicons.org/codeforces" alt="Codeforces" className="w-full h-full object-contain" />
                         </div>
                         <div>
-                          <h3 className="font-bold text-white">Codeforces</h3>
-                          <p className="text-[10px] text-slate-500 uppercase tracking-widest">Competitive</p>
+                          <h3 className="font-bold text-[var(--text-primary)]">Codeforces</h3>
+                          <p className="text-[10px] text-[var(--text-muted)] uppercase tracking-widest">Competitive</p>
                         </div>
                       </div>
                       <span className="text-blue-400"><Award size={20} /></span>
@@ -145,12 +145,12 @@ export default async function HomePage() {
                     
                     <div className="space-y-4">
                       <div className="flex items-center justify-between text-sm">
-                        <span className="text-slate-400">Max Rating</span>
+                        <span className="text-[var(--text-secondary)]">Max Rating</span>
                         <span className="font-mono font-bold text-blue-500">{liveStats.cfRating}</span>
                       </div>
                       <div className="flex items-center justify-between text-sm">
-                        <span className="text-slate-400">Problems Solved</span>
-                        <span className="font-mono font-bold text-white">{liveStats.cfSolved}+</span>
+                        <span className="text-[var(--text-secondary)]">Problems Solved</span>
+                        <span className="font-mono font-bold text-[var(--text-primary)]">{liveStats.cfSolved}+</span>
                       </div>
                       <img 
                         src={`https://img.shields.io/badge/Codeforces-${codeforcesHandle}-blue?style=for-the-badge&logo=codeforces`} 
@@ -164,16 +164,16 @@ export default async function HomePage() {
 
               {/* LeetCode Card */}
               <ScrollReveal direction="up" delay={300}>
-                <GlowCard className="h-full group bg-white/5 border-white/10 backdrop-blur-md">
+                <GlowCard className="h-full group glass-card">
                   <div className="p-6 h-full flex flex-col justify-between">
                     <div className="flex items-center justify-between mb-6">
                       <div className="flex items-center gap-3">
-                        <div className="w-12 h-12 rounded-2xl bg-[#2a2a2a] flex items-center justify-center border border-white/10 p-2 shadow-lg shadow-amber-500/10">
+                        <div className="w-12 h-12 rounded-2xl bg-[var(--surface-tertiary)] flex items-center justify-center border border-[var(--border)] p-2 shadow-lg shadow-amber-500/10">
                           <img src="https://cdn.simpleicons.org/leetcode/amber" alt="LeetCode" className="w-full h-full object-contain" />
                         </div>
                         <div>
-                          <h3 className="font-bold text-white">LeetCode</h3>
-                          <p className="text-[10px] text-slate-500 uppercase tracking-widest">Algorithms</p>
+                          <h3 className="font-bold text-[var(--text-primary)]">LeetCode</h3>
+                          <p className="text-[10px] text-[var(--text-muted)] uppercase tracking-widest">Algorithms</p>
                         </div>
                       </div>
                       <span className="text-amber-500"><Monitor size={20} /></span>
@@ -181,7 +181,7 @@ export default async function HomePage() {
                     
                     <div className="space-y-4">
                       <div className="flex items-center justify-between text-sm">
-                        <span className="text-slate-400">Solved</span>
+                        <span className="text-[var(--text-secondary)]">Solved</span>
                         <span className="font-mono font-bold text-amber-500">{liveStats.lcSolved}</span>
                       </div>
                       <img 
@@ -196,15 +196,15 @@ export default async function HomePage() {
 
               {/* Toph & VJudge Badges */}
               <ScrollReveal direction="up" delay={400} className="md:col-span-2 lg:col-span-3">
-                <div className="flex flex-wrap items-center justify-center gap-6 py-10 border-t border-white/5 mt-8">
-                  <div className="flex items-center gap-4 px-8 py-4 rounded-2xl bg-white/5 border border-white/10 hover:border-green-500 transition-all group backdrop-blur-md">
+                <div className="flex flex-wrap items-center justify-center gap-6 py-10 border-t border-[var(--border)] mt-8">
+                  <div className="flex items-center gap-4 px-8 py-4 rounded-2xl bg-[var(--surface-secondary)] border border-[var(--border)] hover:border-green-500 transition-all group backdrop-blur-md">
                     <img src="https://toph.co/favicon.ico" alt="Toph" className="w-6 h-6 rounded-md" />
-                    <span className="font-bold text-white">Toph</span>
+                    <span className="font-bold text-[var(--text-primary)]">Toph</span>
                     <img src={`https://img.shields.io/badge/Toph-${personalInfo.stats?.toph_handle || "Timon"}-green?style=for-the-badge`} alt="Toph Badge" className="h-6" />
                   </div>
-                  <div className="flex items-center gap-4 px-8 py-4 rounded-2xl bg-white/5 border border-white/10 hover:border-red-500 transition-all group backdrop-blur-md">
-                    <img src="https://vjudge.net/static/images/logo.ico" alt="VJudge" className="w-6 h-6 rounded-md bg-white" />
-                    <span className="font-bold text-white">VJudge</span>
+                  <div className="flex items-center gap-4 px-8 py-4 rounded-2xl bg-[var(--surface-secondary)] border border-[var(--border)] hover:border-red-500 transition-all group backdrop-blur-md">
+                    <img src="https://vjudge.net/static/images/logo.ico" alt="VJudge" className="w-6 h-6 rounded-md" />
+                    <span className="font-bold text-[var(--text-primary)]">VJudge</span>
                     <img src={`https://img.shields.io/badge/VJudge-${personalInfo.stats?.vjudge_handle || "Timon"}-red?style=for-the-badge`} alt="VJudge Badge" className="h-6" />
                   </div>
                 </div>
@@ -219,7 +219,7 @@ export default async function HomePage() {
         <section className="py-24 px-6 bg-transparent">
           <div className="max-w-5xl mx-auto">
             <ScrollReveal>
-              <h2 className="section-title mb-4 text-center md:text-left text-white">What I do</h2>
+              <h2 className="section-title mb-4 text-center md:text-left">What I do</h2>
             </ScrollReveal>
             <div className="grid md:grid-cols-3 gap-8 mt-16">
               {[
@@ -228,12 +228,12 @@ export default async function HomePage() {
                 { icon: <Mic size={28} />, title: "Creative Arts", desc: "Passionate vocalist bringing soul to the stage. Merging creative expression with technical excellence." },
               ].map((item, i) => (
                 <ScrollReveal key={item.title} delay={i * 150} direction="up">
-                  <GlowCard className="glass-card p-10 h-full flex flex-col group bg-white/5 border-white/10">
-                    <div className="mb-6 w-14 h-14 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-[var(--accent)] group-hover:scale-110 transition-transform duration-500">
+                  <GlowCard className="glass-card p-10 h-full flex flex-col group">
+                    <div className="mb-6 w-14 h-14 rounded-2xl bg-[var(--surface-tertiary)] border border-[var(--border)] flex items-center justify-center text-[var(--accent)] group-hover:scale-110 transition-transform duration-500">
                       {item.icon}
                     </div>
-                    <h3 className="font-mono font-bold text-lg text-white mb-3">{item.title}</h3>
-                    <p className="text-sm text-slate-400 leading-relaxed">{item.desc}</p>
+                    <h3 className="font-mono font-bold text-lg text-[var(--text-primary)] mb-3">{item.title}</h3>
+                    <p className="text-sm text-[var(--text-secondary)] leading-relaxed">{item.desc}</p>
                   </GlowCard>
                 </ScrollReveal>
               ))}
@@ -259,22 +259,22 @@ export default async function HomePage() {
 
                 return (
                   <ScrollReveal key={cat.id || cat.category} delay={i * 100} direction="up">
-                    <div className="p-8 rounded-[32px] border border-white/10 bg-white/5 backdrop-blur-md hover:border-[var(--accent)] transition-all duration-500 h-full group">
+                    <div className="p-8 rounded-[32px] border border-[var(--border)] bg-[var(--surface-secondary)] backdrop-blur-md hover:border-[var(--accent)] transition-all duration-500 h-full group">
                       <div className="flex items-center gap-4 mb-8">
                         <div className="w-12 h-12 rounded-2xl bg-[var(--accent)]/10 flex items-center justify-center text-[var(--accent)] group-hover:bg-[var(--accent)] group-hover:text-white transition-all duration-500 border border-[var(--accent)]/20">
                           <Icon size={20} />
                         </div>
-                        <h3 className="font-bold text-sm text-white uppercase tracking-widest">{cat.category}</h3>
+                        <h3 className="font-bold text-sm text-[var(--text-primary)] uppercase tracking-widest">{cat.category}</h3>
                       </div>
 
                       <div className="space-y-6">
                         {cat.skills.map((skill: any) => (
                           <div key={skill.id || skill.name} className="space-y-2">
                             <div className="flex justify-between text-xs font-mono">
-                              <span className="text-slate-400">{skill.name}</span>
+                              <span className="text-[var(--text-secondary)]">{skill.name}</span>
                               <span className="text-[var(--accent)]">{skill.level}%</span>
                             </div>
-                            <div className="h-1 w-full bg-white/5 rounded-full overflow-hidden border border-white/5">
+                            <div className="h-1 w-full bg-[var(--border)] rounded-full overflow-hidden">
                               <div 
                                 style={{ width: `${skill.level}%` }}
                                 className="h-full bg-gradient-to-r from-[var(--accent)] to-blue-500 shadow-[0_0_10px_rgba(59,130,246,0.5)] transition-all duration-1000"
@@ -298,8 +298,8 @@ export default async function HomePage() {
           <div className="max-w-5xl mx-auto">
             <div className="flex flex-col md:flex-row items-start md:items-end justify-between mb-16 gap-6">
               <ScrollReveal direction="left">
-                <span className="tag-pill mb-4 border-white/10 bg-white/5 backdrop-blur-md text-slate-400">selected work</span>
-                <h2 className="section-title text-white">Projects</h2>
+                <span className="tag-pill mb-4">selected work</span>
+                <h2 className="section-title">Projects</h2>
               </ScrollReveal>
               <ScrollReveal direction="right">
                 <Link href="/projects" className="btn-outline text-xs group">
@@ -358,12 +358,12 @@ export default async function HomePage() {
         <section className="py-32 px-6 mesh-gradient">
           <div className="max-w-3xl mx-auto text-center space-y-8">
             <ScrollReveal>
-              <h2 className="font-display text-6xl lg:text-8xl text-white">
+              <h2 className="font-display text-6xl lg:text-8xl text-[var(--text-primary)]">
                 Let&apos;s work together
               </h2>
             </ScrollReveal>
             <ScrollReveal delay={200}>
-              <p className="text-slate-400 text-lg max-w-md mx-auto">
+              <p className="text-[var(--text-secondary)] text-lg max-w-md mx-auto">
                 Open to collaborations, ambitious projects, and worldwide opportunities.
               </p>
             </ScrollReveal>

@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { useAdmin } from "./AdminProvider";
-import { FiEdit2 } from "react-icons/fi";
+import { Pencil } from "lucide-react";
 
 interface EditableSectionProps {
   children: React.ReactNode;
@@ -43,7 +43,7 @@ export default function EditableSection({ children, eventKey, label }: EditableS
       {isHovered && (
         <div className="absolute z-[60] top-0 left-1/2 -translate-x-1/2 -translate-y-full pb-2 animate-fade-in">
           <div className="bg-accent-500 text-white shadow-2xl px-4 py-2 rounded-t-xl text-[10px] font-black uppercase tracking-[0.2em] flex items-center gap-2 whitespace-nowrap">
-            <FiEdit2 size={12} className="animate-pulse" />
+            <Pencil size={12} className="animate-pulse" />
             Click to Edit {label}
           </div>
         </div>
@@ -54,7 +54,7 @@ export default function EditableSection({ children, eventKey, label }: EditableS
           onClick={(e) => { e.stopPropagation(); handleEdit(); }}
           className="absolute z-[60] bottom-4 right-4 bg-white dark:bg-slate-900 border-2 border-accent-500 text-accent-500 hover:bg-accent-500 hover:text-white shadow-xl px-5 py-2.5 rounded-full text-xs font-bold uppercase tracking-wider flex items-center gap-2 transition-all transform hover:scale-110 active:scale-95"
         >
-          <FiEdit2 size={14} /> Edit {label}
+          <Pencil size={14} /> Edit {label}
         </button>
       )}
       
