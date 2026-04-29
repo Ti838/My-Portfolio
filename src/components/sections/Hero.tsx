@@ -11,9 +11,11 @@ import ScrollReveal from "@/components/ui/ScrollReveal";
 import MagneticButton from "@/components/ui/MagneticButton";
 
 export default function Hero({ personalInfo }: { personalInfo: any }) {
-  const [imgSrc, setImgSrc] = useState(
-    personalInfo?.profileImage?.trim() ? personalInfo.profileImage : "/profile.jpg"
-  );
+  const [imgSrc, setImgSrc] = useState(() => {
+    const src = personalInfo?.profileImage;
+    if (!src || src === "null" || src === "") return "/profile.jpg";
+    return src;
+  });
   
   const { scrollY } = useScroll();
   
@@ -111,13 +113,10 @@ export default function Hero({ personalInfo }: { personalInfo: any }) {
           <div className="absolute inset-0 border border-[var(--border)] rounded-[40px] translate-x-4 translate-y-4 backdrop-blur-sm" />
           
           <div className="relative w-full h-full rounded-[40px] overflow-hidden shadow-2xl border border-[var(--border)] bg-[var(--surface-secondary)] backdrop-blur-md group">
-            <Image
+            <img
               src={imgSrc}
               alt={personalInfo?.name || "Profile"}
-              fill
-              className="object-cover object-center group-hover:scale-105 transition-transform duration-1000"
-              priority
-              unoptimized
+              className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-1000"
               onError={() => setImgSrc("/profile.jpg")}
             />
             
