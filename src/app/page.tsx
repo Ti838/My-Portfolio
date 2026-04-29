@@ -64,7 +64,7 @@ export default async function HomePage() {
     <>
       {/* ── Hero — PlantPot-inspired centered layout ────── */}
       <EditableSection eventKey="hero" label="Hero Section">
-        <section className="relative min-h-[95vh] flex flex-col items-center justify-start overflow-hidden mesh-gradient pt-40 pb-20 px-6">
+        <section className="relative min-h-[90vh] flex flex-col items-center justify-start overflow-hidden mesh-gradient pt-32 pb-20 px-6">
           {/* Floating orbs */}
           <div className="absolute top-1/4 left-1/4 w-72 h-72 bg-blue-400/10 rounded-full blur-[100px] animate-float-slow pointer-events-none" />
           <div className="absolute bottom-1/4 right-1/4 w-64 h-64 bg-indigo-400/10 rounded-full blur-[80px] animate-float pointer-events-none" />
@@ -72,7 +72,7 @@ export default async function HomePage() {
           <div className="relative z-10 flex flex-col items-center text-center w-full max-w-4xl mx-auto">
             {/* Professional Profile Image — PlantPot style */}
             <ScrollReveal direction="up" delay={100}>
-              <div className="relative w-40 h-40 md:w-48 md:h-48 mb-8 group">
+              <div className="relative w-44 h-44 md:w-52 md:h-52 mb-8 group">
                 {/* Animated soft glow behind image */}
                 <div className="absolute inset-0 bg-[var(--accent)]/20 blur-3xl rounded-full scale-110 group-hover:bg-[var(--accent)]/30 transition-all duration-700 pointer-events-none" />
                 
@@ -81,7 +81,7 @@ export default async function HomePage() {
                     src="/profile.jpg"
                     alt={personalInfo.name}
                     fill
-                    className="object-cover group-hover:scale-110 transition-transform duration-700"
+                    className="object-cover object-top group-hover:scale-105 transition-transform duration-700"
                     priority
                   />
                 </div>
