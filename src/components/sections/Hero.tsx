@@ -55,8 +55,8 @@ export default function Hero({ personalInfo }: { personalInfo: any }) {
 
         <ScrollReveal delay={200}>
           <h1 className="font-display text-7xl md:text-9xl lg:text-[11rem] leading-[0.85] tracking-tighter text-[var(--text-primary)] mb-8">
-            {personalInfo.name.split(' ')[0]}<br />
-            <span className="text-[var(--text-muted)]">{personalInfo.name.split(' ')[1]}</span>
+            {personalInfo?.name?.split(' ')[0] || "Timon"}<br />
+            <span className="text-[var(--text-muted)]">{personalInfo?.name?.split(' ').slice(1).join(' ') || "Biswas"}</span>
           </h1>
         </ScrollReveal>
 
