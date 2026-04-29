@@ -96,8 +96,8 @@ export default function Navbar({ logoImage }: { logoImage?: string }) {
         />
 
         {/* Menu content */}
-        <nav className="relative z-10 w-full h-full flex flex-col items-center justify-center overflow-y-auto px-6 py-24">
-          <div className="flex flex-col items-center gap-6 w-full max-w-md m-auto">
+        <nav className="relative z-10 w-full h-full flex flex-col items-center justify-start overflow-y-auto px-6 pt-32 pb-24">
+          <div className="flex flex-col items-center gap-6 w-full max-w-md">
             {navLinks.map((link, i) => {
               const active = pathname === link.href;
               
