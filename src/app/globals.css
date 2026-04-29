@@ -14,19 +14,17 @@
   --surface: #faf9f7;
   --surface-secondary: #f3f1ed;
   --surface-tertiary: #eae6e0;
-  --border: #e0dbd3;
-  --text-primary: #1a1a1a;
-  --text-secondary: #5c5c5c;
-  --text-muted: #9c9c9c;
+  --border: rgba(0, 0, 0, 0.1);
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --text-muted: #94a3b8;
   --radius: 24px;
   --radius-lg: 32px;
   --shadow-sm: 0 2px 8px rgba(0,0,0,0.04);
   --shadow-md: 0 8px 32px rgba(0,0,0,0.06);
   --shadow-lg: 0 16px 48px rgba(0,0,0,0.08);
-  --shadow-accent: 0 8px 32px rgba(59, 130, 246, 0.12);
-  --shadow-glow: 0 0 40px rgba(59, 130, 246, 0.1);
-  --glass-bg: rgba(250, 249, 247, 0.75);
-  --glass-border: rgba(224, 219, 211, 0.5);
+  --glass-bg: rgba(255, 255, 255, 0.05);
+  --glass-border: rgba(255, 255, 255, 0.1);
 
   --mesh-1: #dbeafe;
   --mesh-2: #f5f0ea;
@@ -38,15 +36,15 @@
   --surface: #020617;
   --surface-secondary: #0f172a;
   --surface-tertiary: #1e293b;
-  --border: #1e293b;
+  --border: rgba(255, 255, 255, 0.1);
   --text-primary: #f8fafc;
   --text-secondary: #94a3b8;
   --text-muted: #475569;
   --shadow-sm: 0 2px 8px rgba(0,0,0,0.5);
   --shadow-md: 0 8px 32px rgba(0,0,0,0.6);
   --shadow-lg: 0 16px 48px rgba(0,0,0,0.8);
-  --glass-bg: rgba(15, 23, 42, 0.8);
-  --glass-border: rgba(30, 41, 59, 0.5);
+  --glass-bg: rgba(15, 23, 42, 0.4);
+  --glass-border: rgba(255, 255, 255, 0.1);
 
   --mesh-1: #020617;
   --mesh-2: #0f172a;

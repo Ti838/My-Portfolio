@@ -8,8 +8,9 @@ export default function CinematicBackground() {
   const { scrollYProgress } = useScroll();
   
   // Parallax effect for the background container
-  const y = useTransform(scrollYProgress, [0, 1], ["0%", "20%"]);
-  const opacity = useTransform(scrollYProgress, [0, 0.5, 1], [0.6, 0.4, 0.2]);
+  const y = useTransform(scrollYProgress, [0, 1], ["0%", "15%"]);
+  const opacity = useTransform(scrollYProgress, [0, 0.3, 1], [1, 0.8, 0.6]);
+  const scale = useTransform(scrollYProgress, [0, 1], [1, 1.1]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -40,9 +41,9 @@ export default function CinematicBackground() {
         this.x = Math.random() * w;
         this.y = Math.random() * h;
         this.size = Math.random() * 2 + 0.5;
-        this.speedX = Math.random() * 0.5 - 0.25;
-        this.speedY = Math.random() * 0.5 - 0.25;
-        this.color = `rgba(${Math.random() * 50 + 100}, ${Math.random() * 100 + 150}, 255, ${Math.random() * 0.3})`;
+        this.speedX = Math.random() * 0.3 - 0.15;
+        this.speedY = Math.random() * 0.3 - 0.15;
+        this.color = `rgba(255, 255, 255, ${Math.random() * 0.3})`;
       }
 
       update() {
@@ -61,12 +62,16 @@ export default function CinematicBackground() {
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
         ctx.fill();
+        
+        // Glow effect
+        ctx.shadowBlur = 10;
+        ctx.shadowColor = "rgba(255, 255, 255, 0.2)";
       }
     }
 
     const init = () => {
       particles = [];
-      const particleCount = Math.min(Math.floor((w * h) / 15000), 100);
+      const particleCount = 50;
       for (let i = 0; i < particleCount; i++) {
         particles.push(new Particle());
       }
@@ -74,24 +79,6 @@ export default function CinematicBackground() {
 
     const animate = () => {
       ctx.clearRect(0, 0, w, h);
-      
-      // Draw subtle connections
-      ctx.strokeStyle = "rgba(100, 150, 255, 0.05)";
-      ctx.lineWidth = 0.5;
-      for (let i = 0; i < particles.length; i++) {
-        for (let j = i + 1; j < particles.length; j++) {
-          const dx = particles[i].x - particles[j].x;
-          const dy = particles[i].y - particles[j].y;
-          const distance = Math.sqrt(dx * dx + dy * dy);
-          if (distance < 150) {
-            ctx.beginPath();
-            ctx.moveTo(particles[i].x, particles[i].y);
-            ctx.lineTo(particles[j].x, particles[j].y);
-            ctx.stroke();
-          }
-        }
-      }
-
       particles.forEach((p) => {
         p.update();
         p.draw();
@@ -110,19 +97,35 @@ export default function CinematicBackground() {
   }, []);
 
   return (
-    <motion.div 
-      style={{ y, opacity }}
-      className="fixed inset-0 z-0 pointer-events-none overflow-hidden bg-[#020617]"
-    >
-      {/* Animated Mesh Gradient Background */}
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_-20%,#1e293b,transparent_70%)]" />
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_0%_100%,#0f172a,transparent_50%)]" />
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_100%_100%,#1e1b4b,transparent_50%)]" />
+    <div className="fixed inset-0 z-0 bg-[#020617] overflow-hidden">
+      {/* ── Base Layer: Abstract Video Background ────────────────────── */}
+      <motion.div 
+        style={{ y, scale, opacity }}
+        className="absolute inset-0 z-0"
+      >
+        <video 
+          autoPlay 
+          loop 
+          muted 
+          playsInline 
+          className="absolute inset-0 w-full h-full object-cover grayscale-[0.3] brightness-[0.4] contrast-[1.2]"
+        >
+          <source src="https://assets.mixkit.co/videos/preview/mixkit-abstract-flowing-teal-and-pink-light-gradient-background-40071-preview.mp4" type="video/mp4" />
+        </video>
+        
+        {/* Overlay Gradients for Depth */}
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#020617]/50 to-[#020617]" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,transparent,rgba(2,6,23,0.8))]" />
+      </motion.div>
+
+      {/* ── Mid Layer: Particle Canvas ──────────────────────────────── */}
+      <canvas ref={canvasRef} className="absolute inset-0 z-10 opacity-60 mix-blend-screen" />
+
+      {/* ── Top Layer: Cinematic Fog & Noise ────────────────────────── */}
+      <div className="absolute inset-0 z-20 pointer-events-none bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.03] mix-blend-overlay" />
       
-      <canvas ref={canvasRef} className="absolute inset-0" />
-      
-      {/* Cinematic Vignette */}
-      <div className="absolute inset-0 shadow-[inset_0_0_150px_rgba(0,0,0,0.8)]" />
-    </motion.div>
+      {/* Border Vignette */}
+      <div className="absolute inset-0 z-30 pointer-events-none shadow-[inset_0_0_200px_rgba(0,0,0,0.9)]" />
+    </div>
   );
 }

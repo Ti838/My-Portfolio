@@ -248,8 +248,8 @@ export default async function HomePage() {
           <div className="max-w-6xl mx-auto">
             <div className="flex flex-col items-center text-center mb-20">
               <ScrollReveal direction="up">
-                <span className="tag-pill mb-4 uppercase tracking-[0.3em] text-[10px] border-white/10 bg-white/5 backdrop-blur-md">expertize</span>
-                <h2 className="text-4xl font-display font-bold text-white">Tech Stack</h2>
+                <span className="tag-pill mb-4 uppercase tracking-[0.3em] text-[10px] border-[var(--border)] bg-[var(--surface-secondary)]/50 backdrop-blur-md">expertize</span>
+                <h2 className="text-4xl font-display font-bold text-[var(--text-primary)]">Tech Stack</h2>
               </ScrollReveal>
             </div>
 

@@ -38,9 +38,9 @@ export default function Hero({ personalInfo }: { personalInfo: any }) {
 
           <ScrollReveal delay={200} direction="left">
             <div className="space-y-2">
-              <h1 className="font-display text-[clamp(3.5rem,8vw,6rem)] leading-[1.1] tracking-tighter text-white">
+              <h1 className="font-display text-[clamp(3.5rem,8vw,6rem)] leading-[1.1] tracking-tighter text-[var(--text-primary)]">
                 {personalInfo?.name?.split(' ')[0] || "Timon"} <br/>
-                <span className="text-slate-500">{personalInfo?.name?.split(' ').slice(1).join(' ') || "Biswas"}</span>
+                <span className="text-[var(--text-secondary)]">{personalInfo?.name?.split(' ').slice(1).join(' ') || "Biswas"}</span>
               </h1>
             </div>
           </ScrollReveal>
@@ -53,7 +53,7 @@ export default function Hero({ personalInfo }: { personalInfo: any }) {
                   typingSpeed={80}
                 />
               </div>
-              <p className="text-slate-400 text-sm md:text-base max-w-sm leading-relaxed border-l-2 border-[var(--accent)]/30 pl-4">
+              <p className="text-[var(--text-secondary)] text-sm md:text-base max-w-sm leading-relaxed border-l-2 border-[var(--accent)]/30 pl-4">
                 CSE Student at SMUCT. Engineering intelligent software ecosystems with logic and creativity.
               </p>
             </div>
