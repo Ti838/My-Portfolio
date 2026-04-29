@@ -64,7 +64,7 @@ export default async function HomePage() {
     <>
       {/* ── Hero — PlantPot-inspired centered layout ────── */}
       <EditableSection eventKey="hero" label="Hero Section">
-        <section className="relative min-h-[90vh] flex flex-col items-center justify-center overflow-hidden mesh-gradient py-20 px-6">
+        <section className="relative min-h-[95vh] flex flex-col items-center justify-start overflow-hidden mesh-gradient pt-40 pb-20 px-6">
           {/* Floating orbs */}
           <div className="absolute top-1/4 left-1/4 w-72 h-72 bg-blue-400/10 rounded-full blur-[100px] animate-float-slow pointer-events-none" />
           <div className="absolute bottom-1/4 right-1/4 w-64 h-64 bg-indigo-400/10 rounded-full blur-[80px] animate-float pointer-events-none" />
