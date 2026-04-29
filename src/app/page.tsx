@@ -10,6 +10,7 @@ import GlowCard from "@/components/ui/GlowCard";
 import AnimatedCounter from "@/components/ui/AnimatedCounter";
 import MagneticButton from "@/components/ui/MagneticButton";
 import AwardsList from "@/components/sections/AwardsList";
+import Hero from "@/components/sections/Hero";
 
 async function getLiveStats(params: { codeforcesHandle: string; githubUser: string; leetcodeUser: string }) {
   try {
@@ -62,114 +63,9 @@ export default async function HomePage() {
 
   return (
     <>
-      {/* ── Hero — PlantPot-inspired centered layout ────── */}
+      {/* ── Hero — Parallax Background Layout ─────────────────────────── */}
       <EditableSection eventKey="hero" label="Hero Section">
-        <section className="relative min-h-[90vh] flex flex-col items-center justify-start overflow-hidden mesh-gradient pt-32 pb-20 px-6">
-          {/* Floating orbs */}
-          <div className="absolute top-1/4 left-1/4 w-72 h-72 bg-blue-400/10 rounded-full blur-[100px] animate-float-slow pointer-events-none" />
-          <div className="absolute bottom-1/4 right-1/4 w-64 h-64 bg-indigo-400/10 rounded-full blur-[80px] animate-float pointer-events-none" />
- 
-          <div className="relative z-10 flex flex-col items-center text-center w-full max-w-4xl mx-auto">
-            {/* Professional Profile Image — PlantPot style */}
-            <ScrollReveal direction="up" delay={100}>
-              <div className="relative w-44 h-44 md:w-52 md:h-52 mb-8 group">
-                {/* Animated soft glow behind image */}
-                <div className="absolute inset-0 bg-[var(--accent)]/20 blur-3xl rounded-full scale-110 group-hover:bg-[var(--accent)]/30 transition-all duration-700 pointer-events-none" />
-                
-                <div className="relative w-full h-full rounded-[48px] overflow-hidden border-2 border-[var(--border)] shadow-xl bg-[var(--surface-secondary)] group-hover:rounded-[32px] transition-all duration-700">
-                  <Image
-                    src="/profile.jpg"
-                    alt={personalInfo.name}
-                    fill
-                    className="object-cover object-top group-hover:scale-105 transition-transform duration-700"
-                    priority
-                  />
-                </div>
-                
-                {/* Decorative floating element */}
-                <div className="absolute -bottom-2 -right-2 w-10 h-10 bg-[var(--surface)] border border-[var(--border)] rounded-xl flex items-center justify-center shadow-lg animate-float text-[var(--accent)]">
-                  <FiStar size={18} fill="currentColor" />
-                </div>
-              </div>
-            </ScrollReveal>
- 
-            {/* Handwritten greeting */}
-            <ScrollReveal direction="up" delay={200}>
-              <p className="font-display text-2xl lg:text-3xl text-[var(--accent)] mb-2">
-                Hello, I&apos;m
-              </p>
-            </ScrollReveal>
- 
-            {/* Name */}
-            <ScrollReveal direction="up" delay={300}>
-              <h1 className="font-mono text-4xl lg:text-6xl xl:text-7xl font-bold text-[var(--text-primary)] leading-[1.1] tracking-tight mb-4">
-                {personalInfo.name}
-              </h1>
-            </ScrollReveal>
- 
-            {/* Typewriter role */}
-            <ScrollReveal direction="up" delay={400}>
-              <div className="font-mono text-base lg:text-lg text-[var(--text-muted)] mb-6">
-                <TypeWriter
-                  words={["Developer", "Competitive Programmer", "UI/UX Enthusiast", "Vocalist"]}
-                  className="text-[var(--text-secondary)]"
-                />
-              </div>
-            </ScrollReveal>
-
-            {/* Bio */}
-            <ScrollReveal direction="up" delay={500}>
-              <p className="text-[var(--text-secondary)] text-lg max-w-xl leading-relaxed mb-12">
-                {personalInfo.tagline}
-              </p>
-            </ScrollReveal>
-
-            {/* CTA buttons */}
-            <ScrollReveal direction="up" delay={600}>
-              <div className="flex flex-wrap items-center justify-center gap-4">
-                <MagneticButton>
-                  <Link href="/contact" className="btn-primary">
-                    Get in touch <FiArrowRight size={16} />
-                  </Link>
-                </MagneticButton>
-                <MagneticButton>
-                  <a href="/admin/download" className="btn-outline">
-                    <FiDownload size={16} /> Resume
-                  </a>
-                </MagneticButton>
-              </div>
-            </ScrollReveal>
-
-            {/* Social icons */}
-            <ScrollReveal direction="up" delay={700} className="flex items-center gap-6 mt-12">
-              {socialLinks.map((link: any) => {
-                const Icon = {
-                  FiGithub, FiLinkedin, FiCode, FiMessageCircle, FiTwitter, FiGlobe, FiMail: (props: any) => <span {...props}>@</span>
-                }[link.icon as string] || FiLink;
-                return (
-                  <MagneticButton key={link.id || link.label} strength={0.2}>
-                    <a
-                      href={link.url}
-                      target={link.url.startsWith("mailto") ? undefined : "_blank"}
-                      rel="noopener noreferrer"
-                      aria-label={link.label}
-                      className="text-[var(--text-muted)] hover:text-[var(--accent)] transition-colors"
-                    >
-                      <Icon size={20} />
-                    </a>
-                  </MagneticButton>
-                );
-              })}
-            </ScrollReveal>
-          </div>
-
-          {/* Bottom copyright like PlantPot */}
-          <div className="absolute bottom-8 left-0 right-0 text-center">
-            <p className="font-mono text-[10px] text-[var(--text-muted)] tracking-widest">
-              © {new Date().getFullYear()} timon.dev
-            </p>
-          </div>
-        </section>
+        <Hero personalInfo={personalInfo} />
       </EditableSection>
 
       {/* ── Developer Pulse — Multi-platform stats ──────────────────────────── */}
