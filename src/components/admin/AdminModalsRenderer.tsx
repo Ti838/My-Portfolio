@@ -45,7 +45,7 @@ export default function AdminModalsRenderer({
 
   return (
     <>
-      {activeModal === "hero" && <HeroEditorModal initialData={personalInfo} onClose={() => setActiveModal(null)} />}
+      {(activeModal === "hero" || activeModal === "stats") && <HeroEditorModal initialData={personalInfo} onClose={() => setActiveModal(null)} />}
       {activeModal === "bio" && <BioEditorModal initialData={personalInfo} onClose={() => setActiveModal(null)} />}
       {activeModal === "projects" && <ProjectsEditorModal initialProjects={projects || ([] as any[])} onClose={() => setActiveModal(null)} />}
       {activeModal === "announcement" && <AnnouncementEditorModal initialData={personalInfo} onClose={() => setActiveModal(null)} />}

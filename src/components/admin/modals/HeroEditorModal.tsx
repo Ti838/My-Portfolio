@@ -94,6 +94,13 @@ export default function HeroEditorModal({ initialData, onClose }: { initialData:
               <Input label="Toph Custom Stats" value={personalInfo.stats?.toph_stats || ""} onChange={(v) => setPersonalInfo({ ...personalInfo, stats: { ...personalInfo.stats, toph_stats: v } })} />
               <Input label="VJudge Custom Stats" value={personalInfo.stats?.vjudge_stats || ""} onChange={(v) => setPersonalInfo({ ...personalInfo, stats: { ...personalInfo.stats, vjudge_stats: v } })} />
             </div>
+
+            <h3 className="font-bold mb-4 mt-6 text-sm text-[var(--accent)] uppercase tracking-widest">Live API Handles</h3>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <Input label="Codeforces Handle" value={personalInfo.stats?.codeforces_handle || ""} onChange={(v) => setPersonalInfo({ ...personalInfo, stats: { ...personalInfo.stats, codeforces_handle: v } })} />
+              <Input label="GitHub Username" value={personalInfo.stats?.github_user || ""} onChange={(v) => setPersonalInfo({ ...personalInfo, stats: { ...personalInfo.stats, github_user: v } })} />
+              <Input label="LeetCode Username" value={personalInfo.stats?.leetcode_user || ""} onChange={(v) => setPersonalInfo({ ...personalInfo, stats: { ...personalInfo.stats, leetcode_user: v } })} />
+            </div>
           </div>
         </div>
 
