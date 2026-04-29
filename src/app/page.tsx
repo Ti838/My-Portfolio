@@ -267,19 +267,13 @@ export default async function HomePage() {
                         <h3 className="font-bold text-sm text-[var(--text-primary)] uppercase tracking-widest">{cat.category}</h3>
                       </div>
 
-                      <div className="space-y-6">
+                      <div className="flex flex-wrap gap-3">
                         {cat.skills.map((skill: any) => (
-                          <div key={skill.id || skill.name} className="space-y-2">
-                            <div className="flex justify-between text-xs font-mono">
-                              <span className="text-[var(--text-secondary)]">{skill.name}</span>
-                              <span className="text-[var(--accent)]">{skill.level}%</span>
-                            </div>
-                            <div className="h-1 w-full bg-[var(--border)] rounded-full overflow-hidden">
-                              <div 
-                                style={{ width: `${skill.level}%` }}
-                                className="h-full bg-gradient-to-r from-[var(--accent)] to-blue-500 shadow-[0_0_10px_rgba(59,130,246,0.5)] transition-all duration-1000"
-                              />
-                            </div>
+                          <div 
+                            key={skill.id || skill.name} 
+                            className="px-4 py-2 rounded-xl border border-[var(--border)] bg-[var(--surface)] text-[var(--text-secondary)] text-xs font-mono font-medium hover:text-[var(--accent)] hover:border-[var(--accent)] hover:scale-105 transition-all duration-300 shadow-sm"
+                          >
+                            {skill.name}
                           </div>
                         ))}
                       </div>
