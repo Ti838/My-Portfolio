@@ -9,7 +9,12 @@ import ScrollReveal from "@/components/ui/ScrollReveal";
 import GlowCard from "@/components/ui/GlowCard";
 import AnimatedCounter from "@/components/ui/AnimatedCounter";
 import MagneticButton from "@/components/ui/MagneticButton";
-import SplineScene from "@/components/ui/SplineScene";
+import dynamic from "next/dynamic";
+
+const SplineScene = dynamic(() => import("@/components/ui/SplineScene"), { 
+  ssr: false,
+  loading: () => <div className="w-full h-full flex items-center justify-center animate-pulse bg-[var(--surface-secondary)]/50 rounded-[32px] text-[var(--text-muted)] font-mono text-xs">Loading 3D Scene...</div>
+});
 
 async function getLiveStats(params: { codeforcesHandle: string; githubUser: string; leetcodeUser: string }) {
   try {
