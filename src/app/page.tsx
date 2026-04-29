@@ -61,21 +61,21 @@ export default async function HomePage() {
 
   return (
     <>
-      {/* ── Hero — PlantPot-inspired centered layout with mesh gradient ────── */}
+      {/* ── Hero — PlantPot-inspired centered layout ────── */}
       <EditableSection eventKey="hero" label="Hero Section">
-        <section className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden mesh-gradient">
+        <section className="relative min-h-[90vh] flex flex-col items-center justify-center overflow-hidden mesh-gradient py-20 px-6">
           {/* Floating orbs */}
-          <div className="absolute top-1/3 left-1/4 w-72 h-72 bg-blue-400/10 rounded-full blur-[100px] animate-float-slow pointer-events-none" />
-          <div className="absolute bottom-1/3 right-1/4 w-64 h-64 bg-indigo-400/10 rounded-full blur-[80px] animate-float pointer-events-none" />
-
-          <div className="relative z-10 flex flex-col items-center text-center px-6 py-32 max-w-4xl mx-auto">
+          <div className="absolute top-1/4 left-1/4 w-72 h-72 bg-blue-400/10 rounded-full blur-[100px] animate-float-slow pointer-events-none" />
+          <div className="absolute bottom-1/4 right-1/4 w-64 h-64 bg-indigo-400/10 rounded-full blur-[80px] animate-float pointer-events-none" />
+ 
+          <div className="relative z-10 flex flex-col items-center text-center w-full max-w-4xl mx-auto">
             {/* Professional Profile Image — PlantPot style */}
-            <ScrollReveal direction="down" delay={100}>
-              <div className="relative w-48 h-48 md:w-56 md:h-56 mb-12 group">
+            <ScrollReveal direction="up" delay={100}>
+              <div className="relative w-40 h-40 md:w-48 md:h-48 mb-8 group">
                 {/* Animated soft glow behind image */}
                 <div className="absolute inset-0 bg-[var(--accent)]/20 blur-3xl rounded-full scale-110 group-hover:bg-[var(--accent)]/30 transition-all duration-700 pointer-events-none" />
                 
-                <div className="relative w-full h-full rounded-[60px] overflow-hidden border-2 border-[var(--border)] shadow-2xl bg-[var(--surface-secondary)] group-hover:rounded-[40px] transition-all duration-700">
+                <div className="relative w-full h-full rounded-[48px] overflow-hidden border-2 border-[var(--border)] shadow-xl bg-[var(--surface-secondary)] group-hover:rounded-[32px] transition-all duration-700">
                   <Image
                     src="/profile.jpg"
                     alt={personalInfo.name}
@@ -86,29 +86,29 @@ export default async function HomePage() {
                 </div>
                 
                 {/* Decorative floating element */}
-                <div className="absolute -bottom-4 -right-4 w-12 h-12 bg-[var(--surface)] border border-[var(--border)] rounded-2xl flex items-center justify-center shadow-lg animate-float text-[var(--accent)]">
-                  <FiStar size={20} fill="currentColor" />
+                <div className="absolute -bottom-2 -right-2 w-10 h-10 bg-[var(--surface)] border border-[var(--border)] rounded-xl flex items-center justify-center shadow-lg animate-float text-[var(--accent)]">
+                  <FiStar size={18} fill="currentColor" />
                 </div>
               </div>
             </ScrollReveal>
-
+ 
             {/* Handwritten greeting */}
             <ScrollReveal direction="up" delay={200}>
-              <p className="font-display text-3xl lg:text-4xl text-[var(--accent)] mb-4">
+              <p className="font-display text-2xl lg:text-3xl text-[var(--accent)] mb-2">
                 Hello, I&apos;m
               </p>
             </ScrollReveal>
-
+ 
             {/* Name */}
             <ScrollReveal direction="up" delay={300}>
-              <h1 className="font-mono text-5xl lg:text-7xl xl:text-8xl font-bold text-[var(--text-primary)] leading-[1.1] tracking-tight mb-6">
+              <h1 className="font-mono text-4xl lg:text-6xl xl:text-7xl font-bold text-[var(--text-primary)] leading-[1.1] tracking-tight mb-4">
                 {personalInfo.name}
               </h1>
             </ScrollReveal>
-
+ 
             {/* Typewriter role */}
             <ScrollReveal direction="up" delay={400}>
-              <div className="font-mono text-lg lg:text-xl text-[var(--text-muted)] mb-8">
+              <div className="font-mono text-base lg:text-lg text-[var(--text-muted)] mb-6">
                 <TypeWriter
                   words={["Developer", "Competitive Programmer", "UI/UX Enthusiast", "Vocalist"]}
                   className="text-[var(--text-secondary)]"
