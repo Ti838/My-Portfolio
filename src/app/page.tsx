@@ -93,150 +93,138 @@ export default async function HomePage() {
     <>
       {/* ── Hero ─────────────────────────────────────────────────────────────── */}
       <EditableSection eventKey="hero" label="Hero Section">
-        <section className="relative min-h-screen flex items-center pt-20 pb-16 lg:pt-32 overflow-hidden mesh-gradient">
-        {/* Animated Background Mesh */}
-        <div className="absolute inset-0 dot-grid-bg opacity-30 pointer-events-none" />
+        <section className="relative min-h-[90vh] flex items-center pt-32 pb-24 lg:pt-48 overflow-hidden">
+        {/* Cinematic Background */}
+        <div className="absolute inset-0 z-0">
+          <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-accent-500/5 via-transparent to-transparent" />
+          <div className="absolute top-1/4 -left-10 w-[500px] h-[500px] bg-accent-500/10 rounded-full blur-[120px] animate-pulse" />
+          <div className="absolute bottom-1/4 -right-10 w-[400px] h-[400px] bg-purple-500/10 rounded-full blur-[100px] animate-float-slow" />
+        </div>
         
-        {/* Floating background elements */}
-        <div className="absolute top-1/4 -left-20 w-96 h-96 bg-accent-500/10 rounded-full blur-[120px] animate-float-slow" />
-        <div className="absolute bottom-1/4 -right-20 w-80 h-80 bg-purple-500/10 rounded-full blur-[100px] animate-float" />
+        <div className="max-w-7xl mx-auto px-5 w-full relative z-10">
+          <div className="grid lg:grid-cols-[1.2fr_0.8fr] gap-16 lg:gap-24 items-center">
+            {/* Text Content */}
+            <div className="space-y-10">
+              <ScrollReveal direction="left" delay={100}>
+                {personalInfo.stats?.location_public !== false && (
+                  <div className="inline-flex items-center gap-3 py-2.5 px-5 rounded-full glass border-white/20 shadow-xl">
+                    <span className="relative flex h-2 w-2">
+                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent-400 opacity-75"></span>
+                      <span className="relative inline-flex rounded-full h-2 w-2 bg-accent-500"></span>
+                    </span>
+                    <span className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400">
+                      Available for Projects Worldwide
+                    </span>
+                  </div>
+                )}
+              </ScrollReveal>
 
-        <div className="max-w-6xl mx-auto px-5 w-full grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-          {/* Text Content */}
-          <div className="space-y-8 relative z-10">
-            <ScrollReveal direction="left" delay={100}>
-              {personalInfo.stats?.location_public !== false && (
-                <div className="inline-flex items-center gap-2 py-2 px-4 rounded-full bg-white/40 dark:bg-slate-800/40 backdrop-blur-md border border-white/20 shadow-sm">
-                  <span className="relative flex h-2 w-2">
-                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent-400 opacity-75"></span>
-                    <span className="relative inline-flex rounded-full h-2 w-2 bg-accent-500"></span>
-                  </span>
-                  <span className="text-xs font-black uppercase tracking-widest text-slate-600 dark:text-slate-300">
-                    📍 {personalInfo.stats?.location_label || personalInfo.location || "Bangladesh"}
-                  </span>
+              <ScrollReveal direction="up" delay={200}>
+                <h1 className="font-display text-7xl lg:text-9xl font-900 text-slate-900 dark:text-white leading-[0.85] tracking-tighter uppercase">
+                  Hi, I&apos;m <br />
+                  <span className="text-accent-500">Timon</span>{" "}
+                  <span className="text-slate-200 dark:text-white/5">Biswas</span>
+                </h1>
+              </ScrollReveal>
+
+              <ScrollReveal direction="up" delay={300}>
+                <div className="flex flex-col gap-4">
+                  <div className="text-2xl lg:text-3xl font-black text-slate-600 dark:text-slate-400 tracking-tight flex flex-wrap gap-x-3 uppercase">
+                    I am a <TypeWriter 
+                      words={["Creative Developer", "Competitive Programmer", "UI/UX Enthusiast", "Vocalist"]} 
+                      className="text-accent-500 underline decoration-accent-500/30 underline-offset-8"
+                    />
+                  </div>
+                  <p className="text-lg lg:text-xl text-slate-500 dark:text-slate-400 max-w-xl leading-relaxed font-medium">
+                    {personalInfo.bio || "Merging technical logic with creative soul to build high-performance digital solutions."}
+                  </p>
                 </div>
-              )}
-            </ScrollReveal>
+              </ScrollReveal>
 
-            <ScrollReveal direction="up" delay={200}>
-              <h1 className="font-display text-6xl lg:text-8xl font-900 text-slate-900 dark:text-white leading-[0.95] tracking-tight">
-                Hi, I&apos;m <br />
-                <span className="text-accent-500">{personalInfo.name.split(" ")[0]}</span>{" "}
-                <span className="text-slate-400/30 dark:text-white/10">{personalInfo.name.split(" ").slice(1).join(" ")}</span>
-              </h1>
-            </ScrollReveal>
-
-            <ScrollReveal direction="up" delay={300}>
-              <div className="text-xl lg:text-2xl font-bold text-slate-600 dark:text-slate-400 max-w-lg leading-relaxed flex flex-wrap gap-x-2">
-                I am a <TypeWriter 
-                  words={["Creative Developer", "Competitive Programmer", "UI/UX Enthusiast", "Vocalist"]} 
-                  className="text-accent-500 underline decoration-accent-500/30 underline-offset-4"
-                />
-              </div>
-            </ScrollReveal>
-
-            <ScrollReveal direction="up" delay={400}>
-              <p className="text-lg text-slate-500 dark:text-slate-400 max-w-md">
-                {personalInfo.tagline}
-              </p>
-            </ScrollReveal>
-
-            {/* CTA buttons */}
-            <ScrollReveal direction="up" delay={500}>
-              <div className="flex flex-wrap gap-4 pt-4">
+              {/* CTA buttons */}
+              <ScrollReveal direction="up" delay={400} className="flex flex-wrap gap-6 pt-4">
                 <MagneticButton>
-                  <Link href="/contact" className="btn-primary py-4 px-10 text-sm uppercase tracking-widest font-black">
-                    Start a Project <FiArrowRight size={18} />
+                  <Link href="/contact" className="btn-primary py-5 px-12 text-[10px] uppercase tracking-[0.3em] font-black group">
+                    Let&apos;s Build <FiArrowRight size={18} className="group-hover:translate-x-2 transition-transform" />
                   </Link>
                 </MagneticButton>
                 
                 <MagneticButton>
                   <a
                     href="/admin/download"
-                    className="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-white/50 dark:bg-slate-800/50 backdrop-blur-md text-slate-700 dark:text-slate-300 text-xs font-black uppercase tracking-widest border border-white/20 hover:bg-white dark:hover:bg-slate-800 transition-all shadow-lg hover:shadow-xl"
+                    className="glass-card px-10 py-5 text-[10px] font-black uppercase tracking-[0.3em] text-slate-600 dark:text-slate-300 border-white/20 hover:border-accent-500/50 transition-all flex items-center gap-3"
                   >
-                    <FiDownload size={16} /> Get Resume
+                    <FiDownload size={18} /> Resume
                   </a>
                 </MagneticButton>
-              </div>
-            </ScrollReveal>
+              </ScrollReveal>
 
-            {/* Socials */}
-            <ScrollReveal direction="up" delay={600} className="flex items-center gap-6 pt-8">
-              {socialLinks.map((link: any, i: number) => {
-                const Icon = {
-                  FiGithub, FiLinkedin, FiCode, FiMessageCircle, FiTwitter, FiGlobe, FiMail: (props: any) => <span {...props}>@</span>
-                }[link.icon as string] || FiLink;
-                return (
-                  <MagneticButton key={link.id || link.label} strength={0.2}>
-                    <a 
-                      href={link.url} 
-                      target={link.url.startsWith("mailto") ? undefined : "_blank"} 
-                      rel="noopener noreferrer" 
-                      aria-label={link.label}
-                      className="text-slate-400 hover:text-accent-500 transition-colors transform hover:scale-125 block"
-                    >
-                      <Icon size={24} />
-                    </a>
-                  </MagneticButton>
-                );
-              })}
-            </ScrollReveal>
-          </div>
+              {/* Socials */}
+              <ScrollReveal direction="up" delay={500} className="flex items-center gap-8 pt-10">
+                {socialLinks.slice(0, 5).map((link: any, i: number) => {
+                  const Icon = {
+                    FiGithub, FiLinkedin, FiCode, FiMessageCircle, FiTwitter, FiGlobe, FiMail: (props: any) => <span {...props}>@</span>
+                  }[link.icon as string] || FiLink;
+                  return (
+                    <MagneticButton key={link.id || link.label} strength={0.3}>
+                      <a 
+                        href={link.url} 
+                        target={link.url.startsWith("mailto") ? undefined : "_blank"} 
+                        rel="noopener noreferrer" 
+                        aria-label={link.label}
+                        className="text-slate-400 hover:text-accent-500 transition-all hover:scale-125"
+                      >
+                        <Icon size={22} />
+                      </a>
+                    </MagneticButton>
+                  );
+                })}
+              </ScrollReveal>
+            </div>
 
-          {/* Profile Visuals */}
-          <ScrollReveal direction="right" delay={300} className="relative">
-            <div className="relative z-10 flex flex-col items-center">
-              {/* Profile image with organic animation */}
+            {/* Profile Visuals */}
+            <ScrollReveal direction="right" delay={300} className="relative hidden lg:block">
               <div className="relative group">
-                <div className="absolute -inset-8 bg-gradient-to-tr from-accent-500 to-purple-500 rounded-full blur-3xl opacity-20 group-hover:opacity-40 transition-opacity animate-pulse" />
-                <div className="relative w-72 h-72 lg:w-96 lg:h-96 animate-morph overflow-hidden border-8 border-white/20 dark:border-slate-800/50 shadow-2xl backdrop-blur-sm">
-                  <Image
-                    src={personalInfo.profileImage || "/images/profile.jpg"}
-                    alt={personalInfo.name}
-                    fill
-                    className="object-cover scale-110 group-hover:scale-100 transition-transform duration-1000"
-                    priority
-                  />
+                {/* Abstract Visual Elements */}
+                <div className="absolute -top-12 -left-12 w-64 h-64 border border-accent-500/20 rounded-full animate-spin-slow pointer-events-none" />
+                <div className="absolute -bottom-12 -right-12 w-80 h-80 border border-white/10 rounded-full animate-reverse-spin pointer-events-none" />
+                
+                <div className="relative w-[500px] h-[550px] overflow-hidden rounded-[3rem] border border-white/20 shadow-2xl glass p-3">
+                   <div className="relative w-full h-full overflow-hidden rounded-[2.5rem]">
+                    <Image
+                      src={personalInfo.profileImage || "/images/profile.jpg"}
+                      alt={personalInfo.name}
+                      fill
+                      className="object-cover scale-105 group-hover:scale-100 transition-transform duration-[2s]"
+                      priority
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-slate-950/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
+                   </div>
                 </div>
                 
-                {/* Floating ICPC Badge */}
-                <ScrollReveal direction="none" delay={800} className="absolute -bottom-6 -right-6">
+                {/* Floating Achievement */}
+                <ScrollReveal direction="none" delay={1000} className="absolute -bottom-10 -left-10">
                   <MagneticButton strength={0.4}>
-                    <div className="glass-card p-4 flex items-center gap-3 shadow-xl border-white/20 animate-float">
-                      <div className="w-12 h-12 rounded-xl bg-accent-500 flex items-center justify-center text-white text-2xl">
+                    <GlowCard className="glass-card p-6 flex items-center gap-4 shadow-2xl border-white/20 hover:border-accent-500/50 transition-colors animate-float">
+                      <div className="w-14 h-14 rounded-2xl bg-accent-500 flex items-center justify-center text-white text-3xl shadow-glow">
                         🏆
                       </div>
                       <div>
-                        <p className="text-[10px] font-black text-accent-500 uppercase tracking-tighter">ICPC 2024</p>
-                        <p className="text-xs font-black text-slate-900 dark:text-white uppercase">Honorable Mention</p>
+                        <p className="text-[10px] font-black text-accent-500 uppercase tracking-widest mb-1">ICPC 2024</p>
+                        <p className="text-xs font-black text-slate-900 dark:text-white uppercase leading-none">Honorable Mention</p>
                       </div>
-                    </div>
+                    </GlowCard>
                   </MagneticButton>
                 </ScrollReveal>
-              </div>
 
-              {/* Stats Grid Overlay */}
-              <div className="grid grid-cols-3 gap-4 w-full max-w-lg mt-16 px-4">
-                {[
-                  { label: "CF Rating", value: liveStats.cfRating, suffix: "", color: "text-blue-500" },
-                  { label: "Solved", value: liveStats.cfSolved + liveStats.lcSolved, suffix: "+", color: "text-emerald-500" },
-                  { label: "Repos", value: liveStats.ghRepos, suffix: "", color: "text-purple-500" }
-                ].map((stat, i) => (
-                  <ScrollReveal key={stat.label} direction="up" delay={700 + (i * 100)}>
-                    <div className="glass-card p-4 text-center">
-                      <p className="text-[10px] font-black uppercase tracking-widest text-slate-500 mb-1">{stat.label}</p>
-                      <AnimatedCounter 
-                        target={stat.value} 
-                        suffix={stat.suffix} 
-                        className={`text-2xl font-black ${stat.color} font-display`} 
-                      />
-                    </div>
-                  </ScrollReveal>
-                ))}
+                {/* Status Badge */}
+                <div className="absolute top-10 -right-6 glass-card px-6 py-4 border-white/20 rotate-6 group-hover:rotate-0 transition-transform duration-700 shadow-xl">
+                  <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Current Rating</p>
+                  <p className="text-2xl font-black text-accent-500 font-display uppercase leading-none">{liveStats.cfRating} <span className="text-xs text-slate-300">CF</span></p>
+                </div>
               </div>
-            </div>
-          </ScrollReveal>
+            </ScrollReveal>
+          </div>
         </div>
       </section>
       </EditableSection>
