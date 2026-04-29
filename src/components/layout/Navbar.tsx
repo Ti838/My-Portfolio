@@ -96,42 +96,46 @@ export default function Navbar({ logoImage }: { logoImage?: string }) {
         />
 
         {/* Menu content */}
-        <nav className="relative z-10 flex flex-col items-center justify-center min-h-screen px-8 py-32">
-          <ul className="flex flex-col items-center gap-2">
+        <nav className="relative z-10 flex flex-col items-center justify-center min-h-screen px-6 py-24 overflow-y-auto">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 w-full max-w-5xl my-auto pb-10">
             {navLinks.map((link, i) => {
               const active = pathname === link.href;
+              // Make some cards span 2 columns for a bento box feel
+              const span = i === 0 || i === 7 ? "col-span-2 md:col-span-2" : "col-span-1";
+              
               return (
-                <li
+                <Link
                   key={link.href}
-                  className={`transition-all duration-500 ${
-                    open ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+                  href={link.href}
+                  onClick={() => setOpen(false)}
+                  style={{ transitionDelay: open ? `${i * 40}ms` : "0ms" }}
+                  className={`group relative flex flex-col justify-between p-8 rounded-[32px] border transition-all duration-500 overflow-hidden ${
+                    open ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+                  } ${span} ${
+                    active 
+                      ? "bg-[var(--text-primary)] border-[var(--text-primary)] text-[var(--surface)]" 
+                      : "bg-[var(--surface-secondary)]/80 backdrop-blur-md border-[var(--border)] text-[var(--text-secondary)] hover:border-[var(--accent)] hover:shadow-lg"
                   }`}
-                  style={{ transitionDelay: open ? `${i * 60}ms` : "0ms" }}
                 >
-                  <Link
-                    href={link.href}
-                    onClick={() => setOpen(false)}
-                    className={`group flex items-center gap-4 py-3 px-6 rounded-2xl transition-all duration-300 ${
-                      active
-                        ? "text-[var(--accent)]"
-                        : "text-[var(--text-muted)] hover:text-[var(--text-primary)]"
-                    }`}
-                  >
-                    <span className="font-display text-5xl sm:text-6xl lg:text-7xl leading-none">
-                      {link.label}
-                    </span>
+                  <div className="flex justify-between items-start mb-12">
+                    <span className="font-mono text-xs font-bold uppercase tracking-widest opacity-60">0{i + 1}</span>
                     <FiArrowUpRight
-                      size={24}
-                      className="opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300 text-[var(--accent)]"
+                      size={20}
+                      className={`transition-all duration-300 ${
+                        active ? "opacity-100" : "opacity-0 -translate-x-2 translate-y-2 group-hover:opacity-100 group-hover:translate-x-0 group-hover:translate-y-0 group-hover:text-[var(--accent)]"
+                      }`}
                     />
-                  </Link>
-                </li>
+                  </div>
+                  <span className={`font-mono font-bold text-2xl md:text-3xl tracking-tight ${active ? "" : "group-hover:text-[var(--text-primary)]"}`}>
+                    {link.label}
+                  </span>
+                </Link>
               );
             })}
-          </ul>
+          </div>
 
           {/* Footer in menu */}
-          <div className="absolute bottom-10 text-center">
+          <div className="mt-8 text-center">
             <p className="font-mono text-xs text-[var(--text-muted)] tracking-wider">
               © {new Date().getFullYear()} timon.dev
             </p>
