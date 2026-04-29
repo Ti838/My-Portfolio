@@ -321,7 +321,7 @@ export async function getSkills() {
   const { data: categories, error: ce } = await supabase.from("skill_categories").select("*").order("sort_order", { ascending: true });
   const { data: skills, error: se } = await supabase.from("skills").select("*").order("sort_order", { ascending: true });
   
-  if (ce || se || !categories) return staticSkillCategories;
+  if (ce || se || !categories || categories.length === 0) return staticSkillCategories;
 
   return categories.map(cat => ({
     ...cat,
