@@ -68,82 +68,138 @@ export default async function HomePage() {
         <Hero personalInfo={personalInfo} />
       </EditableSection>
 
-      {/* ── Developer Pulse — Multi-platform stats ──────────────────────────── */}
+      {/* ── Developer Pulse — Coding Identity ──────────────────────────── */}
       <EditableSection eventKey="stats" label="Developer Stats">
-        <section className="py-24 px-6 relative overflow-hidden">
-          {/* Subtle background glow */}
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-[var(--accent)]/5 blur-[120px] rounded-full pointer-events-none" />
+        <section className="py-24 px-6 relative overflow-hidden bg-[var(--surface-secondary)]/30">
+          <div className="absolute top-0 right-0 w-full h-full bg-[radial-gradient(circle_at_center,var(--accent-muted)_0%,transparent_70%)] opacity-[0.03] pointer-events-none" />
           
           <div className="max-w-6xl mx-auto relative z-10">
             <ScrollReveal direction="up">
               <div className="flex flex-col items-center text-center mb-16">
-                <span className="tag-pill mb-4">live stats</span>
-                <h2 className="text-3xl font-mono font-bold text-[var(--text-primary)]">Coding Identity</h2>
+                <span className="tag-pill mb-4 font-mono text-[10px] tracking-[0.2em] uppercase">verified metrics</span>
+                <h2 className="text-4xl md:text-5xl font-display font-bold text-[var(--text-primary)] mb-4">Coding Identity</h2>
+                <p className="text-[var(--text-muted)] max-w-xl text-sm">Real-time statistics and badges across major competitive programming and development platforms.</p>
               </div>
             </ScrollReveal>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-              {[
-                { 
-                  label: "Codeforces", 
-                  title: "CF Rating", 
-                  value: liveStats.cfRating, 
-                  icon: <FiCode className="text-blue-500" />,
-                  detail: `${liveStats.cfContests} Contests Played`,
-                  color: "from-blue-500/10 to-blue-500/5",
-                  border: "border-blue-500/20"
-                },
-                { 
-                  label: "LeetCode", 
-                  title: "Solved", 
-                  value: liveStats.lcSolved, 
-                  icon: <FiStar className="text-amber-500" />,
-                  detail: "Data Structures & Algorithms",
-                  color: "from-amber-500/10 to-amber-500/5",
-                  border: "border-amber-500/20"
-                },
-                { 
-                  label: "GitHub", 
-                  title: "Repositories", 
-                  value: liveStats.ghRepos, 
-                  icon: <FiGithub className="text-violet-500" />,
-                  detail: "Open Source Projects",
-                  color: "from-violet-500/10 to-violet-500/5",
-                  border: "border-violet-500/20"
-                },
-                { 
-                  label: "Overall", 
-                  title: "Total Solved", 
-                  value: liveStats.cfSolved + liveStats.lcSolved, 
-                  icon: <FiAward className="text-emerald-500" />,
-                  detail: "Across Platforms",
-                  color: "from-emerald-500/10 to-emerald-500/5",
-                  border: "border-emerald-500/20"
-                }
-              ].map((stat, i) => (
-                <ScrollReveal key={stat.label} direction="up" delay={i * 100}>
-                  <div className={`p-8 rounded-[32px] border ${stat.border} bg-gradient-to-br ${stat.color} backdrop-blur-sm h-full group hover:scale-[1.02] transition-all duration-500`}>
-                    <div className="flex items-center justify-between mb-8">
-                      <div className="p-3 rounded-2xl bg-[var(--surface)] shadow-sm text-xl">
-                        {stat.icon}
+            {/* Badges Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {/* GitHub Card - Featured */}
+              <ScrollReveal direction="up" delay={100} className="md:col-span-2 lg:col-span-1">
+                <GlowCard className="h-full group">
+                  <div className="p-6 h-full flex flex-col justify-between">
+                    <div className="flex items-center justify-between mb-6">
+                      <div className="flex items-center gap-3">
+                        <div className="w-12 h-12 rounded-2xl bg-slate-900 flex items-center justify-center text-white">
+                          <FiGithub size={24} />
+                        </div>
+                        <div>
+                          <h3 className="font-bold text-[var(--text-primary)]">GitHub</h3>
+                          <p className="text-[10px] text-[var(--text-muted)] uppercase tracking-widest">Open Source</p>
+                        </div>
                       </div>
-                      <span className="font-mono text-[10px] uppercase tracking-widest text-[var(--text-muted)] group-hover:text-[var(--text-primary)] transition-colors">
-                        {stat.label}
-                      </span>
+                      <span className="text-[var(--accent)]"><FiArrowUpRight size={20} /></span>
                     </div>
-                    <div className="mb-2">
-                      <AnimatedCounter
-                        target={stat.value}
-                        className="text-4xl font-bold font-mono text-[var(--text-primary)]"
+                    
+                    <div className="flex flex-col gap-4 mb-6">
+                      <Image 
+                        src={`https://github-readme-stats.vercel.app/api?username=${githubUser}&show_icons=true&theme=transparent&title_color=0070f3&text_color=888&icon_color=0070f3&hide_border=true`}
+                        alt="GitHub Stats"
+                        width={400}
+                        height={150}
+                        className="w-full opacity-80 group-hover:opacity-100 transition-opacity"
+                        unoptimized
+                      />
+                      <div className="flex flex-wrap gap-2">
+                        <img src={`https://img.shields.io/github/followers/${githubUser}?style=flat-square&logo=github&color=333`} alt="GitHub Followers" />
+                        <img src={`https://img.shields.io/github/stars/${githubUser}?style=flat-square&logo=github&color=333`} alt="GitHub Stars" />
+                      </div>
+                    </div>
+                  </div>
+                </GlowCard>
+              </ScrollReveal>
+
+              {/* Codeforces Card */}
+              <ScrollReveal direction="up" delay={200}>
+                <GlowCard className="h-full group">
+                  <div className="p-6 h-full flex flex-col justify-between">
+                    <div className="flex items-center justify-between mb-6">
+                      <div className="flex items-center gap-3">
+                        <div className="w-12 h-12 rounded-2xl bg-blue-500/10 flex items-center justify-center text-blue-500 font-bold">
+                          CF
+                        </div>
+                        <div>
+                          <h3 className="font-bold text-[var(--text-primary)]">Codeforces</h3>
+                          <p className="text-[10px] text-[var(--text-muted)] uppercase tracking-widest">Competitive</p>
+                        </div>
+                      </div>
+                      <span className="text-blue-500"><FiAward size={20} /></span>
+                    </div>
+                    
+                    <div className="space-y-4">
+                      <div className="flex items-center justify-between text-sm">
+                        <span className="text-[var(--text-muted)]">Max Rating</span>
+                        <span className="font-mono font-bold text-blue-500">{liveStats.cfRating}</span>
+                      </div>
+                      <div className="flex items-center justify-between text-sm">
+                        <span className="text-[var(--text-muted)]">Problems Solved</span>
+                        <span className="font-mono font-bold text-[var(--text-primary)]">{liveStats.cfSolved}+</span>
+                      </div>
+                      <img 
+                        src={`https://img.shields.io/badge/Codeforces-${codeforcesHandle}-blue?style=for-the-badge&logo=codeforces`} 
+                        alt="Codeforces Badge"
+                        className="w-full mt-4"
                       />
                     </div>
-                    <h3 className="font-mono text-xs font-bold text-[var(--text-secondary)] mb-4">{stat.title}</h3>
-                    <p className="font-mono text-[10px] text-[var(--text-muted)] opacity-60">
-                      {stat.detail}
-                    </p>
                   </div>
-                </ScrollReveal>
-              ))}
+                </GlowCard>
+              </ScrollReveal>
+
+              {/* LeetCode Card */}
+              <ScrollReveal direction="up" delay={300}>
+                <GlowCard className="h-full group">
+                  <div className="p-6 h-full flex flex-col justify-between">
+                    <div className="flex items-center justify-between mb-6">
+                      <div className="flex items-center gap-3">
+                        <div className="w-12 h-12 rounded-2xl bg-amber-500/10 flex items-center justify-center text-amber-500">
+                          <FiCode size={24} />
+                        </div>
+                        <div>
+                          <h3 className="font-bold text-[var(--text-primary)]">LeetCode</h3>
+                          <p className="text-[10px] text-[var(--text-muted)] uppercase tracking-widest">Algorithms</p>
+                        </div>
+                      </div>
+                      <span className="text-amber-500"><FiMonitor size={20} /></span>
+                    </div>
+                    
+                    <div className="space-y-4">
+                      <div className="flex items-center justify-between text-sm">
+                        <span className="text-[var(--text-muted)]">Solved</span>
+                        <span className="font-mono font-bold text-amber-500">{liveStats.lcSolved}</span>
+                      </div>
+                      <img 
+                        src={`https://img.shields.io/badge/LeetCode-${leetcodeUser}-orange?style=for-the-badge&logo=leetcode`} 
+                        alt="LeetCode Badge"
+                        className="w-full mt-4"
+                      />
+                    </div>
+                  </div>
+                </GlowCard>
+              </ScrollReveal>
+
+              {/* Toph & VJudge Badges */}
+              <ScrollReveal direction="up" delay={400} className="md:col-span-2 lg:col-span-3">
+                <div className="flex flex-wrap items-center justify-center gap-6 py-10 border-t border-[var(--border)] mt-8">
+                  <div className="flex items-center gap-4 px-8 py-4 rounded-2xl bg-[var(--surface)] border border-[var(--border)] hover:border-[var(--accent)] transition-all group">
+                    <span className="font-bold text-[var(--text-primary)]">Toph</span>
+                    <img src={`https://img.shields.io/badge/Toph-${personalInfo.stats?.toph_handle || "Timon"}-green?style=for-the-badge`} alt="Toph Badge" className="h-6" />
+                  </div>
+                  <div className="flex items-center gap-4 px-8 py-4 rounded-2xl bg-[var(--surface)] border border-[var(--border)] hover:border-red-500 transition-all group">
+                    <span className="font-bold text-[var(--text-primary)]">VJudge</span>
+                    <img src={`https://img.shields.io/badge/VJudge-${personalInfo.stats?.vjudge_handle || "Timon"}-red?style=for-the-badge`} alt="VJudge Badge" className="h-6" />
+                  </div>
+                </div>
+              </ScrollReveal>
             </div>
           </div>
         </section>
