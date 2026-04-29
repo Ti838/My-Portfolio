@@ -111,7 +111,7 @@ export default function Navbar({ logoImage }: { logoImage?: string }) {
                     open ? "opacity-100 translate-y-0" : "opacity-0 translate-y-12"
                   }`}
                 >
-                  <span className={`block font-display text-5xl md:text-6xl font-bold tracking-tight transition-all duration-300 ${
+                  <span className={`block font-display text-4xl sm:text-5xl md:text-7xl font-bold tracking-tight text-center transition-all duration-300 ${
                     active 
                       ? "text-[var(--accent)]" 
                       : "text-[var(--text-secondary)] group-hover:text-[var(--text-primary)] group-hover:scale-105"
