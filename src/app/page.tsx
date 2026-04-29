@@ -69,9 +69,32 @@ export default async function HomePage() {
           <div className="absolute bottom-1/3 right-1/4 w-64 h-64 bg-indigo-400/10 rounded-full blur-[80px] animate-float pointer-events-none" />
 
           <div className="relative z-10 flex flex-col items-center text-center px-6 py-32 max-w-4xl mx-auto">
+            {/* Professional Profile Image — PlantPot style */}
+            <ScrollReveal direction="down" delay={100}>
+              <div className="relative w-48 h-48 md:w-56 md:h-56 mb-12 group">
+                {/* Animated soft glow behind image */}
+                <div className="absolute inset-0 bg-[var(--accent)]/20 blur-3xl rounded-full scale-110 group-hover:bg-[var(--accent)]/30 transition-all duration-700 pointer-events-none" />
+                
+                <div className="relative w-full h-full rounded-[60px] overflow-hidden border-2 border-[var(--border)] shadow-2xl bg-[var(--surface-secondary)] group-hover:rounded-[40px] transition-all duration-700">
+                  <Image
+                    src="/profile.jpg"
+                    alt={personalInfo.name}
+                    fill
+                    className="object-cover group-hover:scale-110 transition-transform duration-700"
+                    priority
+                  />
+                </div>
+                
+                {/* Decorative floating element */}
+                <div className="absolute -bottom-4 -right-4 w-12 h-12 bg-[var(--surface)] border border-[var(--border)] rounded-2xl flex items-center justify-center shadow-lg animate-float text-[var(--accent)]">
+                  <FiStar size={20} fill="currentColor" />
+                </div>
+              </div>
+            </ScrollReveal>
+
             {/* Handwritten greeting */}
-            <ScrollReveal direction="up" delay={0}>
-              <p className="font-display text-3xl lg:text-4xl text-[var(--accent)] mb-4 mt-12">
+            <ScrollReveal direction="up" delay={200}>
+              <p className="font-display text-3xl lg:text-4xl text-[var(--accent)] mb-4">
                 Hello, I&apos;m
               </p>
             </ScrollReveal>
