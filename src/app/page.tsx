@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { FiArrowRight, FiDownload, FiGithub, FiLinkedin, FiCode, FiStar, FiMonitor, FiAward, FiMic, FiMessageCircle, FiTwitter, FiGlobe, FiLink, FiArrowUpRight } from "react-icons/fi";
+import { ArrowRight, Github, Linkedin, Code, Download, Star, Monitor, Award, Mic, MessageCircle, Twitter, Globe, Link as LinkIcon, ExternalLink } from "lucide-react";
 import { getPersonalInfo, getAchievements, getSkills, getProjects, getTechColor, getSocialLinks } from "@/data/portfolio";
 import EditableSection from "@/components/admin/EditableSection";
 import TypeWriter from "@/components/ui/TypeWriter";
@@ -105,7 +105,7 @@ export default async function HomePage() {
                 </div>
               </div>
             </div>
-                      <span className="text-[var(--accent)]"><FiArrowUpRight size={20} /></span>
+                      <span className="text-[var(--accent)]"><ExternalLink size={20} /></span>
                     </div>
                     
                     <div className="flex flex-col gap-4 mb-6">
@@ -140,7 +140,7 @@ export default async function HomePage() {
                           <p className="text-[10px] text-slate-500 uppercase tracking-widest">Competitive</p>
                         </div>
                       </div>
-                      <span className="text-blue-400"><FiAward size={20} /></span>
+                      <span className="text-blue-400"><Award size={20} /></span>
                     </div>
                     
                     <div className="space-y-4">
@@ -256,8 +256,8 @@ export default async function HomePage() {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               {skillCategories.map((cat: any, i: number) => {
                 const Icon = {
-                  FiCode, FiMonitor, FiAward, FiMic, FiTool: FiMonitor
-                }[cat.icon as string] || FiCode;
+                  Code, Monitor, Award, Mic, Tool: Monitor
+                }[cat.icon as string] || Code;
 
                 return (
                   <ScrollReveal key={cat.id || cat.category} delay={i * 100} direction="up">

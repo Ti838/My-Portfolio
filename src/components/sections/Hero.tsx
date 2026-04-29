@@ -3,7 +3,7 @@
 import { motion, useScroll, useTransform } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
-import { FiArrowRight, FiGithub, FiLinkedin, FiCode, FiDownload } from "react-icons/fi";
+import { ArrowRight, Github, Linkedin, Code, Download } from "lucide-react";
 import TypeWriter from "@/components/ui/TypeWriter";
 import ScrollReveal from "@/components/ui/ScrollReveal";
 import MagneticButton from "@/components/ui/MagneticButton";
@@ -62,7 +62,7 @@ export default function Hero({ personalInfo }: { personalInfo: any }) {
           <ScrollReveal delay={600} direction="up" className="flex flex-wrap items-center gap-6 pt-4">
             <MagneticButton>
               <Link href="#contact" className="btn-primary px-10 py-4 text-[10px] uppercase tracking-widest font-black shadow-[0_0_30px_rgba(var(--accent-rgb),0.3)]">
-                Get Started <FiArrowRight className="ml-2" />
+                Get Started <ArrowRight className="ml-2 w-4 h-4" />
               </Link>
             </MagneticButton>
             <MagneticButton>
@@ -72,10 +72,24 @@ export default function Hero({ personalInfo }: { personalInfo: any }) {
             </MagneticButton>
           </ScrollReveal>
 
-          <ScrollReveal delay={800} direction="up" className="flex items-center gap-8 pt-8 text-slate-500">
-            <a href="https://github.com/Ti838" target="_blank" rel="noopener noreferrer" className="hover:text-[var(--accent)] transition-all hover:scale-110"><FiGithub size={22} /></a>
-            <a href="https://linkedin.com/in/timon-biswas-83493a328/" target="_blank" rel="noopener noreferrer" className="hover:text-[var(--accent)] transition-all hover:scale-110"><FiLinkedin size={22} /></a>
-            <a href="mailto:timonbiswas33@gmail.com" className="hover:text-[var(--accent)] transition-all hover:scale-110"><FiCode size={22} /></a>
+          <ScrollReveal delay={800} direction="up" className="flex items-center gap-6 pt-8">
+            {[
+              { icon: Github, href: "https://github.com/Ti838" },
+              { icon: Linkedin, href: "https://linkedin.com/in/timon-biswas-83493a328/" },
+              { icon: Code, href: "mailto:timonbiswas33@gmail.com" }
+            ].map((social, idx) => (
+              <motion.a
+                key={idx}
+                href={social.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                whileHover={{ scale: 1.1, y: -5 }}
+                whileTap={{ scale: 0.9 }}
+                className="w-12 h-12 rounded-xl flex items-center justify-center glass-card border-white/10 text-[var(--text-secondary)] hover:text-[var(--accent)] hover:border-[var(--accent)]/50 transition-all shadow-xl"
+              >
+                <social.icon size={20} strokeWidth={1.5} />
+              </motion.a>
+            ))}
           </ScrollReveal>
         </motion.div>
 
