@@ -107,11 +107,11 @@ export default function Navbar({ logoImage }: { logoImage?: string }) {
                   href={link.href}
                   onClick={() => setOpen(false)}
                   style={{ transitionDelay: open ? `${i * 50}ms` : "0ms" }}
-                  className={`group relative overflow-hidden transition-all duration-700 ${
+                  className={`group relative transition-all duration-700 ${
                     open ? "opacity-100 translate-y-0" : "opacity-0 translate-y-12"
                   }`}
                 >
-                  <span className={`block font-display text-4xl sm:text-5xl md:text-7xl font-bold tracking-tight text-center transition-all duration-300 ${
+                  <span className={`block font-display text-4xl sm:text-5xl md:text-7xl font-bold tracking-tight text-center px-4 transition-all duration-300 ${
                     active 
                       ? "text-[var(--accent)]" 
                       : "text-[var(--text-secondary)] group-hover:text-[var(--text-primary)] group-hover:scale-105"
