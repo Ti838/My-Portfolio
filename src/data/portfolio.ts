@@ -38,7 +38,7 @@ const staticPersonalInfo = {
   location: "Dhaka, Bangladesh",
   email: "timonbiswas33@gmail.com",
   phone: "+8801779976858",
-  profileImage: "/images/profile.jpg",
+  profileImage: "/profile.jpg",
   logoImage: "/images/logo.png",
   university: "Shanto-Mariam University of Creative Technology",
   studentId: "241071015",

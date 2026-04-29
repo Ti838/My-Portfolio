@@ -1,14 +1,14 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { motion } from "framer-motion";
-import { ArrowRight, Github, Linkedin, Code, Download, Star, Monitor, Award, Mic, MessageCircle, Twitter, Globe, Link as LinkIcon, ExternalLink } from "lucide-react";
+
+import { ArrowRight, Code, Download, Star, Monitor, Award, Mic, MessageCircle, Globe, Link as LinkIcon, ExternalLink, ArrowUpRight } from "lucide-react";
+import { FiGithub, FiLinkedin, FiCode, FiExternalLink, FiAward, FiMonitor, FiMic, FiTwitter } from "react-icons/fi";
 import { getPersonalInfo, getAchievements, getSkills, getProjects, getTechColor, getSocialLinks } from "@/data/portfolio";
 import EditableSection from "@/components/admin/EditableSection";
 import TypeWriter from "@/components/ui/TypeWriter";
 import ScrollReveal from "@/components/ui/ScrollReveal";
 import GlowCard from "@/components/ui/GlowCard";
-import AnimatedCounter from "@/components/ui/AnimatedCounter";
 import MagneticButton from "@/components/ui/MagneticButton";
 import AwardsList from "@/components/sections/AwardsList";
 import Hero from "@/components/sections/Hero";
@@ -62,6 +62,8 @@ export default async function HomePage() {
     getSocialLinks()
   ]);
 
+  const icons: any = { Code, Monitor, Award, Mic, Tool: Monitor };
+
   return (
     <>
       {/* ── Hero — Parallax Background Layout ─────────────────────────── */}
@@ -90,21 +92,19 @@ export default async function HomePage() {
                 <GlowCard className="h-full group bg-white/5 border-white/10 backdrop-blur-md">
                   <div className="p-6 h-full flex flex-col justify-between">
                     <div className="flex items-center justify-between mb-6">
-            <div className="flex flex-col items-center justify-between mb-6">
-              <div className="flex items-center gap-4">
-                <div className="w-14 h-14 rounded-2xl bg-slate-900 flex items-center justify-center text-white border border-white/10 relative shadow-2xl">
-                  <img src="https://cdn.simpleicons.org/github/white" alt="GitHub" className="w-8 h-8" />
-                  <img src="https://img.shields.io/badge/PRO-black?style=flat-square&logo=github&logoColor=white&color=2ea44f" alt="Pro" className="absolute -bottom-2 -right-2 h-5 rounded-sm shadow-xl border border-white/20" />
-                </div>
-                <div>
-                  <div className="flex items-center gap-3">
-                    <h3 className="font-bold text-xl text-white">GitHub</h3>
-                    <img src="https://img.shields.io/badge/PRO-2ea44f?style=flat-square" alt="GitHub Pro" className="h-5 rounded-sm" />
-                  </div>
-                  <p className="text-[10px] text-slate-500 uppercase tracking-[0.2em] font-bold">Open Source Professional</p>
-                </div>
-              </div>
-            </div>
+                      <div className="flex items-center gap-4">
+                        <div className="w-14 h-14 rounded-2xl bg-slate-900 flex items-center justify-center text-white border border-white/10 relative shadow-2xl">
+                          <img src="https://cdn.simpleicons.org/github/white" alt="GitHub" className="w-8 h-8" />
+                          <img src="https://img.shields.io/badge/PRO-black?style=flat-square&logo=github&logoColor=white&color=2ea44f" alt="Pro" className="absolute -bottom-2 -right-2 h-5 rounded-sm shadow-xl border border-white/20" />
+                        </div>
+                        <div>
+                          <div className="flex items-center gap-3">
+                            <h3 className="font-bold text-xl text-white">GitHub</h3>
+                            <img src="https://img.shields.io/badge/PRO-2ea44f?style=flat-square" alt="GitHub Pro" className="h-5 rounded-sm" />
+                          </div>
+                          <p className="text-[10px] text-slate-500 uppercase tracking-[0.2em] font-bold">Open Source Professional</p>
+                        </div>
+                      </div>
                       <span className="text-[var(--accent)]"><ExternalLink size={20} /></span>
                     </div>
                     
@@ -176,7 +176,7 @@ export default async function HomePage() {
                           <p className="text-[10px] text-slate-500 uppercase tracking-widest">Algorithms</p>
                         </div>
                       </div>
-                      <span className="text-amber-500"><FiMonitor size={20} /></span>
+                      <span className="text-amber-500"><Monitor size={20} /></span>
                     </div>
                     
                     <div className="space-y-4">
@@ -223,9 +223,9 @@ export default async function HomePage() {
             </ScrollReveal>
             <div className="grid md:grid-cols-3 gap-8 mt-16">
               {[
-                { icon: <FiMonitor size={28} />, title: "Development", desc: "Crafting digital experiences with precision. Currently focusing on Jerry AI & Philomedis while mastering full-stack ecosystems." },
-                { icon: <FiCode size={28} />, title: "Problem Solving", desc: "Fueled by logic. ICPC Honorable Mention and active solver on Codeforces & LeetCode." },
-                { icon: <FiMic size={28} />, title: "Creative Arts", desc: "Passionate vocalist bringing soul to the stage. Merging creative expression with technical excellence." },
+                { icon: <Monitor size={28} />, title: "Development", desc: "Crafting digital experiences with precision. Currently focusing on Jerry AI & Philomedis while mastering full-stack ecosystems." },
+                { icon: <Code size={28} />, title: "Problem Solving", desc: "Fueled by logic. ICPC Honorable Mention and active solver on Codeforces & LeetCode." },
+                { icon: <Mic size={28} />, title: "Creative Arts", desc: "Passionate vocalist bringing soul to the stage. Merging creative expression with technical excellence." },
               ].map((item, i) => (
                 <ScrollReveal key={item.title} delay={i * 150} direction="up">
                   <GlowCard className="glass-card p-10 h-full flex flex-col group bg-white/5 border-white/10">
@@ -255,9 +255,7 @@ export default async function HomePage() {
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               {skillCategories.map((cat: any, i: number) => {
-                const Icon = {
-                  Code, Monitor, Award, Mic, Tool: Monitor
-                }[cat.icon as string] || Code;
+                const Icon = icons[cat.icon as string] || Code;
 
                 return (
                   <ScrollReveal key={cat.id || cat.category} delay={i * 100} direction="up">
@@ -277,11 +275,9 @@ export default async function HomePage() {
                               <span className="text-[var(--accent)]">{skill.level}%</span>
                             </div>
                             <div className="h-1 w-full bg-white/5 rounded-full overflow-hidden border border-white/5">
-                              <motion.div 
-                                initial={{ width: 0 }}
-                                whileInView={{ width: `${skill.level}%` }}
-                                transition={{ duration: 1.5, ease: "easeOut" }}
-                                className="h-full bg-gradient-to-r from-[var(--accent)] to-blue-500 shadow-[0_0_10px_rgba(59,130,246,0.5)]"
+                              <div 
+                                style={{ width: `${skill.level}%` }}
+                                className="h-full bg-gradient-to-r from-[var(--accent)] to-blue-500 shadow-[0_0_10px_rgba(59,130,246,0.5)] transition-all duration-1000"
                               />
                             </div>
                           </div>
@@ -307,13 +303,13 @@ export default async function HomePage() {
               </ScrollReveal>
               <ScrollReveal direction="right">
                 <Link href="/projects" className="btn-outline text-xs group">
-                  View all <FiArrowUpRight size={14} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                  View all <ArrowUpRight size={14} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
                 </Link>
               </ScrollReveal>
             </div>
 
             <div className="grid md:grid-cols-2 gap-8">
-              {projects.filter((p) => p.featured).map((p, i) => (
+              {projects.filter((p:any) => p.featured).map((p:any, i:number) => (
                 <ScrollReveal key={p.id} delay={i * 100} direction="up">
                   <GlowCard className="glass-card p-8 h-full flex flex-col group">
                     <div className="flex items-start justify-between gap-4 mb-6">
@@ -333,37 +329,11 @@ export default async function HomePage() {
                       )}
                       {p.liveUrl && (
                         <a href={p.liveUrl} target="_blank" rel="noopener noreferrer" className="font-mono text-xs text-[var(--text-muted)] hover:text-[var(--accent)] transition-colors flex items-center gap-1">
-                          <FiGlobe size={14} /> live
+                          <Globe size={14} /> live
                         </a>
                       )}
                     </div>
                   </GlowCard>
-                </ScrollReveal>
-              ))}
-            </div>
-          </div>
-        </section>
-      </EditableSection>
-
-      {/* ── Skills ──────────────────────────────────────────────────────────── */}
-      <EditableSection eventKey="skills" label="Skills Section">
-        <section id="skills" className="py-32 px-6">
-          <div className="max-w-5xl mx-auto">
-            <ScrollReveal className="mb-16">
-              <span className="tag-pill mb-4">mastery</span>
-              <h2 className="section-title">Tech Stack</h2>
-            </ScrollReveal>
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-              {skillCategories.map((cat, i) => (
-                <ScrollReveal key={cat.category} delay={i * 100} direction="up">
-                  <div className="glass-card p-8 h-full">
-                    <h3 className="font-mono font-bold text-sm text-[var(--text-primary)] mb-6 pb-4 border-b border-[var(--border)] uppercase tracking-wider">{cat.category}</h3>
-                    <div className="flex flex-wrap gap-2">
-                      {cat.skills.map((s: { name: string; level: number }) => (
-                        <span key={s.name} className="skill-pill">{s.name}</span>
-                      ))}
-                    </div>
-                  </div>
                 </ScrollReveal>
               ))}
             </div>
@@ -400,7 +370,7 @@ export default async function HomePage() {
             <ScrollReveal delay={400}>
               <MagneticButton>
                 <Link href="/contact" className="btn-primary">
-                  Start a conversation <FiArrowRight size={16} />
+                  Start a conversation <ArrowRight size={16} />
                 </Link>
               </MagneticButton>
             </ScrollReveal>

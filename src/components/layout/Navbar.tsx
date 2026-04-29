@@ -5,7 +5,7 @@ import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useTheme } from "next-themes";
 import { useAdmin } from "@/components/admin/AdminProvider";
-import { FiSun, FiMoon, FiMenu, FiX, FiArrowUpRight } from "react-icons/fi";
+import { Sun, Moon, Menu, X, ArrowUpRight } from "lucide-react";
 
 const navLinks = [
   { href: "/", label: "Home" },
@@ -67,7 +67,7 @@ export default function Navbar({ logoImage }: { logoImage?: string }) {
             className="w-11 h-11 rounded-2xl border border-[var(--border)] bg-[var(--surface-secondary)] flex items-center justify-center text-[var(--text-secondary)] hover:text-[var(--accent)] hover:border-[var(--accent)] transition-all duration-300"
             aria-label="Toggle Theme"
           >
-            {theme === "dark" ? <FiSun size={18} /> : <FiMoon size={18} />}
+            {theme === "dark" ? <Sun size={18} /> : <Moon size={18} />}
           </button>
 
           {/* Hamburger */}
@@ -76,7 +76,7 @@ export default function Navbar({ logoImage }: { logoImage?: string }) {
             className="w-11 h-11 rounded-2xl border border-[var(--border)] bg-[var(--surface-secondary)] flex items-center justify-center text-[var(--text-secondary)] hover:text-[var(--accent)] hover:border-[var(--accent)] transition-all duration-300"
             aria-label="Toggle Menu"
           >
-            {open ? <FiX size={20} /> : <FiMenu size={20} />}
+            {open ? <X size={20} /> : <Menu size={20} />}
           </button>
         </div>
       </header>

@@ -3,7 +3,8 @@
 import { motion, useScroll, useTransform } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, Github, Linkedin, Code, Download } from "lucide-react";
+import { ArrowRight, Code, Download } from "lucide-react";
+import { FiGithub, FiLinkedin, FiCode } from "react-icons/fi";
 import TypeWriter from "@/components/ui/TypeWriter";
 import ScrollReveal from "@/components/ui/ScrollReveal";
 import MagneticButton from "@/components/ui/MagneticButton";
@@ -74,9 +75,9 @@ export default function Hero({ personalInfo }: { personalInfo: any }) {
 
           <ScrollReveal delay={800} direction="up" className="flex items-center gap-6 pt-8">
             {[
-              { icon: Github, href: "https://github.com/Ti838" },
-              { icon: Linkedin, href: "https://linkedin.com/in/timon-biswas-83493a328/" },
-              { icon: Code, href: "mailto:timonbiswas33@gmail.com" }
+              { icon: FiGithub, href: "https://github.com/Ti838" },
+              { icon: FiLinkedin, href: "https://linkedin.com/in/timon-biswas-83493a328/" },
+              { icon: FiCode, href: "mailto:timonbiswas33@gmail.com" }
             ].map((social, idx) => (
               <motion.a
                 key={idx}
@@ -87,7 +88,7 @@ export default function Hero({ personalInfo }: { personalInfo: any }) {
                 whileTap={{ scale: 0.9 }}
                 className="w-12 h-12 rounded-xl flex items-center justify-center glass-card border-white/10 text-[var(--text-secondary)] hover:text-[var(--accent)] hover:border-[var(--accent)]/50 transition-all shadow-xl"
               >
-                <social.icon size={20} strokeWidth={1.5} />
+                <social.icon size={20} />
               </motion.a>
             ))}
           </ScrollReveal>
@@ -106,11 +107,12 @@ export default function Hero({ personalInfo }: { personalInfo: any }) {
           
           <div className="relative w-full h-full rounded-[40px] overflow-hidden shadow-2xl border border-white/10 bg-white/5 backdrop-blur-md group">
             <Image
-              src={personalInfo?.profileImage || "/profile.jpg"}
+              src={personalInfo?.profileImage && personalInfo.profileImage !== "" ? personalInfo.profileImage : "/profile.jpg"}
               alt={personalInfo?.name || "Profile"}
               fill
               className="object-cover object-center group-hover:scale-105 transition-transform duration-1000"
               priority
+              unoptimized
             />
             
             {/* Cinematic Gradient Overlay */}

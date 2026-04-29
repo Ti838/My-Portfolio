@@ -65,7 +65,7 @@ timon-biswas-portfolio/
 
 ## 🗄️ STEP 1 — Supabase Database Setup
 
-Go to **https://supabase.com** → New Project → Copy your URL and keys.
+Go to **<https://supabase.com>** → New Project → Copy your URL and keys.
 
 Then run this SQL in the **Supabase SQL Editor**:
 
@@ -122,7 +122,8 @@ CREATE POLICY "Service role write" ON blog_posts
 2. Click **New Bucket** → name it `resume` → set to **Private**
 3. Upload your PDF: `timon-biswas-cv.pdf` inside the `resume` bucket
 4. Note: the site now generates Resume/CV PDFs in-browser from your website data.
-  - The old static storage download endpoint `/api/resume` is retired.
+
+- The old static storage download endpoint `/api/resume` is retired.
 
 ---
 
@@ -141,7 +142,7 @@ The Admin dashboard will upload files into this bucket and store the returned pu
 
 ## 🔐 STEP 3 — Google Authenticator TOTP Setup
 
-### Generate your secret (do this ONCE):
+### Generate your secret (do this ONCE)
 
 ```bash
 node -e "
@@ -161,7 +162,8 @@ console.log('otpauth:', r.otpauth_url);
    - `base32` — copy this to `TOTP_SECRET` in your `.env.local`
    - `qr_code_data_url` — paste in browser to see QR code, scan with Google Authenticator
 
-### Add to Google Authenticator:
+### Add to Google Authenticator
+
 - Open **Google Authenticator** app → tap **+** → **Scan a QR code** (or Enter Setup Key)
 - Enter the base32 key manually if scanning doesn't work
 - You'll see "Timon Portfolio" appear with a 6-digit rotating code
@@ -236,6 +238,7 @@ vercel --prod
 ### Option B: GitHub + Vercel Dashboard
 
 1. Push your project to GitHub:
+
    ```bash
    git init
    git add .
@@ -243,12 +246,14 @@ vercel --prod
    git remote add origin https://github.com/Ti838/portfolio.git
    git push -u origin main
    ```
-2. Go to **https://vercel.com** → **New Project** → Import your GitHub repo
+
+2. Go to **<https://vercel.com>** → **New Project** → Import your GitHub repo
 3. Framework preset: **Next.js** (auto-detected)
 4. Add **all environment variables** from Step 4 in the Vercel dashboard
 5. Click **Deploy**
 
-### Vercel Environment Variables to Add:
+### Vercel Environment Variables to Add
+
 | Key | Value |
 |-----|-------|
 | `NEXT_PUBLIC_SUPABASE_URL` | Your Supabase project URL |
@@ -273,6 +278,7 @@ Open `src/data/portfolio.ts` and update:
 - [ ] `achievements` — add new certificates (put image in `public/images/`)
 
 Other files to update:
+
 - [ ] `public/images/profile.jpg` — replace with your latest photo anytime
 - [ ] `public/images/logo.png` — your custom logo
 - [ ] `src/app/layout.tsx` — update `NEXT_PUBLIC_SITE_URL` after deploying
@@ -288,7 +294,7 @@ Other files to update:
    - `title`: `My First Blog Post`
    - `excerpt`: Short 1–2 sentence summary
    - `content`: Write in **Markdown**
-   - `content_html`: Paste rendered HTML (use https://markdowntohtml.com/)
+   - `content_html`: Paste rendered HTML (use <https://markdowntohtml.com/>)
    - `tags`: `["C++", "Competitive Programming"]`
    - `reading_time`: estimated minutes
    - `published`: `true`
