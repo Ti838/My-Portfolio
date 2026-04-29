@@ -5,7 +5,7 @@ export default function SplineScene() {
   return (
     <div className="w-full h-full min-h-[400px] sm:min-h-[600px] flex items-center justify-center relative cursor-pointer">
       <Spline 
-        scene="https://prod.spline.design/StoREztEF8FI0TvjPAjXo8Mr/scene.splinecode" 
+        scene="https://prod.spline.design/31HP6oZKpT96998E/scene.splinecode" 
         className="w-full h-full drop-shadow-2xl"
       />
       
