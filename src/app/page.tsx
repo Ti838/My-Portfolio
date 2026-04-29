@@ -71,15 +71,15 @@ export default async function HomePage() {
 
       {/* ── Developer Pulse — Coding Identity ──────────────────────────── */}
       <EditableSection eventKey="stats" label="Developer Stats">
-        <section className="py-24 px-6 relative overflow-hidden bg-[var(--surface-secondary)]/30">
-          <div className="absolute top-0 right-0 w-full h-full bg-[radial-gradient(circle_at_center,var(--accent-muted)_0%,transparent_70%)] opacity-[0.03] pointer-events-none" />
+        <section className="py-24 px-6 relative overflow-hidden bg-transparent">
+          <div className="absolute top-0 right-0 w-full h-full bg-[radial-gradient(circle_at_center,var(--accent-muted)_0%,transparent_70%)] opacity-[0.05] pointer-events-none" />
           
           <div className="max-w-6xl mx-auto relative z-10">
             <ScrollReveal direction="up">
               <div className="flex flex-col items-center text-center mb-16">
-                <span className="tag-pill mb-4 font-mono text-[10px] tracking-[0.2em] uppercase">verified metrics</span>
-                <h2 className="text-4xl md:text-5xl font-display font-bold text-[var(--text-primary)] mb-4">Coding Identity</h2>
-                <p className="text-[var(--text-muted)] max-w-xl text-sm">Real-time statistics and badges across major competitive programming and development platforms.</p>
+                <span className="tag-pill mb-4 font-mono text-[10px] tracking-[0.2em] uppercase border-white/10 bg-white/5 backdrop-blur-md">verified metrics</span>
+                <h2 className="text-4xl md:text-5xl font-display font-bold text-white mb-4">Coding Identity</h2>
+                <p className="text-slate-400 max-w-xl text-sm">Real-time statistics and badges across major competitive programming and development platforms.</p>
               </div>
             </ScrollReveal>
 
@@ -87,16 +87,16 @@ export default async function HomePage() {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {/* GitHub Card - Featured */}
               <ScrollReveal direction="up" delay={100} className="md:col-span-2 lg:col-span-1">
-                <GlowCard className="h-full group">
+                <GlowCard className="h-full group bg-white/5 border-white/10 backdrop-blur-md">
                   <div className="p-6 h-full flex flex-col justify-between">
                     <div className="flex items-center justify-between mb-6">
                       <div className="flex items-center gap-3">
-                        <div className="w-12 h-12 rounded-2xl bg-slate-900 flex items-center justify-center text-white">
+                        <div className="w-12 h-12 rounded-2xl bg-slate-900 flex items-center justify-center text-white border border-white/10">
                           <FiGithub size={24} />
                         </div>
                         <div>
-                          <h3 className="font-bold text-[var(--text-primary)]">GitHub</h3>
-                          <p className="text-[10px] text-[var(--text-muted)] uppercase tracking-widest">Open Source</p>
+                          <h3 className="font-bold text-white">GitHub</h3>
+                          <p className="text-[10px] text-slate-500 uppercase tracking-widest">Open Source</p>
                         </div>
                       </div>
                       <span className="text-[var(--accent)]"><FiArrowUpRight size={20} /></span>
@@ -104,7 +104,7 @@ export default async function HomePage() {
                     
                     <div className="flex flex-col gap-4 mb-6">
                       <Image 
-                        src={`https://github-readme-stats.vercel.app/api?username=${githubUser}&show_icons=true&theme=transparent&title_color=0070f3&text_color=888&icon_color=0070f3&hide_border=true`}
+                        src={`https://github-readme-stats.vercel.app/api?username=${githubUser}&show_icons=true&theme=transparent&title_color=3b82f6&text_color=94a3b8&icon_color=3b82f6&hide_border=true`}
                         alt="GitHub Stats"
                         width={400}
                         height={150}
@@ -122,16 +122,16 @@ export default async function HomePage() {
 
               {/* Codeforces Card */}
               <ScrollReveal direction="up" delay={200}>
-                <GlowCard className="h-full group">
+                <GlowCard className="h-full group bg-white/5 border-white/10 backdrop-blur-md">
                   <div className="p-6 h-full flex flex-col justify-between">
                     <div className="flex items-center justify-between mb-6">
                       <div className="flex items-center gap-3">
-                        <div className="w-12 h-12 rounded-2xl bg-blue-500/10 flex items-center justify-center text-blue-500 font-bold">
+                        <div className="w-12 h-12 rounded-2xl bg-blue-500/10 flex items-center justify-center text-blue-500 font-bold border border-blue-500/20">
                           CF
                         </div>
                         <div>
-                          <h3 className="font-bold text-[var(--text-primary)]">Codeforces</h3>
-                          <p className="text-[10px] text-[var(--text-muted)] uppercase tracking-widest">Competitive</p>
+                          <h3 className="font-bold text-white">Codeforces</h3>
+                          <p className="text-[10px] text-slate-500 uppercase tracking-widest">Competitive</p>
                         </div>
                       </div>
                       <span className="text-blue-500"><FiAward size={20} /></span>
@@ -139,12 +139,12 @@ export default async function HomePage() {
                     
                     <div className="space-y-4">
                       <div className="flex items-center justify-between text-sm">
-                        <span className="text-[var(--text-muted)]">Max Rating</span>
+                        <span className="text-slate-400">Max Rating</span>
                         <span className="font-mono font-bold text-blue-500">{liveStats.cfRating}</span>
                       </div>
                       <div className="flex items-center justify-between text-sm">
-                        <span className="text-[var(--text-muted)]">Problems Solved</span>
-                        <span className="font-mono font-bold text-[var(--text-primary)]">{liveStats.cfSolved}+</span>
+                        <span className="text-slate-400">Problems Solved</span>
+                        <span className="font-mono font-bold text-white">{liveStats.cfSolved}+</span>
                       </div>
                       <img 
                         src={`https://img.shields.io/badge/Codeforces-${codeforcesHandle}-blue?style=for-the-badge&logo=codeforces`} 
@@ -158,16 +158,16 @@ export default async function HomePage() {
 
               {/* LeetCode Card */}
               <ScrollReveal direction="up" delay={300}>
-                <GlowCard className="h-full group">
+                <GlowCard className="h-full group bg-white/5 border-white/10 backdrop-blur-md">
                   <div className="p-6 h-full flex flex-col justify-between">
                     <div className="flex items-center justify-between mb-6">
                       <div className="flex items-center gap-3">
-                        <div className="w-12 h-12 rounded-2xl bg-amber-500/10 flex items-center justify-center text-amber-500">
+                        <div className="w-12 h-12 rounded-2xl bg-amber-500/10 flex items-center justify-center text-amber-500 border border-amber-500/20">
                           <FiCode size={24} />
                         </div>
                         <div>
-                          <h3 className="font-bold text-[var(--text-primary)]">LeetCode</h3>
-                          <p className="text-[10px] text-[var(--text-muted)] uppercase tracking-widest">Algorithms</p>
+                          <h3 className="font-bold text-white">LeetCode</h3>
+                          <p className="text-[10px] text-slate-500 uppercase tracking-widest">Algorithms</p>
                         </div>
                       </div>
                       <span className="text-amber-500"><FiMonitor size={20} /></span>
@@ -175,7 +175,7 @@ export default async function HomePage() {
                     
                     <div className="space-y-4">
                       <div className="flex items-center justify-between text-sm">
-                        <span className="text-[var(--text-muted)]">Solved</span>
+                        <span className="text-slate-400">Solved</span>
                         <span className="font-mono font-bold text-amber-500">{liveStats.lcSolved}</span>
                       </div>
                       <img 
@@ -190,13 +190,13 @@ export default async function HomePage() {
 
               {/* Toph & VJudge Badges */}
               <ScrollReveal direction="up" delay={400} className="md:col-span-2 lg:col-span-3">
-                <div className="flex flex-wrap items-center justify-center gap-6 py-10 border-t border-[var(--border)] mt-8">
-                  <div className="flex items-center gap-4 px-8 py-4 rounded-2xl bg-[var(--surface)] border border-[var(--border)] hover:border-[var(--accent)] transition-all group">
-                    <span className="font-bold text-[var(--text-primary)]">Toph</span>
+                <div className="flex flex-wrap items-center justify-center gap-6 py-10 border-t border-white/5 mt-8">
+                  <div className="flex items-center gap-4 px-8 py-4 rounded-2xl bg-white/5 border border-white/10 hover:border-[var(--accent)] transition-all group backdrop-blur-md">
+                    <span className="font-bold text-white">Toph</span>
                     <img src={`https://img.shields.io/badge/Toph-${personalInfo.stats?.toph_handle || "Timon"}-green?style=for-the-badge`} alt="Toph Badge" className="h-6" />
                   </div>
-                  <div className="flex items-center gap-4 px-8 py-4 rounded-2xl bg-[var(--surface)] border border-[var(--border)] hover:border-red-500 transition-all group">
-                    <span className="font-bold text-[var(--text-primary)]">VJudge</span>
+                  <div className="flex items-center gap-4 px-8 py-4 rounded-2xl bg-white/5 border border-white/10 hover:border-red-500 transition-all group backdrop-blur-md">
+                    <span className="font-bold text-white">VJudge</span>
                     <img src={`https://img.shields.io/badge/VJudge-${personalInfo.stats?.vjudge_handle || "Timon"}-red?style=for-the-badge`} alt="VJudge Badge" className="h-6" />
                   </div>
                 </div>
@@ -208,10 +208,10 @@ export default async function HomePage() {
 
       {/* ── Quick About ──────────────────────────────────────────────────── */}
       <EditableSection eventKey="bio" label="Quick About">
-        <section className="py-24 px-6">
+        <section className="py-24 px-6 bg-transparent">
           <div className="max-w-5xl mx-auto">
             <ScrollReveal>
-              <h2 className="section-title mb-4 text-center md:text-left">What I do</h2>
+              <h2 className="section-title mb-4 text-center md:text-left text-white">What I do</h2>
             </ScrollReveal>
             <div className="grid md:grid-cols-3 gap-8 mt-16">
               {[
@@ -220,12 +220,12 @@ export default async function HomePage() {
                 { icon: <FiMic size={28} />, title: "Creative Arts", desc: "Passionate vocalist bringing soul to the stage. Merging creative expression with technical excellence." },
               ].map((item, i) => (
                 <ScrollReveal key={item.title} delay={i * 150} direction="up">
-                  <GlowCard className="glass-card p-10 h-full flex flex-col group">
-                    <div className="mb-6 w-14 h-14 rounded-2xl bg-[var(--surface-secondary)] border border-[var(--border)] flex items-center justify-center text-[var(--accent)] group-hover:scale-110 transition-transform duration-500">
+                  <GlowCard className="glass-card p-10 h-full flex flex-col group bg-white/5 border-white/10">
+                    <div className="mb-6 w-14 h-14 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-[var(--accent)] group-hover:scale-110 transition-transform duration-500">
                       {item.icon}
                     </div>
-                    <h3 className="font-mono font-bold text-lg text-[var(--text-primary)] mb-3">{item.title}</h3>
-                    <p className="text-sm text-[var(--text-secondary)] leading-relaxed">{item.desc}</p>
+                    <h3 className="font-mono font-bold text-lg text-white mb-3">{item.title}</h3>
+                    <p className="text-sm text-slate-400 leading-relaxed">{item.desc}</p>
                   </GlowCard>
                 </ScrollReveal>
               ))}
@@ -236,12 +236,12 @@ export default async function HomePage() {
 
       {/* ── Tech Stack / Skills ─────────────────────────────────────────── */}
       <EditableSection eventKey="skills" label="Tech Stack">
-        <section className="py-24 px-6 relative bg-[var(--surface-secondary)]/20">
+        <section className="py-24 px-6 relative bg-transparent">
           <div className="max-w-6xl mx-auto">
             <div className="flex flex-col items-center text-center mb-20">
               <ScrollReveal direction="up">
-                <span className="tag-pill mb-4 uppercase tracking-[0.3em] text-[10px]">expertize</span>
-                <h2 className="text-4xl font-display font-bold text-[var(--text-primary)]">Tech Stack</h2>
+                <span className="tag-pill mb-4 uppercase tracking-[0.3em] text-[10px] border-white/10 bg-white/5 backdrop-blur-md">expertize</span>
+                <h2 className="text-4xl font-display font-bold text-white">Tech Stack</h2>
               </ScrollReveal>
             </div>
 
@@ -253,27 +253,27 @@ export default async function HomePage() {
 
                 return (
                   <ScrollReveal key={cat.id || cat.category} delay={i * 100} direction="up">
-                    <div className="p-8 rounded-[32px] border border-[var(--border)] bg-[var(--surface)] hover:border-[var(--accent)] transition-all duration-500 h-full group">
+                    <div className="p-8 rounded-[32px] border border-white/10 bg-white/5 backdrop-blur-md hover:border-[var(--accent)] transition-all duration-500 h-full group">
                       <div className="flex items-center gap-4 mb-8">
-                        <div className="w-12 h-12 rounded-2xl bg-[var(--accent)]/10 flex items-center justify-center text-[var(--accent)] group-hover:bg-[var(--accent)] group-hover:text-white transition-all duration-500">
+                        <div className="w-12 h-12 rounded-2xl bg-[var(--accent)]/10 flex items-center justify-center text-[var(--accent)] group-hover:bg-[var(--accent)] group-hover:text-white transition-all duration-500 border border-[var(--accent)]/20">
                           <Icon size={20} />
                         </div>
-                        <h3 className="font-bold text-sm text-[var(--text-primary)] uppercase tracking-widest">{cat.category}</h3>
+                        <h3 className="font-bold text-sm text-white uppercase tracking-widest">{cat.category}</h3>
                       </div>
 
                       <div className="space-y-6">
                         {cat.skills.map((skill: any) => (
                           <div key={skill.id || skill.name} className="space-y-2">
                             <div className="flex justify-between text-xs font-mono">
-                              <span className="text-[var(--text-secondary)]">{skill.name}</span>
+                              <span className="text-slate-400">{skill.name}</span>
                               <span className="text-[var(--accent)]">{skill.level}%</span>
                             </div>
-                            <div className="h-1 w-full bg-[var(--border)] rounded-full overflow-hidden">
+                            <div className="h-1 w-full bg-white/5 rounded-full overflow-hidden border border-white/5">
                               <motion.div 
                                 initial={{ width: 0 }}
                                 whileInView={{ width: `${skill.level}%` }}
                                 transition={{ duration: 1.5, ease: "easeOut" }}
-                                className="h-full bg-gradient-to-r from-[var(--accent)] to-blue-500"
+                                className="h-full bg-gradient-to-r from-[var(--accent)] to-blue-500 shadow-[0_0_10px_rgba(59,130,246,0.5)]"
                               />
                             </div>
                           </div>
@@ -290,12 +290,12 @@ export default async function HomePage() {
 
       {/* ── Featured Projects ─────────────────────────────────────────────── */}
       <EditableSection eventKey="projects" label="Projects Section">
-        <section id="projects" className="py-32 px-6 bg-[var(--surface-secondary)]">
+        <section id="projects" className="py-32 px-6 bg-transparent">
           <div className="max-w-5xl mx-auto">
             <div className="flex flex-col md:flex-row items-start md:items-end justify-between mb-16 gap-6">
               <ScrollReveal direction="left">
-                <span className="tag-pill mb-4">selected work</span>
-                <h2 className="section-title">Projects</h2>
+                <span className="tag-pill mb-4 border-white/10 bg-white/5 backdrop-blur-md text-slate-400">selected work</span>
+                <h2 className="section-title text-white">Projects</h2>
               </ScrollReveal>
               <ScrollReveal direction="right">
                 <Link href="/projects" className="btn-outline text-xs group">

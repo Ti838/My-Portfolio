@@ -49,6 +49,9 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
+import SmoothScroll from "@/components/ui/SmoothScroll";
+import CinematicBackground from "@/components/ui/CinematicBackground";
+
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const [personalInfo, projects, achievements, experiences, education, skillData, socialLinks] = await Promise.all([
     getPersonalInfo(),
@@ -76,27 +79,31 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           }}
         />
       </head>
-      <body suppressHydrationWarning className="noise-bg antialiased selection:bg-accent-500/20">
-        <ThemeProvider attribute="class" defaultTheme="light" enableSystem={false}>
+      <body suppressHydrationWarning className="antialiased selection:bg-accent-500/20 bg-[#020617]">
+        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false}>
           <AdminProvider>
-
-            <HeaderStack personalInfo={personalInfo} />
-            <AdminModalsRenderer 
-              personalInfo={personalInfo} 
-              projects={projects} 
-              achievements={achievements} 
-              experiences={experiences}
-              education={education}
-              skills={skillData.flatMap((c:any) => c.skills)}
-              skillCategories={skillData}
-              socialLinks={socialLinks}
-            />
-            <main className="min-h-screen relative">{children}</main>
-            <Footer socialLinks={socialLinks} tagline={personalInfo?.tagline} />
+            <SmoothScroll>
+              <CinematicBackground />
+              <div className="relative z-10">
+                <HeaderStack personalInfo={personalInfo} />
+                <AdminModalsRenderer 
+                  personalInfo={personalInfo} 
+                  projects={projects} 
+                  achievements={achievements} 
+                  experiences={experiences}
+                  education={education}
+                  skills={skillData.flatMap((c:any) => c.skills)}
+                  skillCategories={skillData}
+                  socialLinks={socialLinks}
+                />
+                <main className="min-h-screen">{children}</main>
+                <Footer socialLinks={socialLinks} tagline={personalInfo?.tagline} />
+              </div>
+            </SmoothScroll>
             <Toaster
               position="bottom-right"
               toastOptions={{
-                style: { borderRadius: "16px", fontFamily: "'Inter', sans-serif" },
+                style: { borderRadius: "16px", background: "#0f172a", color: "#fff", border: "1px solid #1e293b" },
               }}
             />
           </AdminProvider>

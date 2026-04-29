@@ -7,6 +7,7 @@
 /* ── Design Tokens (Your Blue + PlantPot Layout) ──────────────────────────── */
 :root {
   --accent: #3b82f6;
+  --accent-rgb: 59, 130, 246;
   --accent-light: #60a5fa;
   --accent-dark: #1d4ed8;
   --accent-glow: rgba(59, 130, 246, 0.3);
@@ -27,7 +28,6 @@
   --glass-bg: rgba(250, 249, 247, 0.75);
   --glass-border: rgba(224, 219, 211, 0.5);
 
-  /* PlantPot-style mesh gradient — using blues */
   --mesh-1: #dbeafe;
   --mesh-2: #f5f0ea;
   --mesh-3: #e0e7ff;
@@ -35,23 +35,23 @@
 }
 
 .dark {
-  --surface: #0a0a0a;
-  --surface-secondary: #111111;
-  --surface-tertiary: #1a1a1a;
-  --border: #222222;
-  --text-primary: #f0ede8;
-  --text-secondary: #8a8a8a;
-  --text-muted: #4a4a4a;
-  --shadow-sm: 0 2px 8px rgba(0,0,0,0.3);
-  --shadow-md: 0 8px 32px rgba(0,0,0,0.4);
-  --shadow-lg: 0 16px 48px rgba(0,0,0,0.5);
-  --glass-bg: rgba(17, 17, 17, 0.8);
-  --glass-border: rgba(34, 34, 34, 0.6);
+  --surface: #020617;
+  --surface-secondary: #0f172a;
+  --surface-tertiary: #1e293b;
+  --border: #1e293b;
+  --text-primary: #f8fafc;
+  --text-secondary: #94a3b8;
+  --text-muted: #475569;
+  --shadow-sm: 0 2px 8px rgba(0,0,0,0.5);
+  --shadow-md: 0 8px 32px rgba(0,0,0,0.6);
+  --shadow-lg: 0 16px 48px rgba(0,0,0,0.8);
+  --glass-bg: rgba(15, 23, 42, 0.8);
+  --glass-border: rgba(30, 41, 59, 0.5);
 
-  --mesh-1: #0c1929;
-  --mesh-2: #111111;
-  --mesh-3: #0f0f20;
-  --mesh-4: #0a130e;
+  --mesh-1: #020617;
+  --mesh-2: #0f172a;
+  --mesh-3: #1e1b4b;
+  --mesh-4: #020617;
 }
 
 /* ── Base ──────────────────────────────────────────────────────────────────── */
