@@ -1,5 +1,6 @@
 "use client";
 
+import React, { useState } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
@@ -10,6 +11,10 @@ import ScrollReveal from "@/components/ui/ScrollReveal";
 import MagneticButton from "@/components/ui/MagneticButton";
 
 export default function Hero({ personalInfo }: { personalInfo: any }) {
+  const [imgSrc, setImgSrc] = useState(
+    personalInfo?.profileImage?.trim() ? personalInfo.profileImage : "/profile.jpg"
+  );
+  
   const { scrollY } = useScroll();
   
   // High-precision parallax
@@ -107,12 +112,13 @@ export default function Hero({ personalInfo }: { personalInfo: any }) {
           
           <div className="relative w-full h-full rounded-[40px] overflow-hidden shadow-2xl border border-[var(--border)] bg-[var(--surface-secondary)] backdrop-blur-md group">
             <Image
-              src={personalInfo?.profileImage && personalInfo.profileImage !== "" ? personalInfo.profileImage : "/profile.jpg"}
+              src={imgSrc}
               alt={personalInfo?.name || "Profile"}
               fill
               className="object-cover object-center group-hover:scale-105 transition-transform duration-1000"
               priority
               unoptimized
+              onError={() => setImgSrc("/profile.jpg")}
             />
             
             {/* Cinematic Gradient Overlay */}

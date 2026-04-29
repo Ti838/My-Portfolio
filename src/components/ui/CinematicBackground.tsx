@@ -97,7 +97,7 @@ export default function CinematicBackground() {
   }, []);
 
   return (
-    <div className="fixed inset-0 z-0 bg-[#020617] overflow-hidden">
+    <div className="fixed inset-0 z-0 bg-[var(--surface)] overflow-hidden">
       {/* ── Base Layer: Abstract Video Background ────────────────────── */}
       <motion.div 
         style={{ y, scale, opacity }}
@@ -114,8 +114,8 @@ export default function CinematicBackground() {
         </video>
         
         {/* Overlay Gradients for Depth */}
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#020617]/50 to-[#020617]" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,transparent,rgba(2,6,23,0.8))]" />
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[var(--surface)]/50 to-[var(--surface)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,transparent,var(--surface))]" />
       </motion.div>
 
       {/* ── Mid Layer: Particle Canvas ──────────────────────────────── */}
