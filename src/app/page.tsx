@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
+import { motion } from "framer-motion";
 import { FiArrowRight, FiDownload, FiGithub, FiLinkedin, FiCode, FiStar, FiMonitor, FiAward, FiMic, FiMessageCircle, FiTwitter, FiGlobe, FiLink, FiArrowUpRight } from "react-icons/fi";
 import { getPersonalInfo, getAchievements, getSkills, getProjects, getTechColor, getSocialLinks } from "@/data/portfolio";
 import EditableSection from "@/components/admin/EditableSection";
@@ -207,10 +208,10 @@ export default async function HomePage() {
 
       {/* ── Quick About ──────────────────────────────────────────────────── */}
       <EditableSection eventKey="bio" label="Quick About">
-        <section className="py-32 px-6">
+        <section className="py-24 px-6">
           <div className="max-w-5xl mx-auto">
             <ScrollReveal>
-              <h2 className="section-title mb-4">What I do</h2>
+              <h2 className="section-title mb-4 text-center md:text-left">What I do</h2>
             </ScrollReveal>
             <div className="grid md:grid-cols-3 gap-8 mt-16">
               {[
@@ -228,6 +229,60 @@ export default async function HomePage() {
                   </GlowCard>
                 </ScrollReveal>
               ))}
+            </div>
+          </div>
+        </section>
+      </EditableSection>
+
+      {/* ── Tech Stack / Skills ─────────────────────────────────────────── */}
+      <EditableSection eventKey="skills" label="Tech Stack">
+        <section className="py-24 px-6 relative bg-[var(--surface-secondary)]/20">
+          <div className="max-w-6xl mx-auto">
+            <div className="flex flex-col items-center text-center mb-20">
+              <ScrollReveal direction="up">
+                <span className="tag-pill mb-4 uppercase tracking-[0.3em] text-[10px]">expertize</span>
+                <h2 className="text-4xl font-display font-bold text-[var(--text-primary)]">Tech Stack</h2>
+              </ScrollReveal>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              {skillCategories.map((cat: any, i: number) => {
+                const Icon = {
+                  FiCode, FiMonitor, FiAward, FiMusic, FiTool: FiMonitor
+                }[cat.icon as string] || FiCode;
+
+                return (
+                  <ScrollReveal key={cat.id || cat.category} delay={i * 100} direction="up">
+                    <div className="p-8 rounded-[32px] border border-[var(--border)] bg-[var(--surface)] hover:border-[var(--accent)] transition-all duration-500 h-full group">
+                      <div className="flex items-center gap-4 mb-8">
+                        <div className="w-12 h-12 rounded-2xl bg-[var(--accent)]/10 flex items-center justify-center text-[var(--accent)] group-hover:bg-[var(--accent)] group-hover:text-white transition-all duration-500">
+                          <Icon size={20} />
+                        </div>
+                        <h3 className="font-bold text-sm text-[var(--text-primary)] uppercase tracking-widest">{cat.category}</h3>
+                      </div>
+
+                      <div className="space-y-6">
+                        {cat.skills.map((skill: any) => (
+                          <div key={skill.id || skill.name} className="space-y-2">
+                            <div className="flex justify-between text-xs font-mono">
+                              <span className="text-[var(--text-secondary)]">{skill.name}</span>
+                              <span className="text-[var(--accent)]">{skill.level}%</span>
+                            </div>
+                            <div className="h-1 w-full bg-[var(--border)] rounded-full overflow-hidden">
+                              <motion.div 
+                                initial={{ width: 0 }}
+                                whileInView={{ width: `${skill.level}%` }}
+                                transition={{ duration: 1.5, ease: "easeOut" }}
+                                className="h-full bg-gradient-to-r from-[var(--accent)] to-blue-500"
+                              />
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </ScrollReveal>
+                );
+              })}
             </div>
           </div>
         </section>
