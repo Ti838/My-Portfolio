@@ -1,5 +1,5 @@
+// REFINED
 import type { Metadata } from "next";
-import { ThemeProvider } from "next-themes";
 import "./globals.css";
 import Footer from "@/components/layout/Footer";
 import { Toaster } from "react-hot-toast";
@@ -49,9 +49,6 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-import SmoothScroll from "@/components/ui/SmoothScroll";
-import CinematicBackground from "@/components/ui/CinematicBackground";
-
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const [personalInfo, projects, achievements, experiences, education, skillData, socialLinks] = await Promise.all([
     getPersonalInfo(),
@@ -64,50 +61,46 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   ]);
 
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" className="dark" suppressHydrationWarning>
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link
-          href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;500;600;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Sora:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"
           rel="stylesheet"
         />
-      {/* Blocking theme script - prevents FOUC/flicker on load */}
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `(function(){try{var t=localStorage.getItem('theme');if(t==='dark'){document.documentElement.classList.add('dark');}}catch(e){}})();`,
-          }}
-        />
       </head>
-      <body suppressHydrationWarning className="antialiased selection:bg-accent-500/20" style={{ background: 'var(--surface)' }}>
-        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false}>
-          <AdminProvider>
-            <SmoothScroll>
-              <CinematicBackground />
-              <div className="relative z-10">
-                <HeaderStack personalInfo={personalInfo} />
-                <AdminModalsRenderer 
-                  personalInfo={personalInfo} 
-                  projects={projects} 
-                  achievements={achievements} 
-                  experiences={experiences}
-                  education={education}
-                  skills={skillData.flatMap((c:any) => c.skills)}
-                  skillCategories={skillData}
-                  socialLinks={socialLinks}
-                />
-                <main className="min-h-screen">{children}</main>
-                <Footer socialLinks={socialLinks} tagline={personalInfo?.tagline} />
-              </div>
-            </SmoothScroll>
-            <Toaster
-              position="bottom-right"
-              toastOptions={{
-                style: { borderRadius: "16px", background: "#0f172a", color: "#fff", border: "1px solid #1e293b" },
-              }}
+      <body suppressHydrationWarning className="antialiased" style={{ background: '#0a0a0a', color: '#f0ece4' }}>
+        <AdminProvider>
+          <div className="relative z-10">
+            <HeaderStack personalInfo={personalInfo} />
+            <AdminModalsRenderer 
+              personalInfo={personalInfo} 
+              projects={projects} 
+              achievements={achievements} 
+              experiences={experiences}
+              education={education}
+              skills={skillData.flatMap((c:any) => c.skills)}
+              skillCategories={skillData}
+              socialLinks={socialLinks}
             />
-          </AdminProvider>
-        </ThemeProvider>
+            <main className="min-h-screen">{children}</main>
+            <Footer socialLinks={socialLinks} tagline={personalInfo?.tagline} />
+          </div>
+          <Toaster
+            position="bottom-right"
+            toastOptions={{
+              style: { 
+                borderRadius: "12px", 
+                background: "#111111", 
+                color: "#f0ece4", 
+                border: "1px solid #222222",
+                fontFamily: "'Sora', sans-serif",
+                fontSize: "0.875rem",
+              },
+            }}
+          />
+        </AdminProvider>
       </body>
     </html>
   );

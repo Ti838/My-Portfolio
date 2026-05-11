@@ -176,7 +176,10 @@ export async function getAllAdminData() {
       projects: [],
       achievements: [],
       experiences: [],
-      education: []
+      education: [],
+      skills: [],
+      skillCategories: [],
+      socialLinks: []
     };
   }
   

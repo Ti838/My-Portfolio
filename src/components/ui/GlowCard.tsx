@@ -1,3 +1,4 @@
+// REFINED
 "use client";
 import { useRef, useState, type ReactNode, type CSSProperties } from "react";
 
@@ -12,7 +13,7 @@ interface GlowCardProps {
 export default function GlowCard({
   children,
   className = "",
-  glowColor = "rgba(59, 130, 246, 0.15)",
+  glowColor = "rgba(232, 160, 32, 0.12)",
   style,
   onClick,
 }: GlowCardProps) {
@@ -39,7 +40,6 @@ export default function GlowCard({
       onClick={onClick}
       style={style}
     >
-      {/* Glow effect */}
       <div
         className="absolute pointer-events-none transition-opacity duration-500"
         style={{
@@ -52,7 +52,6 @@ export default function GlowCard({
           opacity: isHovering ? 1 : 0,
         }}
       />
-      {/* Content */}
       <div className="relative z-10">{children}</div>
     </div>
   );

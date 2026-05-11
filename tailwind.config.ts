@@ -1,3 +1,4 @@
+// REFINED
 import type { Config } from "tailwindcss";
 
 const config: Config = {
@@ -10,22 +11,22 @@ const config: Config = {
   theme: {
     extend: {
       fontFamily: {
-        sans: ["'Inter'", "system-ui", "sans-serif"],
-        mono: ["'Space Mono'", "'JetBrains Mono'", "monospace"],
-        display: ["'Caveat'", "cursive"],
+        display: ["'Cormorant Garamond'", "serif"],
+        sans: ["'Sora'", "system-ui", "sans-serif"],
+        mono: ["'JetBrains Mono'", "monospace"],
       },
       colors: {
-        accent: {
-          50:  "#eff6ff",
-          100: "#dbeafe",
-          200: "#bfdbfe",
-          300: "#93c5fd",
-          400: "#60a5fa",
-          500: "#3b82f6",
-          600: "#2563eb",
-          700: "#1d4ed8",
-          800: "#1e40af",
-          900: "#1e3a8a",
+        craft: {
+          bg: "#0a0a0a",
+          surface: "#111111",
+          elevated: "#1a1a1a",
+          border: "#222222",
+          "border-hi": "#333333",
+          "text-1": "#f0ece4",
+          "text-2": "#8a8580",
+          "text-3": "#4a4845",
+          accent: "#e8a020",
+          "accent-hover": "#f5b535",
         },
       },
       animation: {
@@ -33,6 +34,9 @@ const config: Config = {
         "fade-in": "fadeIn 0.4s ease forwards",
         "slide-right": "slideRight 0.5s ease forwards",
         "pulse-slow": "pulse 3s cubic-bezier(0.4,0,0.6,1) infinite",
+        "bounce-chevron": "bounceChevron 2s ease-in-out infinite",
+        "marquee": "marquee 40s linear infinite",
+        "spin-slow": "rotateGlow 20s linear infinite",
       },
       keyframes: {
         fadeUp: {
@@ -46,6 +50,18 @@ const config: Config = {
         slideRight: {
           "0%": { opacity: "0", transform: "translateX(-20px)" },
           "100%": { opacity: "1", transform: "translateX(0)" },
+        },
+        bounceChevron: {
+          "0%, 100%": { transform: "translateY(0)" },
+          "50%": { transform: "translateY(8px)" },
+        },
+        marquee: {
+          from: { transform: "translateX(0)" },
+          to: { transform: "translateX(-50%)" },
+        },
+        rotateGlow: {
+          "0%": { transform: "rotate(0deg)" },
+          "100%": { transform: "rotate(360deg)" },
         },
       },
     },
