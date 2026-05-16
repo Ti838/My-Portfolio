@@ -1,0 +1,19 @@
+<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="64" height="64" rx="16" fill="#030303"/>
+  <rect x="4" y="4" width="56" height="56" rx="13" fill="url(#bg)"/>
+  <path d="M13 17H38V24H29.5V48H22.5V24H13V17Z" fill="#F8FAFC"/>
+  <path d="M36 17H46C51.5 17 55 20.2 55 25C55 28.1 53.2 30.5 50.5 31.7C53.9 32.8 56 35.6 56 39.3C56 44.4 52 48 46 48H36V17ZM43 29H45.5C47.2 29 48.4 27.9 48.4 26.2C48.4 24.5 47.2 23.5 45.5 23.5H43V29ZM43 41.5H46.2C48.1 41.5 49.4 40.3 49.4 38.5C49.4 36.7 48.1 35.5 46.2 35.5H43V41.5Z" fill="url(#accent)"/>
+  <circle cx="52" cy="12" r="3" fill="#22D3EE"/>
+  <defs>
+    <radialGradient id="bg" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(51 12) rotate(135) scale(58)">
+      <stop stop-color="#0E7490" stop-opacity="0.65"/>
+      <stop offset="0.5" stop-color="#111827"/>
+      <stop offset="1" stop-color="#030303"/>
+    </radialGradient>
+    <linearGradient id="accent" x1="36" y1="17" x2="55" y2="48" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#22D3EE"/>
+      <stop offset="0.52" stop-color="#818CF8"/>
+      <stop offset="1" stop-color="#10B981"/>
+    </linearGradient>
+  </defs>
+</svg>

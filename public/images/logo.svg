@@ -1,0 +1,32 @@
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Timon Biswas monogram">
+  <rect width="512" height="512" rx="112" fill="#030303"/>
+  <rect x="24" y="24" width="464" height="464" rx="92" fill="url(#paint0_radial)"/>
+  <rect x="44" y="44" width="424" height="424" rx="76" stroke="url(#paint1_linear)" stroke-width="2"/>
+  <path d="M127 139H307V190H244V373H190V190H127V139Z" fill="#F8FAFC"/>
+  <path d="M276 139H355C397.526 139 426 164.49 426 201.5C426 225.892 413.262 244.649 391.972 254.417C418.247 263.178 434 283.784 434 312.5C434 350.861 404.299 373 359 373H276V139ZM329 234H350C364.241 234 373 225.944 373 212.5C373 199.286 364.241 191 350 191H329V234ZM329 321H356C371.745 321 381 312.444 381 298C381 283.786 371.745 275 356 275H329V321Z" fill="url(#paint2_linear)"/>
+  <path d="M98 395H414" stroke="url(#paint3_linear)" stroke-width="10" stroke-linecap="round"/>
+  <circle cx="412" cy="106" r="16" fill="#22D3EE"/>
+  <circle cx="412" cy="106" r="32" stroke="#22D3EE" stroke-opacity="0.18" stroke-width="2"/>
+  <defs>
+    <radialGradient id="paint0_radial" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(406 118) rotate(134.322) scale(408.829)">
+      <stop stop-color="#0E7490" stop-opacity="0.55"/>
+      <stop offset="0.48" stop-color="#111827" stop-opacity="0.7"/>
+      <stop offset="1" stop-color="#030303"/>
+    </radialGradient>
+    <linearGradient id="paint1_linear" x1="89" y1="66" x2="449" y2="451" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#22D3EE" stop-opacity="0.85"/>
+      <stop offset="0.48" stop-color="#6366F1" stop-opacity="0.42"/>
+      <stop offset="1" stop-color="#10B981" stop-opacity="0.72"/>
+    </linearGradient>
+    <linearGradient id="paint2_linear" x1="276" y1="138" x2="421" y2="372" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#22D3EE"/>
+      <stop offset="0.52" stop-color="#818CF8"/>
+      <stop offset="1" stop-color="#10B981"/>
+    </linearGradient>
+    <linearGradient id="paint3_linear" x1="98" y1="395" x2="414" y2="395" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#10B981" stop-opacity="0"/>
+      <stop offset="0.5" stop-color="#22D3EE"/>
+      <stop offset="1" stop-color="#6366F1" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+</svg>

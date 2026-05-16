@@ -323,3 +323,13 @@ Other files to update:
 | Resume download fails | Ensure file is uploaded to the `resume` bucket in Supabase Storage as `timon-biswas-cv.pdf` |
 | Build fails on Vercel | Run `npm run build` locally first to catch TypeScript errors |
 | Blog posts not showing | Make sure `published = true` and `published_at` is set in Supabase |
+# Current Design Setup Notes
+
+- Main logo: `public/images/logo.svg`
+- Main favicon: `public/favicon.svg`
+- Theme provider: `src/components/providers/ThemeProvider.tsx`
+- Theme toggle: `src/components/ui/ThemeToggle.tsx`
+- Public 3D command hero shell: `src/components/sections/Hero.tsx`
+- Real 3D scene: `src/components/sections/PortfolioScene3D.tsx`
+- 3D dependencies: `three`, `@react-three/fiber`, `@react-three/drei`
+- Editable home copy lives in `personal_info.stats.siteCopy`

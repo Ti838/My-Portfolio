@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { updatePersonalInfo, updateProject, deleteProject, createProject, uploadAdminAsset } from "@/lib/admin-actions";
 import { 
   FiUser, FiMail, FiPhone, FiMapPin, FiBriefcase, 
-  FiSave, FiPlus, FiTrash2, FiLoader, FiCheckCircle, FiAlertCircle
+  FiSave, FiPlus, FiTrash2, FiLoader, FiCheckCircle, FiAlertCircle, FiEdit3
 } from "react-icons/fi";
 import { toast } from "react-hot-toast";
 
@@ -11,6 +11,20 @@ export default function SiteEditor({ initialData }: { initialData: any }) {
   const [personalInfo, setPersonalInfo] = useState(initialData.personalInfo);
   const [projects, setProjects] = useState(initialData.projects);
   const [loading, setLoading] = useState(false);
+  const siteCopy = personalInfo.stats?.siteCopy || {};
+
+  const updateSiteCopy = (key: string, value: string) => {
+    setPersonalInfo({
+      ...personalInfo,
+      stats: {
+        ...personalInfo.stats,
+        siteCopy: {
+          ...siteCopy,
+          [key]: value,
+        },
+      },
+    });
+  };
 
   const uploadImage = async (file: File, folder: string) => {
     const bytes = await file.arrayBuffer();
@@ -181,6 +195,60 @@ export default function SiteEditor({ initialData }: { initialData: any }) {
                className="w-full p-4 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-sm min-h-[120px] focus:ring-2 focus:ring-accent-500 outline-none"
             />
           </div>
+        </div>
+      </section>
+
+      {/* Editable Home Copy */}
+      <section className="space-y-6">
+        <div className="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-4">
+          <h2 className="text-xl font-bold flex items-center gap-2">
+            <FiEdit3 className="text-accent-500" /> Home Page Text
+          </h2>
+          <button
+            onClick={savePersonalInfo}
+            disabled={loading}
+            className="btn-primary py-2 text-sm"
+          >
+            {loading ? <FiLoader className="animate-spin" /> : <FiSave />} Save Text
+          </button>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <Input label="Hero Eyebrow" value={siteCopy.heroEyebrow || ""} onChange={(v) => updateSiteCopy("heroEyebrow", v)} />
+          <Input label="Hero Panel Subtitle" value={siteCopy.heroPanelSubtitle || ""} onChange={(v) => updateSiteCopy("heroPanelSubtitle", v)} />
+          <Input label="Hero Panel Title" value={siteCopy.heroPanelTitle || ""} onChange={(v) => updateSiteCopy("heroPanelTitle", v)} />
+          <Input label="About Label" value={siteCopy.aboutLabel || ""} onChange={(v) => updateSiteCopy("aboutLabel", v)} />
+          <Input label="About Title" value={siteCopy.aboutTitle || ""} onChange={(v) => updateSiteCopy("aboutTitle", v)} />
+          <Input label="Skills Label" value={siteCopy.skillsLabel || ""} onChange={(v) => updateSiteCopy("skillsLabel", v)} />
+          <Input label="Skills Title" value={siteCopy.skillsTitle || ""} onChange={(v) => updateSiteCopy("skillsTitle", v)} />
+          <Input label="Projects Label" value={siteCopy.projectsLabel || ""} onChange={(v) => updateSiteCopy("projectsLabel", v)} />
+          <Input label="Projects Title" value={siteCopy.projectsTitle || ""} onChange={(v) => updateSiteCopy("projectsTitle", v)} />
+          <Input label="Experience Label" value={siteCopy.experienceLabel || ""} onChange={(v) => updateSiteCopy("experienceLabel", v)} />
+          <Input label="Experience Title" value={siteCopy.experienceTitle || ""} onChange={(v) => updateSiteCopy("experienceTitle", v)} />
+          <Input label="Education Label" value={siteCopy.educationLabel || ""} onChange={(v) => updateSiteCopy("educationLabel", v)} />
+          <Input label="Education Title" value={siteCopy.educationTitle || ""} onChange={(v) => updateSiteCopy("educationTitle", v)} />
+          <Input label="Achievements Label" value={siteCopy.achievementsLabel || ""} onChange={(v) => updateSiteCopy("achievementsLabel", v)} />
+          <Input label="Achievements Title" value={siteCopy.achievementsTitle || ""} onChange={(v) => updateSiteCopy("achievementsTitle", v)} />
+          <Input label="Contact Label" value={siteCopy.contactLabel || ""} onChange={(v) => updateSiteCopy("contactLabel", v)} />
+          <Input label="Contact Title" value={siteCopy.contactTitle || ""} onChange={(v) => updateSiteCopy("contactTitle", v)} />
+        </div>
+
+        <div className="space-y-2">
+          <label className="block text-xs font-bold text-slate-400 uppercase">Hero Summary</label>
+          <textarea
+            value={siteCopy.heroSummary || ""}
+            onChange={(e) => updateSiteCopy("heroSummary", e.target.value)}
+            className="w-full p-4 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-sm min-h-[96px] focus:ring-2 focus:ring-accent-500 outline-none"
+          />
+        </div>
+
+        <div className="space-y-2">
+          <label className="block text-xs font-bold text-slate-400 uppercase">Contact Summary</label>
+          <textarea
+            value={siteCopy.contactSummary || ""}
+            onChange={(e) => updateSiteCopy("contactSummary", e.target.value)}
+            className="w-full p-4 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-sm min-h-[96px] focus:ring-2 focus:ring-accent-500 outline-none"
+          />
         </div>
       </section>
 

@@ -4,7 +4,8 @@ import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useAdmin } from "@/components/admin/AdminProvider";
-import { Menu, X, ChevronDown } from "lucide-react";
+import { Menu, X } from "lucide-react";
+import ThemeToggle from "@/components/ui/ThemeToggle";
 
 const navLinks = [
   { href: "#hero", label: "Home" },
@@ -24,169 +25,105 @@ export default function Navbar({ logoImage }: { logoImage?: string }) {
   const [open, setOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("hero");
 
-  // Track scroll for navbar shrink
   useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 100);
-    };
-    window.addEventListener("scroll", handleScroll, { passive: true });
+    const handleScroll = () => setScrolled(window.scrollY > 50);
+    window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Track active section via IntersectionObserver
   useEffect(() => {
     if (pathname !== "/") return;
-    
-    const sections = navLinks
-      .map(l => l.href.replace("#", ""))
-      .map(id => document.getElementById(id))
-      .filter(Boolean) as HTMLElement[];
-
-    if (sections.length === 0) return;
-
+    const sections = navLinks.map(l => document.getElementById(l.href.replace("#", ""))).filter(Boolean) as HTMLElement[];
     const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setActiveSection(entry.target.id);
-          }
-        });
-      },
+      (entries) => entries.forEach(entry => entry.isIntersecting && setActiveSection(entry.target.id)),
       { threshold: 0.3, rootMargin: "-80px 0px -40% 0px" }
     );
-
-    sections.forEach((el) => observer.observe(el));
+    sections.forEach(el => observer.observe(el));
     return () => observer.disconnect();
   }, [pathname]);
-
-  // Lock body scroll when menu is open
-  useEffect(() => {
-    document.body.style.overflow = open ? "hidden" : "";
-    return () => { document.body.style.overflow = ""; };
-  }, [open]);
 
   const handleNavClick = useCallback((href: string) => {
     setOpen(false);
     if (pathname === "/") {
-      const el = document.getElementById(href.replace("#", ""));
-      if (el) {
-        el.scrollIntoView({ behavior: "smooth" });
-      }
+      document.getElementById(href.replace("#", ""))?.scrollIntoView({ behavior: "smooth" });
     }
   }, [pathname]);
 
   return (
     <>
-      {/* Fixed Navbar */}
-      <header
-        className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 ${
-          scrolled
-            ? "py-3 bg-[var(--bg-primary)]/90 backdrop-blur-md border-b border-[var(--border)] shadow-[0_1px_20px_rgba(0,0,0,0.5)]"
-            : "py-6 bg-transparent border-b border-transparent"
-        }`}
-      >
-        <div className="max-w-[1200px] mx-auto px-6 flex items-center justify-between">
+      <header className={`fixed top-0 left-0 w-full z-50 transition-all duration-700 ${scrolled ? 'py-4' : 'py-8'}`}>
+        <div className="max-w-[1400px] mx-auto px-6 flex items-center justify-between">
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-1 group">
-            <span className="font-display text-2xl font-bold">
-              <span className="text-[var(--accent)]">T</span>
-              <span className="text-[var(--text-primary)] group-hover:text-[var(--text-secondary)] transition-colors">imon</span>
+          <Link href="/" className="relative z-50 group flex items-center gap-3">
+            <span className="flex h-11 w-11 items-center justify-center rounded-2xl border border-white/10 bg-black/30 p-1.5 shadow-[0_18px_40px_rgba(0,0,0,0.24)] backdrop-blur-xl">
+              <img src={logoImage || "/images/logo.svg"} alt="Timon Biswas logo" className="h-full w-full rounded-xl object-contain" />
+            </span>
+            <span className="hidden font-display text-sm font-semibold uppercase tracking-[0.22em] text-text-1 sm:block">
+              Timon<span className="text-accent">.</span>
             </span>
           </Link>
 
-          {/* Desktop Nav Links */}
-          <nav className="hidden md:flex items-center gap-8">
+          {/* Center Nav - Floating Dock style when scrolled */}
+          <nav className={`hidden md:flex items-center gap-1 p-1 transition-all duration-700 ${
+            scrolled 
+              ? 'glass border border-white/5 rounded-full px-2 py-1 shadow-2xl scale-95 translate-y-2' 
+              : 'bg-transparent'
+          }`}>
             {navLinks.map((link) => {
-              const sectionId = link.href.replace("#", "");
-              const isActive = activeSection === sectionId;
-              
+              const isActive = activeSection === link.href.replace("#", "");
               return (
                 <button
                   key={link.href}
                   onClick={() => handleNavClick(link.href)}
-                  className={`relative font-sans text-sm tracking-wide transition-colors duration-200 bg-transparent border-none cursor-pointer ${
-                    isActive
-                      ? "text-[var(--accent)] font-medium"
-                      : "text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
+                  className={`px-4 py-1.5 rounded-full text-[11px] font-mono uppercase tracking-[0.2em] transition-all duration-500 ${
+                    isActive 
+                      ? 'text-accent bg-white/[0.05]' 
+                      : 'text-text-2 hover:text-text-1'
                   }`}
-                  style={{ fontVariant: "small-caps" }}
                 >
                   {link.label}
-                  {/* Active indicator dot */}
-                  {isActive && (
-                    <span className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-[var(--accent)]" />
-                  )}
                 </button>
               );
             })}
           </nav>
 
-          {/* Right Controls */}
-          <div className="flex items-center gap-3">
+          {/* Right side */}
+          <div className="flex items-center gap-4 relative z-50">
+            <ThemeToggle compact />
+
             {isAdmin && (
-              <Link
-                href="/admin/dashboard"
-                className="hidden md:flex items-center gap-2 text-xs font-mono text-[var(--accent)] hover:text-[var(--accent-hover)] transition-colors"
-              >
-                Dashboard
+              <Link href="/admin/dashboard" className="hidden lg:block text-[10px] font-mono text-accent uppercase tracking-widest hover:opacity-70 transition-opacity">
+                Admin
               </Link>
             )}
-
-            {/* Mobile Hamburger */}
+            
+            {/* Mobile Toggle */}
             <button
               onClick={() => setOpen(!open)}
-              className="md:hidden w-10 h-10 rounded-xl border border-[var(--border)] bg-[var(--bg-secondary)] flex items-center justify-center text-[var(--text-secondary)] hover:text-[var(--accent)] hover:border-[var(--accent)] transition-all"
-              aria-label="Toggle Menu"
+              className="md:hidden w-10 h-10 flex items-center justify-center rounded-full glass border border-white/10 text-text-1"
             >
-              {open ? <X size={18} /> : <Menu size={18} />}
+              {open ? <X size={20} /> : <Menu size={20} />}
             </button>
           </div>
         </div>
       </header>
 
-      {/* Mobile Full-Screen Overlay Menu */}
-      <div
-        className={`fixed inset-0 z-40 transition-all duration-500 md:hidden ${
-          open ? "opacity-100 visible" : "opacity-0 invisible pointer-events-none"
-        }`}
-      >
-        <div
-          className="absolute inset-0 bg-[var(--bg-primary)]/95 backdrop-blur-xl"
-          onClick={() => setOpen(false)}
-        />
-
-        <nav className="relative z-10 w-full h-full flex flex-col items-center justify-center px-6 gap-2">
-          {navLinks.map((link, i) => {
-            const sectionId = link.href.replace("#", "");
-            const isActive = activeSection === sectionId;
-
-            return (
-              <button
-                key={link.href}
-                onClick={() => handleNavClick(link.href)}
-                style={{ transitionDelay: open ? `${i * 60}ms` : "0ms" }}
-                className={`bg-transparent border-none cursor-pointer transition-all duration-500 ${
-                  open ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-                }`}
-              >
-                <span
-                  className={`block font-display text-4xl font-bold tracking-tight transition-colors duration-200 ${
-                    isActive
-                      ? "text-[var(--accent)]"
-                      : "text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
-                  }`}
-                >
-                  {link.label}
-                </span>
-              </button>
-            );
-          })}
-
-          <div className="mt-8">
-            <p className="font-mono text-xs text-[var(--text-tertiary)] tracking-wider">
-              © {new Date().getFullYear()} timon.dev
-            </p>
-          </div>
+      {/* Mobile Menu Overlay */}
+      <div className={`fixed inset-0 z-[45] md:hidden transition-all duration-700 ${open ? 'opacity-100 visible' : 'opacity-0 invisible'}`}>
+        <div className="absolute inset-0 bg-bg-primary/95 backdrop-blur-2xl" />
+        <nav className="relative h-full flex flex-col items-center justify-center gap-8 px-6">
+          {navLinks.map((link, i) => (
+            <button
+              key={link.href}
+              onClick={() => handleNavClick(link.href)}
+              className={`text-4xl font-display font-bold tracking-tight text-text-1 hover:text-accent transition-all duration-500 ${
+                open ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'
+              }`}
+              style={{ transitionDelay: `${i * 100}ms` }}
+            >
+              {link.label}
+            </button>
+          ))}
         </nav>
       </div>
     </>

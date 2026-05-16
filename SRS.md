@@ -126,3 +126,12 @@ It is written to match the current implemented product (no demo features).
 - `/admin/download` allows unlock with only TOTP and enables preview/edit/download.
 - Resume/CV downloads reflect the latest website DB content.
 - Tools do not advertise non-working conversions.
+# Current Product Direction
+
+The portfolio now follows an **Interactive 3D Command Portfolio** direction:
+
+- Public homepage uses a premium mouse-reactive 3D command hero.
+- Brand assets are SVG-first: `/images/logo.svg` and `/favicon.svg`.
+- Theme support includes dark, light, and system.
+- Admin must keep expanding toward full-site CMS editing, including every public text and image.
+- Admin UI should stay practical and dashboard-oriented; 3D belongs on the public side only.

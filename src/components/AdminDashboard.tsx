@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import ResumeBuilder from "@/components/ResumeBuilder";
 import SiteEditor from "@/components/SiteEditor";
 import { FiEdit3, FiFileText, FiLogOut } from "react-icons/fi";
+import ThemeToggle from "@/components/ui/ThemeToggle";
 
 export default function AdminDashboard({ initialData }: { initialData: any }) {
   const [activeTab, setActiveTab] = useState<"resume" | "site">("site");
@@ -72,6 +73,7 @@ export default function AdminDashboard({ initialData }: { initialData: any }) {
             {activeTab === "site" ? "Content Management" : "Resume Generation Engine"}
           </h2>
           <div className="flex items-center gap-3">
+            <ThemeToggle />
             <div className="px-3 py-1 rounded-full bg-green-500/10 text-green-500 text-[10px] font-bold flex items-center gap-1.5">
               <div className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></div>
               System Live

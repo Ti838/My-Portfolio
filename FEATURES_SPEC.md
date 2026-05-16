@@ -4,6 +4,13 @@ This document lists what the site can **actually** do (no demos / no placeholder
 
 ## Public Site
 
+### Design System
+- Premium SVG logo: `/images/logo.svg`
+- SVG favicon: `/favicon.svg` with PNG fallback
+- Theme modes: dark, light, and system
+- Homepage hero: real 3D command portfolio scene using Three.js, React Three Fiber, Drei, and Framer Motion
+- Editable home page copy is stored in `personal_info.stats.siteCopy`
+
 ### Pages
 - Home (`/`)
 - About (`/about`)
@@ -34,6 +41,7 @@ This document lists what the site can **actually** do (no demos / no placeholder
 - Guard: requires valid `admin_session`
 - Capabilities:
   - Edit Personal Info (hero/about, images, quick facts, announcement, etc.)
+  - Edit Home Page Text (hero copy, section labels, section titles, contact copy)
   - CRUD Projects (create/update/delete + image upload)
   - CRUD Achievements (create/update/delete + image upload)
   - CRUD Experience / Education / Skills
