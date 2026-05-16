@@ -16,16 +16,22 @@ const isUrlValid = (url: string | undefined) => {
 // Client-side Supabase client (uses anon key)
 export const supabase = isUrlValid(supabaseUrl) && supabaseAnonKey
   ? createClient(supabaseUrl!, supabaseAnonKey)
-  : (null as any); // Fallback to null; components should handle null or use catch-blocks
+  : (null as any);
 
 // Server-side admin client (uses service role key — never expose to browser)
 export function createAdminClient() {
   const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
-  if (!isUrlValid(supabaseUrl) || !serviceRoleKey) {
-    // Return a dummy client or throw a more descriptive error that can be caught
-    // Instead of throwing, we can return null and handle it in the fetchers
+  
+  if (!isUrlValid(supabaseUrl)) {
+    console.warn("[SUPABASE] Invalid or missing NEXT_PUBLIC_SUPABASE_URL.");
     return null;
   }
+  
+  if (!serviceRoleKey) {
+    console.warn("[SUPABASE] Missing SUPABASE_SERVICE_ROLE_KEY.");
+    return null;
+  }
+
   return createClient(supabaseUrl!, serviceRoleKey, {
     auth: { autoRefreshToken: false, persistSession: false },
   });

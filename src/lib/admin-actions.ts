@@ -264,7 +264,7 @@ export async function updateProject(id: string, data: any) {
       draftData.projects[idx] = {
         ...draftData.projects[idx],
         ...data,
-        tech_stack: data.techStack,
+        tags: data.techStack,
         github_url: data.githubUrl,
         live_url: data.liveUrl,
         image_url: data.imageUrl,
@@ -273,7 +273,7 @@ export async function updateProject(id: string, data: any) {
       draftData.projects.push({
         ...data,
         id,
-        tech_stack: data.techStack,
+        tags: data.techStack,
         github_url: data.githubUrl,
         live_url: data.liveUrl,
         image_url: data.imageUrl,
@@ -289,7 +289,7 @@ export async function updateProject(id: string, data: any) {
     .update({
       title: data.title,
       description: data.description,
-      tech_stack: data.techStack,
+      tags: data.techStack,
       github_url: data.githubUrl,
       live_url: data.liveUrl,
       image_url: data.imageUrl,
@@ -316,7 +316,7 @@ export async function createProject(data: any) {
       title: data.title,
       slug: data.title.toLowerCase().replace(/ /g, "-"),
       description: data.description,
-      tech_stack: data.techStack,
+      tags: data.techStack,
       github_url: data.githubUrl,
       live_url: data.liveUrl,
       image_url: data.imageUrl,
@@ -687,7 +687,7 @@ export async function createSkill(data: any) {
     .from("skills")
     .insert([{
       name: data.name,
-      level: data.level,
+      proficiency: data.level,
       category_id: data.category_id,
       sort_order: data.sort_order || 99
     }]);
@@ -707,7 +707,7 @@ export async function updateSkill(id: string, data: any) {
     .from("skills")
     .update({
       name: data.name,
-      level: data.level,
+      proficiency: data.level,
       category_id: data.category_id,
       sort_order: data.sort_order
     })

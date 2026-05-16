@@ -315,7 +315,11 @@ export async function getPersonalInfo() {
     profileImage: data.profile_image || staticPersonalInfo.profileImage,
     logoImage: data.logo_image || staticPersonalInfo.logoImage,
     studentId: data.student_id || staticPersonalInfo.studentId,
-    stats: { ...staticPersonalInfo.stats, ...(data.stats || {}) },
+    stats: { 
+      ...staticPersonalInfo.stats, 
+      ...(data.stats || {}),
+      siteCopy: { ...staticPersonalInfo.stats.siteCopy, ...(data.stats?.siteCopy || {}) }
+    },
   };
 }
 
@@ -328,7 +332,7 @@ export async function getProjects() {
   
   return data.map(p => ({
     ...p,
-    techStack: p.tech_stack || [],
+    techStack: p.tech_stack || p.tags || [],
     imageUrl: p.image_url,
     githubUrl: p.github_url,
     liveUrl: p.live_url,
@@ -346,7 +350,7 @@ export async function getSkills() {
 
   return categories.map(cat => ({
     ...cat,
-    skills: skills ? skills.filter(s => s.category_id === cat.id) : []
+    skills: skills ? skills.filter(s => s.category_id === cat.id).map(s => ({ ...s, level: s.proficiency || s.level })) : []
   }));
 }
 

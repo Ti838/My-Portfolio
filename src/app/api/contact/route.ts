@@ -26,7 +26,6 @@ export async function POST(req: Request) {
         email,
         subject: msgSubject || "No Subject",
         message,
-        status: "unread",
       });
 
     if (dbError) {

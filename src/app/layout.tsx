@@ -17,7 +17,13 @@ export async function generateMetadata(): Promise<Metadata> {
   const fullTitle = tagline ? `${siteName} — ${tagline}` : siteName;
   
   return {
-    metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "https://timonbiswas.vercel.app"),
+    metadataBase: (() => {
+      try {
+        return new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://timonbiswas.vercel.app");
+      } catch {
+        return new URL("https://timonbiswas.vercel.app");
+      }
+    })(),
     title: {
       default: fullTitle,
       template: `%s | ${siteName}`,

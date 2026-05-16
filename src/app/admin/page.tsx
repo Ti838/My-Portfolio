@@ -70,7 +70,7 @@ export default function AdminLoginPage() {
 
       setStatus("success");
       login();
-      setTimeout(() => router.push("/"), 800);
+      setTimeout(() => router.push("/admin/dashboard"), 800);
     } catch {
       setStatus("error");
       setErrorMsg("Server error.");
