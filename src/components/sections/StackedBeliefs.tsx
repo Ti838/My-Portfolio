@@ -112,15 +112,14 @@ export default function StackedBeliefs() {
               }}
             >
               <div
-                className="relative rounded-3xl p-10 md:p-14 overflow-hidden shadow-2xl cursor-pointer"
+                className="relative rounded-3xl p-10 md:p-14 overflow-hidden shadow-lg border border-white/5 cursor-pointer"
                 style={{
                   background: i === 0
-                    ? "rgba(255,255,255,0.04)"
+                    ? "#111111"
                     : i === 1
-                    ? "rgba(99,102,241,0.06)"
-                    : "rgba(139,92,246,0.05)",
+                    ? "#151515"
+                    : "#1a1a1a",
                   border: `1px solid ${belief.accent}25`,
-                  backdropFilter: "blur(20px)",
                   top: `${i * 40}px`,
                 }}
               >
