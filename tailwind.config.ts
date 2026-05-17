@@ -16,6 +16,7 @@ const config: Config = {
         mono: ["'JetBrains Mono'", "monospace"],
       },
       colors: {
+        // Ethereal design system (namespaced)
         ethereal: {
           bg: "var(--bg-primary)",
           surface: "var(--bg-secondary)",
@@ -27,6 +28,19 @@ const config: Config = {
           "text-3": "var(--text-tertiary)",
           accent: "var(--accent)",
         },
+        // Shorthand aliases (used directly in page.tsx etc.)
+        "bg-primary":   "var(--bg-primary)",
+        "bg-secondary": "var(--bg-secondary)",
+        "bg-elevated":  "var(--bg-elevated)",
+        "text-1":       "var(--text-primary)",
+        "text-2":       "var(--text-secondary)",
+        "text-3":       "var(--text-tertiary)",
+        accent:         "var(--accent)",
+        "accent-secondary": "var(--accent-secondary)",
+        border:         "var(--border)",
+        success:        "var(--success)",
+        error:          "var(--error)",
+        warning:        "var(--warning)",
       },
       backgroundImage: {
         "accent-gradient": "var(--accent-gradient)",
