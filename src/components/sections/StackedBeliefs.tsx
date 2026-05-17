@@ -65,45 +65,44 @@ export default function StackedBeliefs() {
     offset: ["start end", "end start"],
   });
 
-  // Each card enters at different scroll points
-  const card1Y = useTransform(scrollYProgress, [0, 0.3, 0.6], [120, 0, 0]);
-  const card1Opacity = useTransform(scrollYProgress, [0, 0.25], [0, 1]);
-
-  const card2Y = useTransform(scrollYProgress, [0.15, 0.45, 0.7], [120, 0, 0]);
-  const card2Opacity = useTransform(scrollYProgress, [0.15, 0.4], [0, 1]);
-
-  const card3Y = useTransform(scrollYProgress, [0.35, 0.6, 1], [120, 0, 0]);
-  const card3Opacity = useTransform(scrollYProgress, [0.35, 0.55], [0, 1]);
+  // Cards start inside the envelope (y: 400) and slide up to spread out
+  const card1Y = useTransform(scrollYProgress, [0, 0.5], [400, 0]);
+  const card2Y = useTransform(scrollYProgress, [0, 0.7], [400, 80]);
+  const card3Y = useTransform(scrollYProgress, [0, 0.9], [400, 160]);
 
   const transforms = [
-    { y: card1Y, opacity: card1Opacity },
-    { y: card2Y, opacity: card2Opacity },
-    { y: card3Y, opacity: card3Opacity },
+    { y: card1Y },
+    { y: card2Y },
+    { y: card3Y },
   ];
 
   return (
-    <section ref={containerRef} className="py-32 md:py-48 px-6 relative overflow-hidden">
-      <div className="max-w-[1400px] mx-auto">
+    <section ref={containerRef} className="py-32 md:py-48 px-6 relative overflow-hidden h-[150vh]">
+      <div className="sticky top-32 max-w-[1400px] mx-auto">
         {/* Section header */}
-        <div className="flex flex-col items-center text-center mb-24">
-          <span className="section-label mb-4">00 // The Principles</span>
-          <h2 className="font-display text-4xl md:text-6xl text-ethereal-text-1 leading-tight max-w-2xl">
+        <div className="flex flex-col items-center text-center mb-12">
+          <span className="section-label mb-4 text-white">00 // The Principles</span>
+          <h2 className="font-display text-4xl md:text-6xl text-white leading-tight max-w-2xl">
             3 things I strongly believe in.
           </h2>
         </div>
 
-        {/* Stacked cards */}
-        <div className="relative max-w-3xl mx-auto" style={{ height: "560px" }}>
+        {/* Envelope Container */}
+        <div className="relative max-w-3xl mx-auto w-full" style={{ height: "600px" }}>
+          
+          {/* Envelope Back */}
+          <div className="absolute bottom-0 left-0 right-0 h-[300px] bg-[#8c6b4a] rounded-b-xl z-0 shadow-inner" style={{ backgroundImage: "radial-gradient(circle, rgba(0,0,0,0.1) 1px, transparent 1px)", backgroundSize: "4px 4px" }} />
+
+          {/* Stacked cards */}
           {beliefs.map((belief, i) => (
             <motion.div
               key={belief.id}
               style={{
                 y: transforms[i].y,
-                opacity: transforms[i].opacity,
                 rotate: belief.rotate,
                 zIndex: i + 1,
               }}
-              className="absolute inset-x-0"
+              className="absolute left-4 right-4 md:left-8 md:right-8 top-0"
               whileHover={{
                 rotate: "0deg",
                 scale: 1.02,
@@ -112,22 +111,17 @@ export default function StackedBeliefs() {
               }}
             >
               <div
-                className="relative p-10 md:p-14 shadow-[0_25px_50px_-12px_rgba(0,0,0,0.5)] cursor-pointer"
+                className="relative p-8 md:p-12 shadow-[0_25px_50px_-12px_rgba(0,0,0,0.5)] cursor-pointer h-[400px]"
                 style={{
-                  background: i === 0
-                    ? "#fdfbf7" // Spiral notebook white
-                    : i === 1
-                    ? "#d6d1c4" // Graph paper greyish brown
-                    : "#b38c64", // Kraft paper brown
-                  color: "#1a1a1a", // Dark text
+                  background: i === 0 ? "#fdfbf7" : i === 1 ? "#d6d1c4" : "#b38c64",
+                  color: "#1a1a1a",
                   borderTopLeftRadius: i === 0 ? '0px' : '4px',
                   borderTopRightRadius: i === 0 ? '0px' : '4px',
                   clipPath: i === 1 
-                    ? "polygon(2% 0, 98% 2%, 100% 98%, 95% 100%, 85% 98%, 75% 100%, 65% 98%, 55% 100%, 45% 98%, 35% 100%, 25% 98%, 15% 100%, 5% 98%, 0 95%, 2% 80%, 0 60%, 2% 40%, 0 20%)" // Torn all around
+                    ? "polygon(2% 0, 98% 2%, 100% 98%, 95% 100%, 85% 98%, 75% 100%, 65% 98%, 55% 100%, 45% 98%, 35% 100%, 25% 98%, 15% 100%, 5% 98%, 0 95%, 2% 80%, 0 60%, 2% 40%, 0 20%)"
                     : i === 0
-                    ? "polygon(0 0, 100% 0, 100% 90%, 95% 100%, 90% 92%, 85% 98%, 80% 90%, 75% 100%, 70% 92%, 65% 98%, 60% 90%, 55% 100%, 50% 92%, 45% 98%, 40% 90%, 35% 100%, 30% 92%, 25% 98%, 20% 90%, 15% 100%, 10% 92%, 5% 98%, 0 90%)" // Torn bottom
+                    ? "polygon(0 0, 100% 0, 100% 90%, 95% 100%, 90% 92%, 85% 98%, 80% 90%, 75% 100%, 70% 92%, 65% 98%, 60% 90%, 55% 100%, 50% 92%, 45% 98%, 40% 90%, 35% 100%, 30% 92%, 25% 98%, 20% 90%, 15% 100%, 10% 92%, 5% 98%, 0 90%)"
                     : "none",
-                  top: `${i * 40}px`,
                 }}
               >
                 {/* Custom Paper Textures */}
@@ -156,7 +150,7 @@ export default function StackedBeliefs() {
                 )}
 
                 {/* Number */}
-                <div className="relative z-10 flex items-center gap-4 mb-8">
+                <div className="relative z-10 flex items-center gap-4 mb-6">
                   <span
                     className="font-mono text-[10px] uppercase tracking-[0.3em] font-bold"
                     style={{ color: i === 0 ? "#1a1a1a" : i === 1 ? "#333" : "#fff" }}
@@ -167,7 +161,7 @@ export default function StackedBeliefs() {
 
                 {/* Belief text */}
                 <p 
-                  className={`relative z-10 font-display italic text-3xl md:text-4xl leading-snug mb-6 ${i === 1 ? 'font-mono' : ''}`}
+                  className={`relative z-10 font-display italic text-2xl md:text-3xl leading-snug mb-4 ${i === 1 ? 'font-mono' : ''}`}
                   style={{ color: i === 2 ? "#fff" : "#1a1a1a" }}
                 >
                   &ldquo;{belief.text}&rdquo;
@@ -181,6 +175,19 @@ export default function StackedBeliefs() {
               </div>
             </motion.div>
           ))}
+
+          {/* Envelope Front (Covers the cards as they slide down) */}
+          <div className="absolute bottom-0 left-0 right-0 h-[300px] z-[50] pointer-events-none drop-shadow-2xl overflow-hidden rounded-b-xl">
+             <div className="absolute inset-0 bg-[#a68059]" style={{ backgroundImage: "radial-gradient(circle, rgba(0,0,0,0.05) 1px, transparent 1px)", backgroundSize: "4px 4px" }} />
+             {/* Envelope flap folds */}
+             <div className="absolute -top-10 left-0 right-0 h-[100px] bg-[#b38c64] rotate-3 origin-left shadow-lg" />
+             <div className="absolute -top-10 left-0 right-0 h-[100px] bg-[#b38c64] -rotate-3 origin-right shadow-lg" />
+             {/* Label on the envelope */}
+             <div className="absolute bottom-10 right-10 rotate-[-5deg] bg-white text-black font-handwriting px-4 py-2 text-xl shadow-md">
+                Top Secret
+             </div>
+          </div>
+
         </div>
       </div>
     </section>
