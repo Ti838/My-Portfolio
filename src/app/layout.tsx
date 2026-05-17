@@ -8,6 +8,7 @@ import HeaderStack from "@/components/layout/HeaderStack";
 import AdminModalsRenderer from "@/components/admin/AdminModalsRenderer";
 import ThemeProvider from "@/components/providers/ThemeProvider";
 import SmoothScroll from "@/components/layout/SmoothScroll";
+import VerticalStamps from "@/components/ui/VerticalStamps";
 
 import { getPersonalInfo, getProjects, getAchievements, getExperiences, getEducation, getSkills, getSocialLinks } from "@/data/portfolio";
 
@@ -87,6 +88,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           <SmoothScroll>
             <AdminProvider>
               <div className="relative z-10">
+                <VerticalStamps />
                 <HeaderStack personalInfo={personalInfo} />
                 <AdminModalsRenderer 
                   personalInfo={personalInfo} 

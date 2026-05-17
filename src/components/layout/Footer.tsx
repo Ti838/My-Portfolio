@@ -58,6 +58,12 @@ export default function Footer({ socialLinks = [], tagline }: { socialLinks?: an
               rel="noopener noreferrer"
               className="font-sans text-xs uppercase tracking-widest text-ethereal-text-2 hover:text-ethereal-text-1 transition-colors flex items-center gap-1.5"
             >
+              {iconMap[social.icon] ? (
+                (() => {
+                  const Icon = iconMap[social.icon];
+                  return <Icon size={14} className="mr-1" />;
+                })()
+              ) : null}
               {social.label}
               <ArrowUpRight size={10} />
             </a>
@@ -73,9 +79,9 @@ export default function Footer({ socialLinks = [], tagline }: { socialLinks?: an
               Admin ↗
             </Link>
           )}
-          <p className="font-mono text-[10px] text-ethereal-text-3 uppercase tracking-widest">
+          <Link href="/admin" className="font-mono text-[10px] text-ethereal-text-3 uppercase tracking-widest hover:text-ethereal-text-2 transition-colors">
             © {new Date().getFullYear()} Timon Biswas. Handcrafted.
-          </p>
+          </Link>
         </div>
       </div>
     </footer>

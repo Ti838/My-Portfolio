@@ -1,30 +1,33 @@
 export default function BackgroundSketches() {
   return (
     <div className="absolute inset-0 pointer-events-none overflow-hidden z-0">
-      {/* 1. Neural Network Sketch (Top Right) */}
+      {/* 1. Competitive Programming / ICPC Sketch (Top Right) */}
       <svg
-        className="absolute -top-20 -right-20 w-[600px] h-[600px] opacity-[0.03] text-white rotate-12"
+        className="absolute -top-10 -right-10 w-[500px] h-[500px] opacity-[0.03] text-white rotate-12"
         viewBox="0 0 200 200"
         fill="none"
         stroke="currentColor"
         strokeWidth="0.5"
       >
-        <path d="M 20 100 Q 50 20, 100 100 T 180 100" strokeDasharray="4 4" />
-        <circle cx="20" cy="100" r="4" />
-        <circle cx="60" cy="60" r="3" />
-        <circle cx="100" cy="100" r="5" />
-        <circle cx="140" cy="140" r="3" />
-        <circle cx="180" cy="100" r="4" />
-        <line x1="20" y1="100" x2="60" y2="60" />
-        <line x1="60" y1="60" x2="100" y2="100" />
-        <line x1="100" y1="100" x2="140" y2="140" />
-        <line x1="140" y1="140" x2="180" y2="100" />
-        <line x1="100" y1="100" x2="180" y2="100" strokeDasharray="2 2" />
-        <text x="70" y="50" fontSize="8" fontFamily="monospace" fill="currentColor" stroke="none">L1_hidden</text>
-        <text x="130" y="160" fontSize="8" fontFamily="monospace" fill="currentColor" stroke="none">L2_output</text>
+        {/* Array / Sorting algorithm sketch */}
+        <rect x="20" y="80" width="160" height="40" rx="2" />
+        <line x1="60" y1="80" x2="60" y2="120" />
+        <line x1="100" y1="80" x2="100" y2="120" />
+        <line x1="140" y1="80" x2="140" y2="120" />
+        <text x="35" y="105" fontSize="12" fontFamily="monospace" fill="currentColor" stroke="none">3</text>
+        <text x="75" y="105" fontSize="12" fontFamily="monospace" fill="currentColor" stroke="none">1</text>
+        <text x="115" y="105" fontSize="12" fontFamily="monospace" fill="currentColor" stroke="none">4</text>
+        <text x="155" y="105" fontSize="12" fontFamily="monospace" fill="currentColor" stroke="none">2</text>
+        <path d="M 40 70 Q 60 40, 80 70" strokeDasharray="2 2" markerEnd="url(#arrow)" />
+        <text x="40" y="60" fontSize="8" fontFamily="monospace" fill="currentColor" stroke="none">swap(i, j)</text>
+        
+        {/* ICPC Balloon */}
+        <path d="M 160 30 C 180 10, 190 40, 160 60 C 130 40, 140 10, 160 30 Z" />
+        <path d="M 160 60 Q 150 90, 165 120" strokeDasharray="2 2" />
+        <text x="175" y="45" fontSize="6" fontFamily="sans-serif" fill="currentColor" stroke="none">AC</text>
       </svg>
 
-      {/* 2. Abstract Code Blocks (Center Left) */}
+      {/* 2. Abstract Code Blocks & AI (Center Left) */}
       <svg
         className="absolute top-1/3 -left-32 w-[500px] h-[500px] opacity-[0.02] text-white -rotate-6"
         viewBox="0 0 200 200"
@@ -39,11 +42,14 @@ export default function BackgroundSketches() {
         <line x1="45" y1="85" x2="140" y2="85" />
         <line x1="45" y1="100" x2="100" y2="100" />
         <path d="M 10 10 L 30 10 L 30 -10" strokeDasharray="2 2" />
-        <text x="30" y="30" fontSize="10" fontFamily="monospace" fill="currentColor" stroke="none">function trainModel(data) {'{'} </text>
+        <text x="30" y="30" fontSize="8" fontFamily="monospace" fill="currentColor" stroke="none">model = Sequential([</text>
+        <text x="40" y="45" fontSize="8" fontFamily="monospace" fill="currentColor" stroke="none">Dense(128, activation='relu')</text>
+        <text x="40" y="60" fontSize="8" fontFamily="monospace" fill="currentColor" stroke="none">Dense(64, activation='relu')</text>
+        <text x="30" y="75" fontSize="8" fontFamily="monospace" fill="currentColor" stroke="none">])</text>
         <text x="130" y="110" fontSize="20" fontFamily="monospace" fill="currentColor" stroke="none">{'}'}</text>
       </svg>
 
-      {/* 3. Mathematical Formula / Logic Graph (Bottom Right) */}
+      {/* 3. Music Notes & Vocalist Graph (Bottom Right) */}
       <svg
         className="absolute -bottom-10 right-10 w-[450px] h-[450px] opacity-[0.03] text-white rotate-6"
         viewBox="0 0 200 200"
@@ -51,14 +57,30 @@ export default function BackgroundSketches() {
         stroke="currentColor"
         strokeWidth="0.5"
       >
-        <circle cx="100" cy="100" r="80" strokeDasharray="8 8" />
+        {/* Staff Lines */}
+        <line x1="20" y1="60" x2="180" y2="60" />
+        <line x1="20" y1="70" x2="180" y2="70" />
+        <line x1="20" y1="80" x2="180" y2="80" />
+        <line x1="20" y1="90" x2="180" y2="90" />
         <line x1="20" y1="100" x2="180" y2="100" />
-        <line x1="100" y1="20" x2="100" y2="180" />
-        <path d="M 20 100 Q 60 20, 100 100 T 180 100" strokeWidth="1" />
-        <text x="120" y="40" fontSize="12" fontFamily="serif" fill="currentColor" stroke="none" fontStyle="italic">f(x) = σ(W·x + b)</text>
-        <text x="140" y="90" fontSize="8" fontFamily="sans-serif" fill="currentColor" stroke="none">activation</text>
-        <circle cx="60" cy="60" r="2" fill="currentColor" />
-        <circle cx="140" cy="140" r="2" fill="currentColor" />
+        
+        {/* Treble Clef approximate */}
+        <path d="M 40 110 C 20 110, 20 80, 40 70 C 60 60, 50 30, 40 30 C 30 30, 30 50, 40 120" strokeWidth="1" />
+        
+        {/* Notes */}
+        <circle cx="80" cy="85" r="4" fill="currentColor" />
+        <line x1="84" y1="85" x2="84" y2="50" strokeWidth="1" />
+        
+        <circle cx="120" cy="75" r="4" fill="currentColor" />
+        <line x1="124" y1="75" x2="124" y2="40" strokeWidth="1" />
+        
+        <circle cx="150" cy="65" r="4" fill="currentColor" />
+        <line x1="154" y1="65" x2="154" y2="30" strokeWidth="1" />
+        
+        {/* Beams */}
+        <line x1="124" y1="40" x2="154" y2="30" strokeWidth="2" />
+        
+        <text x="80" y="140" fontSize="10" fontFamily="serif" fill="currentColor" stroke="none" fontStyle="italic">C Maj / freq = 440Hz</text>
       </svg>
       
       {/* 4. Binary Tree Structure (Top Center) */}

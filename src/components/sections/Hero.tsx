@@ -6,7 +6,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import { ArrowDown, MapPin } from "lucide-react";
 import MagneticButton from "@/components/ui/MagneticButton";
-import VerticalStamps from "@/components/ui/VerticalStamps";
 import DraggableStickers from "@/components/ui/DraggableStickers";
 import BackgroundSketches from "@/components/ui/BackgroundSketches";
 
@@ -84,9 +83,8 @@ export default function Hero({ personalInfo }: { personalInfo?: any }) {
   };
 
   return (
-    <section id="hero" className="relative min-h-screen flex flex-col justify-center overflow-hidden pt-24 pb-16">
+    <section id="hero" className="relative min-h-screen flex flex-col justify-center pt-24 pb-16">
       <BackgroundSketches />
-      <VerticalStamps />
       <DraggableStickers />
       {/* Subtle radial glow */}
       <div
@@ -149,20 +147,31 @@ export default function Hero({ personalInfo }: { personalInfo?: any }) {
               >
                 let&apos;s chat!
               </MagneticButton>
-              {resumeUrl && (
-                <a
-                  href={resumeUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="btn-ghost"
-                >
-                  Download CV
-                </a>
-              )}
+              
+              {/* Premium Download CV Button */}
+              <a
+                href={resumeUrl || "#"}
+                target={resumeUrl ? "_blank" : "_self"}
+                rel="noopener noreferrer"
+                onClick={(e) => {
+                  if (!resumeUrl) {
+                    e.preventDefault();
+                    alert("Please upload your CV in the Admin Dashboard first!");
+                  }
+                }}
+                className="group relative flex items-center gap-3 px-6 py-3.5 rounded-full border border-white/10 bg-white/[0.03] hover:bg-white/[0.08] transition-all duration-300 overflow-hidden"
+              >
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-[200%] group-hover:animate-[shimmer_2s_infinite]" />
+                <span className="relative font-mono text-[11px] uppercase tracking-[0.2em] text-ethereal-text-1">Download CV</span>
+                <span className="relative flex items-center justify-center w-6 h-6 rounded-full bg-ethereal-accent/20 text-ethereal-accent group-hover:bg-ethereal-accent group-hover:text-white transition-colors">
+                  <ArrowDown size={12} />
+                </span>
+              </a>
+
               <a
                 href="#projects"
                 onClick={e => { e.preventDefault(); document.getElementById("projects")?.scrollIntoView({ behavior: "smooth" }); }}
-                className="btn-ghost"
+                className="btn-ghost ml-2"
               >
                 View Work <ArrowDown size={14} />
               </a>

@@ -16,7 +16,7 @@ const stamps = [
 
 export default function VerticalStamps() {
   return (
-    <div className="absolute left-0 top-32 bottom-0 w-16 md:w-20 hidden md:flex flex-col items-center py-8 gap-8 overflow-hidden pointer-events-none z-0 opacity-40">
+    <div className="fixed left-0 top-32 bottom-0 w-16 md:w-20 hidden md:flex flex-col items-center py-8 gap-8 overflow-hidden pointer-events-none z-[-1] opacity-40">
       {/* Infinite vertical scroll effect using framer motion */}
       <motion.div
         animate={{ y: ["0%", "-50%"] }}
