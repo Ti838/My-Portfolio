@@ -8,6 +8,7 @@ import { ArrowDown, MapPin } from "lucide-react";
 import MagneticButton from "@/components/ui/MagneticButton";
 import VerticalStamps from "@/components/ui/VerticalStamps";
 import DraggableStickers from "@/components/ui/DraggableStickers";
+import BackgroundSketches from "@/components/ui/BackgroundSketches";
 
 // ── Rotating belief words (Jackie Zhang signature) ────────────────────────────
 const beliefWords = ["natural.", "powerful.", "reliable.", "joyful.", "precise."];
@@ -83,6 +84,7 @@ export default function Hero({ personalInfo }: { personalInfo?: any }) {
 
   return (
     <section id="hero" className="relative min-h-screen flex flex-col justify-center overflow-hidden pt-24 pb-16">
+      <BackgroundSketches />
       <VerticalStamps />
       <DraggableStickers />
       {/* Subtle radial glow */}
