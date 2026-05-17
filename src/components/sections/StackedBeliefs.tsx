@@ -112,14 +112,19 @@ export default function StackedBeliefs() {
               }}
             >
               <div
-                className="relative rounded-3xl p-10 md:p-14 overflow-hidden shadow-lg border border-white/5 cursor-pointer"
+                className="relative p-10 md:p-14 shadow-lg border border-white/5 cursor-pointer"
                 style={{
                   background: i === 0
                     ? "#111111"
                     : i === 1
                     ? "#151515"
                     : "#1a1a1a",
-                  border: `1px solid ${belief.accent}25`,
+                  borderTop: `1px solid ${belief.accent}25`,
+                  borderRight: `1px solid ${belief.accent}25`,
+                  borderLeft: `1px solid ${belief.accent}25`,
+                  borderTopLeftRadius: '24px',
+                  borderTopRightRadius: '24px',
+                  clipPath: i === 0 ? "polygon(0 0, 100% 0, 100% 90%, 95% 100%, 90% 92%, 85% 98%, 80% 90%, 75% 100%, 70% 92%, 65% 98%, 60% 90%, 55% 100%, 50% 92%, 45% 98%, 40% 90%, 35% 100%, 30% 92%, 25% 98%, 20% 90%, 15% 100%, 10% 92%, 5% 98%, 0 90%)" : "none",
                   top: `${i * 40}px`,
                 }}
               >
@@ -127,8 +132,10 @@ export default function StackedBeliefs() {
 
                 {/* Paper clip decoration */}
                 {i === 2 && (
-                  <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2">
-                    <div className="w-8 h-8 rounded-full border-2 border-current opacity-20" />
+                  <div className="absolute -top-6 left-1/4 -translate-x-1/2 z-20" style={{ transform: "rotate(-15deg)" }}>
+                    {/* Realistic paperclip using CSS */}
+                    <div className="w-6 h-16 rounded-full border-4 border-gray-400 opacity-80" style={{ borderBottom: "none", borderBottomLeftRadius: 0, borderBottomRightRadius: 0 }} />
+                    <div className="w-4 h-12 rounded-full border-4 border-gray-400 opacity-80 absolute top-2 left-1" style={{ borderTop: "none", borderTopLeftRadius: 0, borderTopRightRadius: 0 }} />
                   </div>
                 )}
 
