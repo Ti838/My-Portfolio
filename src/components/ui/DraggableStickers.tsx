@@ -14,7 +14,7 @@ export default function DraggableStickers() {
   const [visibleStickers, setVisibleStickers] = useState(stickers);
 
   return (
-    <div className="fixed inset-0 pointer-events-none z-[100] overflow-hidden">
+    <div className="absolute inset-0 pointer-events-none z-[100] overflow-hidden">
       {visibleStickers.map((sticker) => (
         <motion.div
           key={sticker.id}
