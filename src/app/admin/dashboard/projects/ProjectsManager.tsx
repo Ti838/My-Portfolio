@@ -5,7 +5,7 @@ import { useState, useRef } from "react";
 import { Plus, Pencil, Trash2, Search, Star, ExternalLink, X, Upload } from "lucide-react";
 import { FiGithub as Github } from "react-icons/fi";
 import { createProject, updateProject, deleteProject } from "@/lib/admin-actions";
-import { uploadAdminAsset } from "@/lib/upload";
+import { uploadImage } from "@/lib/upload";
 import toast from "react-hot-toast";
 
 interface Project {
@@ -111,7 +111,7 @@ export default function ProjectsManager({ initialProjects }: { initialProjects: 
 
     setUploadingImage(true);
     try {
-      const url = await uploadAdminAsset(file, "projects");
+      const url = await uploadImage(file, "projects");
       if (url) {
         setForm({ ...form, imageUrl: url });
         toast.success("Image uploaded!");
