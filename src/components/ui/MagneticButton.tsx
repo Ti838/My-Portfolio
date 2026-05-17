@@ -1,41 +1,60 @@
 "use client";
-import { useRef, useState, type ReactNode } from "react";
+
+import { useRef, useState } from "react";
+import { motion, useSpring } from "framer-motion";
 
 interface MagneticButtonProps {
-  children: ReactNode;
+  children: React.ReactNode;
   className?: string;
   strength?: number;
+  onClick?: () => void;
+  href?: string;
+  as?: "button" | "a";
+  target?: string;
+  rel?: string;
 }
 
 export default function MagneticButton({
   children,
   className = "",
-  strength = 0.3,
+  strength = 0.35,
+  onClick,
+  href,
+  as: Tag = "button",
+  target,
+  rel,
 }: MagneticButtonProps) {
-  const ref = useRef<HTMLDivElement>(null);
-  const [transform, setTransform] = useState("translate(0px, 0px)");
+  const ref = useRef<HTMLElement>(null);
+  const x = useSpring(0, { stiffness: 200, damping: 15 });
+  const y = useSpring(0, { stiffness: 200, damping: 15 });
 
-  function handleMouseMove(e: React.MouseEvent) {
-    const rect = ref.current?.getBoundingClientRect();
-    if (!rect) return;
-    const x = (e.clientX - rect.left - rect.width / 2) * strength;
-    const y = (e.clientY - rect.top - rect.height / 2) * strength;
-    setTransform(`translate(${x}px, ${y}px)`);
-  }
+  const handleMouseMove = (e: React.MouseEvent) => {
+    const el = ref.current;
+    if (!el) return;
+    const rect = el.getBoundingClientRect();
+    const dx = e.clientX - (rect.left + rect.width / 2);
+    const dy = e.clientY - (rect.top + rect.height / 2);
+    x.set(dx * strength);
+    y.set(dy * strength);
+  };
 
-  function handleMouseLeave() {
-    setTransform("translate(0px, 0px)");
-  }
+  const handleMouseLeave = () => {
+    x.set(0);
+    y.set(0);
+  };
+
+  const props: any = {
+    ref,
+    onMouseMove: handleMouseMove,
+    onMouseLeave: handleMouseLeave,
+    onClick,
+    className,
+    ...(Tag === "a" ? { href, target, rel } : {}),
+  };
 
   return (
-    <div
-      ref={ref}
-      className={`inline-block transition-transform duration-300 ease-out ${className}`}
-      style={{ transform }}
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
-    >
-      {children}
-    </div>
+    <motion.div style={{ x, y }} className="inline-block">
+      <Tag {...props}>{children}</Tag>
+    </motion.div>
   );
 }

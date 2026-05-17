@@ -10,6 +10,7 @@ import ScrollReveal from "@/components/ui/ScrollReveal";
 import AwardsList from "@/components/sections/AwardsList";
 import Hero from "@/components/sections/Hero";
 import ContactForm from "@/components/sections/ContactForm";
+import StackedBeliefs from "@/components/sections/StackedBeliefs";
 
 export default async function HomePage() {
   const personalInfo = await getPersonalInfo();
@@ -33,6 +34,11 @@ export default async function HomePage() {
       <EditableSection eventKey="hero" label="Hero Section">
         <Hero personalInfo={personalInfo} />
       </EditableSection>
+
+      {/* ══════════════════════════════════════════════════════════════ */}
+      {/* // 00. BELIEFS — Jackie Zhang-style stacked paper sheets */}
+      {/* ══════════════════════════════════════════════════════════════ */}
+      <StackedBeliefs />
 
       {/* ══════════════════════════════════════════════════════════════ */}
       {/* // 01. ABOUT ME */}
@@ -92,11 +98,12 @@ export default async function HomePage() {
                 <ScrollReveal direction="right" delay={200}>
                   <div className="relative aspect-[4/5] rounded-[2rem] overflow-hidden group">
                     <Image
-                      src={personalInfo?.profileImage || "/profile.jpg"}
+                      src={personalInfo?.profile_image || personalInfo?.profileImage || "/profile.jpg"}
                       alt={personalInfo?.name || "Profile"}
                       fill
                       className="object-cover grayscale hover:grayscale-0 transition-all duration-700 scale-110 group-hover:scale-100"
                       sizes="(max-width: 768px) 100vw, 50vw"
+                      unoptimized
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-bg-primary via-transparent to-transparent opacity-60 pointer-events-none" />
                     
