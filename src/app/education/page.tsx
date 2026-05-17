@@ -62,7 +62,12 @@ export default async function EducationPage() {
 
                     {edu.details && (
                       <ul className="grid sm:grid-cols-2 gap-3 mt-6">
-                        {edu.details.map((d: string) => (
+                        {(Array.isArray(edu.details)
+                          ? edu.details
+                          : typeof edu.details === "string"
+                          ? edu.details.split("|").map((s: string) => s.trim()).filter(Boolean)
+                          : []
+                        ).map((d: string) => (
                           <li key={d} className="flex items-center gap-3 text-sm text-[var(--text-secondary)] font-mono tracking-wider">
                             <span className="w-1.5 h-1.5 bg-[var(--accent)] rounded-full shadow-sm" /> {d}
                           </li>

@@ -348,8 +348,17 @@ export async function getSkills() {
   
   if (ce || se || !categories || categories.length === 0) return staticSkillCategories;
 
+  const iconMap: Record<string, string> = {
+    "Languages": "FiCode",
+    "Frameworks & Tools": "FiTool",
+    "Competitive Programming": "FiAward",
+    "Creative Skills": "FiMusic"
+  };
+
   return categories.map(cat => ({
     ...cat,
+    category: cat.name,
+    icon: iconMap[cat.name] || "FiLink",
     skills: skills ? skills.filter(s => s.category_id === cat.id).map(s => ({ ...s, level: s.proficiency || s.level })) : []
   }));
 }

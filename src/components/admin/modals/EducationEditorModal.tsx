@@ -138,7 +138,13 @@ export default function EducationEditorModal({ initialEducation, onClose }: { in
                 <div className="space-y-1.5">
                   <label className="text-[10px] uppercase font-bold text-slate-400">Key Details (One per line)</label>
                   <textarea 
-                    value={formData.details?.join("\n") || ""} 
+                    value={
+                      Array.isArray(formData.details)
+                        ? formData.details.join("\n")
+                        : typeof formData.details === "string"
+                        ? formData.details.split("|").map((s: string) => s.trim()).join("\n")
+                        : ""
+                    } 
                     onChange={(e) => setFormData({...formData, details: e.target.value.split("\n").filter(Boolean)})}
                     className="w-full px-4 py-3 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm min-h-[100px] focus:ring-2 focus:ring-accent-500 outline-none"
                     placeholder="e.g. CGPA: 3.80&#10;Student ID: 123"

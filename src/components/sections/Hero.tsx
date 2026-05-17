@@ -9,6 +9,8 @@ import { ArrowRight, Download, Mail } from "lucide-react";
 import { FiGithub as Github, FiLinkedin as Linkedin } from "react-icons/fi";
 import TypeWriter from "@/components/ui/TypeWriter";
 import ScrollReveal from "@/components/ui/ScrollReveal";
+import ErrorBoundary from "@/components/ui/ErrorBoundary";
+import HeroFallback from "@/components/sections/HeroFallback";
 
 const PortfolioScene3D = dynamic(() => import("@/components/sections/PortfolioScene3D"), {
   ssr: false,
@@ -117,7 +119,9 @@ export default function Hero({ personalInfo }: { personalInfo: any }) {
           </motion.div>
 
           <div className="lg:col-span-6">
-            <PortfolioScene3D personalInfo={personalInfo} />
+            <ErrorBoundary fallback={<HeroFallback personalInfo={personalInfo} />}>
+              <PortfolioScene3D personalInfo={personalInfo} />
+            </ErrorBoundary>
           </div>
         </div>
 
