@@ -1,10 +1,11 @@
 // REFINED
 "use client";
 
-import { useState } from "react";
-import { Plus, Pencil, Trash2, Search, Star, ExternalLink, X } from "lucide-react";
+import { useState, useRef } from "react";
+import { Plus, Pencil, Trash2, Search, Star, ExternalLink, X, Upload } from "lucide-react";
 import { FiGithub as Github } from "react-icons/fi";
 import { createProject, updateProject, deleteProject } from "@/lib/admin-actions";
+import { uploadAdminAsset } from "@/lib/upload";
 import toast from "react-hot-toast";
 
 interface Project {
@@ -32,6 +33,8 @@ export default function ProjectsManager({ initialProjects }: { initialProjects: 
     featured: false, status: "completed"
   });
   const [saving, setSaving] = useState(false);
+  const [uploadingImage, setUploadingImage] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const [confirmDelete, setConfirmDelete] = useState<string | null>(null);
 
   const filtered = projects.filter(p =>
@@ -99,6 +102,27 @@ export default function ProjectsManager({ initialProjects }: { initialProjects: 
       setConfirmDelete(null);
     } catch (err: any) {
       toast.error(err.message || "Failed to delete");
+    }
+  };
+
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setUploadingImage(true);
+    try {
+      const url = await uploadAdminAsset(file, "projects");
+      if (url) {
+        setForm({ ...form, imageUrl: url });
+        toast.success("Image uploaded!");
+      } else {
+        throw new Error("Failed to get image URL");
+      }
+    } catch (error: any) {
+      toast.error(error.message || "Image upload failed");
+    } finally {
+      setUploadingImage(false);
+      if (fileInputRef.current) fileInputRef.current.value = "";
     }
   };
 
@@ -228,7 +252,18 @@ export default function ProjectsManager({ initialProjects }: { initialProjects: 
               </div>
               <div>
                 <label className="label text-[10px] mb-1.5 block">Cover Image URL</label>
-                <input className="admin-input" value={form.imageUrl} onChange={e => setForm({...form, imageUrl: e.target.value})} placeholder="https://..." />
+                <div className="flex gap-2">
+                  <input className="admin-input flex-1" value={form.imageUrl} onChange={e => setForm({...form, imageUrl: e.target.value})} placeholder="https://..." />
+                  <input type="file" accept="image/*" className="hidden" ref={fileInputRef} onChange={handleImageUpload} />
+                  <button 
+                    type="button" 
+                    onClick={() => fileInputRef.current?.click()} 
+                    disabled={uploadingImage}
+                    className="btn-ghost px-4 border border-[var(--border)] whitespace-nowrap"
+                  >
+                    {uploadingImage ? <span className="animate-pulse">Uploading...</span> : <><Upload size={14} className="inline mr-2" />Upload</>}
+                  </button>
+                </div>
               </div>
               <div className="flex items-center gap-6">
                 <label className="flex items-center gap-2 cursor-pointer">
