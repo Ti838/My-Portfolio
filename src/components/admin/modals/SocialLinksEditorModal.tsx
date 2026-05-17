@@ -1,118 +1,235 @@
 "use client";
 
 import React, { useState } from "react";
-import { updateSocialLink } from "@/lib/admin-actions";
-import { FiSave, FiX, FiLoader, FiLink, FiGithub, FiLinkedin, FiTwitter, FiMessageCircle, FiGlobe, FiCode } from "react-icons/fi";
+import { updateSocialLink, createSocialLink, deleteSocialLink } from "@/lib/admin-actions";
+import {
+  FiSave, FiX, FiLoader, FiLink, FiGithub, FiLinkedin, FiTwitter,
+  FiMessageCircle, FiGlobe, FiCode, FiPlus, FiTrash2, FiInstagram, FiYoutube, FiMail
+} from "react-icons/fi";
 import { toast } from "react-hot-toast";
 
 const iconOptions = [
   { value: "FiGithub", label: "GitHub", icon: FiGithub },
   { value: "FiLinkedin", label: "LinkedIn", icon: FiLinkedin },
-  { value: "FiTwitter", label: "Twitter", icon: FiTwitter },
-  { value: "FiMessageCircle", label: "WhatsApp/Message", icon: FiMessageCircle },
+  { value: "FiTwitter", label: "Twitter / X", icon: FiTwitter },
+  { value: "FiInstagram", label: "Instagram", icon: FiInstagram },
+  { value: "FiYoutube", label: "YouTube", icon: FiYoutube },
+  { value: "FiMessageCircle", label: "WhatsApp", icon: FiMessageCircle },
+  { value: "FiMail", label: "Email", icon: FiMail },
   { value: "FiGlobe", label: "Website", icon: FiGlobe },
-  { value: "FiCode", label: "Codeforces/Coding", icon: FiCode },
+  { value: "FiCode", label: "Codeforces", icon: FiCode },
   { value: "FiLink", label: "Generic Link", icon: FiLink },
 ];
 
 const icons: Record<string, React.ElementType> = {
-  FiGithub, FiLinkedin, FiTwitter, FiMessageCircle, FiGlobe, FiCode, FiLink
+  FiGithub, FiLinkedin, FiTwitter, FiInstagram, FiYoutube,
+  FiMessageCircle, FiMail, FiGlobe, FiCode, FiLink,
 };
 
-export default function SocialLinksEditorModal({ socialLinks, onClose }: { socialLinks: any[], onClose: () => void }) {
+const emptyForm = { label: "", url: "", icon: "FiLink" };
+
+export default function SocialLinksEditorModal({
+  socialLinks,
+  onClose,
+}: {
+  socialLinks: any[];
+  onClose: () => void;
+}) {
   const [loading, setLoading] = useState(false);
+  const [deleting, setDeleting] = useState<string | null>(null);
+  const [mode, setMode] = useState<"edit" | "add">("edit");
   const [editingId, setEditingId] = useState<string | null>(null);
   const [formData, setFormData] = useState<any>(null);
+  const [newForm, setNewForm] = useState({ ...emptyForm });
 
   const startEdit = (link: any) => {
+    setMode("edit");
     setEditingId(link.id);
     setFormData({ ...link });
   };
 
-  const save = async () => {
-    if (!formData.url) return toast.error("URL is required");
+  const startAdd = () => {
+    setMode("add");
+    setEditingId(null);
+    setFormData(null);
+    setNewForm({ ...emptyForm });
+  };
+
+  const saveEdit = async () => {
+    if (!formData?.url) return toast.error("URL is required");
     setLoading(true);
     try {
       await updateSocialLink(editingId!, formData);
-      toast.success("Social link updated!");
+      toast.success("Link updated!");
       window.location.reload();
     } catch (err: any) {
       toast.error(err.message || "Failed to save");
+    } finally {
       setLoading(false);
     }
   };
 
+  const saveNew = async () => {
+    if (!newForm.url || !newForm.label) return toast.error("Label and URL are required");
+    setLoading(true);
+    try {
+      await createSocialLink(newForm);
+      toast.success("Link added!");
+      window.location.reload();
+    } catch (err: any) {
+      toast.error(err.message || "Failed to add");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleDelete = async (id: string) => {
+    if (!confirm("Delete this social link?")) return;
+    setDeleting(id);
+    try {
+      await deleteSocialLink(id);
+      toast.success("Link deleted!");
+      window.location.reload();
+    } catch (err: any) {
+      toast.error(err.message || "Failed to delete");
+    } finally {
+      setDeleting(null);
+    }
+  };
+
+  const activeForm = mode === "add" ? newForm : formData;
+  const setActive = mode === "add"
+    ? (v: any) => setNewForm(v)
+    : (v: any) => setFormData(v);
+
   return (
-    <div className="fixed inset-0 z-[200] flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4 animate-in fade-in">
-      <div className="bg-white dark:bg-slate-900 w-full max-w-2xl rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-800 overflow-hidden">
-        <div className="flex items-center justify-between p-5 border-b border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/50">
-          <h2 className="text-lg font-bold flex items-center gap-2">
-            <FiLink className="text-accent-500" /> Manage Connect Links
+    <div className="fixed inset-0 z-[200] flex items-center justify-center bg-black/70 backdrop-blur-sm p-4">
+      <div className="bg-[var(--bg-elevated)] w-full max-w-2xl rounded-3xl shadow-2xl border border-[var(--border)] overflow-hidden">
+        {/* Header */}
+        <div className="flex items-center justify-between p-5 border-b border-[var(--border)]">
+          <h2 className="heading flex items-center gap-2">
+            <FiLink className="text-[var(--accent)]" /> Social Links
           </h2>
-          <button onClick={onClose} className="p-2 text-slate-400 hover:text-slate-900 dark:hover:text-white rounded-lg hover:bg-slate-200 dark:hover:bg-slate-700 transition">
-            <FiX size={20} />
-          </button>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={startAdd}
+              className="btn-primary text-xs py-2 px-3"
+            >
+              <FiPlus size={14} /> Add New
+            </button>
+            <button
+              onClick={onClose}
+              className="p-2 text-[var(--text-tertiary)] hover:text-[var(--text-primary)] rounded-xl hover:bg-white/5 transition"
+            >
+              <FiX size={20} />
+            </button>
+          </div>
         </div>
 
         <div className="flex flex-col md:flex-row max-h-[70vh]">
           {/* List */}
-          <div className="w-full md:w-1/2 border-r border-slate-100 dark:border-slate-800 overflow-y-auto p-4 space-y-2">
+          <div className="w-full md:w-2/5 border-r border-[var(--border)] overflow-y-auto p-4 space-y-2">
+            {/* Add new entry */}
+            <button
+              onClick={startAdd}
+              className={`w-full text-left p-3 rounded-2xl border transition-all flex items-center gap-3 ${
+                mode === "add"
+                  ? "border-[var(--accent)] bg-[var(--accent-dim)]"
+                  : "border-dashed border-[var(--border-highlight)] hover:border-[var(--accent)]/50 text-[var(--text-tertiary)]"
+              }`}
+            >
+              <div className="w-8 h-8 rounded-xl bg-[var(--accent-dim)] flex items-center justify-center">
+                <FiPlus size={16} className="text-[var(--accent)]" />
+              </div>
+              <span className="text-sm font-medium">Add New Link</span>
+            </button>
+
             {socialLinks.map((link) => {
               const Icon = icons[link.icon] || FiLink;
               return (
-                <button 
-                  key={link.id} 
-                  onClick={() => startEdit(link)}
-                  className={`w-full text-left p-4 rounded-xl border transition-all flex items-center gap-4 ${editingId === link.id ? "bg-accent-50 dark:bg-accent-900/20 border-accent-500 ring-1 ring-accent-500" : "bg-white dark:bg-slate-800 border-slate-100 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600"}`}
+                <div
+                  key={link.id}
+                  className={`w-full p-3 rounded-2xl border transition-all flex items-center gap-3 group ${
+                    editingId === link.id && mode === "edit"
+                      ? "border-[var(--accent)] bg-[var(--accent-dim)]"
+                      : "border-[var(--border)] hover:border-[var(--border-highlight)] bg-[var(--bg-secondary)]"
+                  }`}
                 >
-                  <div className={`p-2 rounded-lg ${editingId === link.id ? "bg-accent-500 text-white" : "bg-slate-100 dark:bg-slate-700 text-slate-500 dark:text-slate-400"}`}>
-                    <Icon size={18} />
-                  </div>
-                  <div>
-                    <div className="text-sm font-bold text-slate-900 dark:text-white">{link.label}</div>
-                    <div className="text-[10px] text-slate-500 truncate max-w-[150px]">{link.url}</div>
-                  </div>
-                </button>
+                  <button
+                    className="flex items-center gap-3 flex-1 min-w-0"
+                    onClick={() => startEdit(link)}
+                  >
+                    <div
+                      className={`w-8 h-8 rounded-xl flex items-center justify-center flex-shrink-0 ${
+                        editingId === link.id && mode === "edit"
+                          ? "bg-[var(--accent)] text-white"
+                          : "bg-[var(--bg-elevated)] text-[var(--text-tertiary)]"
+                      }`}
+                    >
+                      <Icon size={16} />
+                    </div>
+                    <div className="min-w-0">
+                      <div className="text-sm font-medium text-[var(--text-primary)] truncate">{link.label}</div>
+                      <div className="text-[10px] text-[var(--text-tertiary)] truncate">{link.url}</div>
+                    </div>
+                  </button>
+                  <button
+                    onClick={() => handleDelete(link.id)}
+                    disabled={deleting === link.id}
+                    className="flex-shrink-0 p-1.5 rounded-lg text-[var(--text-tertiary)] hover:text-[var(--error)] hover:bg-[var(--error)]/10 opacity-0 group-hover:opacity-100 transition-all"
+                  >
+                    {deleting === link.id ? <FiLoader size={14} className="animate-spin" /> : <FiTrash2 size={14} />}
+                  </button>
+                </div>
               );
             })}
           </div>
 
           {/* Form */}
-          <div className="flex-1 p-6 bg-slate-50/30 dark:bg-slate-900/20 overflow-y-auto">
-            {formData ? (
+          <div className="flex-1 p-6 overflow-y-auto">
+            {activeForm !== null ? (
               <div className="space-y-5">
+                <h3 className="heading text-sm text-[var(--accent)]">
+                  {mode === "add" ? "Add New Platform" : "Edit Platform"}
+                </h3>
+
                 <div>
-                  <label className="text-[10px] uppercase font-bold text-slate-400 mb-1.5 block">Label</label>
-                  <input 
-                    type="text" 
-                    value={formData.label} 
-                    onChange={(e) => setFormData({...formData, label: e.target.value})}
-                    className="w-full px-4 py-2 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm focus:ring-2 focus:ring-accent-500 outline-none"
+                  <label className="label text-[10px] mb-1.5 block">Label</label>
+                  <input
+                    type="text"
+                    value={activeForm.label}
+                    onChange={(e) => setActive({ ...activeForm, label: e.target.value })}
+                    className="admin-input"
+                    placeholder="GitHub, LinkedIn, etc."
                   />
                 </div>
 
                 <div>
-                  <label className="text-[10px] uppercase font-bold text-slate-400 mb-1.5 block">URL</label>
-                  <input 
-                    type="text" 
-                    value={formData.url} 
-                    onChange={(e) => setFormData({...formData, url: e.target.value})}
-                    className="w-full px-4 py-2 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm focus:ring-2 focus:ring-accent-500 outline-none"
+                  <label className="label text-[10px] mb-1.5 block">URL</label>
+                  <input
+                    type="text"
+                    value={activeForm.url}
+                    onChange={(e) => setActive({ ...activeForm, url: e.target.value })}
+                    className="admin-input"
                     placeholder="https://..."
                   />
                 </div>
 
                 <div>
-                  <label className="text-[10px] uppercase font-bold text-slate-400 mb-1.5 block">Icon</label>
-                  <div className="grid grid-cols-4 gap-2">
-                    {iconOptions.map(opt => {
+                  <label className="label text-[10px] mb-2 block">Icon</label>
+                  <div className="grid grid-cols-5 gap-2">
+                    {iconOptions.map((opt) => {
                       const Icon = opt.icon;
                       return (
-                        <button 
+                        <button
                           key={opt.value}
-                          onClick={() => setFormData({...formData, icon: opt.value})}
-                          className={`p-3 rounded-xl border flex items-center justify-center transition-all ${formData.icon === opt.value ? "bg-accent-500 border-accent-500 text-white shadow-lg shadow-accent-500/20" : "bg-white dark:bg-slate-800 border-slate-100 dark:border-slate-700 text-slate-400 hover:border-slate-300 dark:hover:border-slate-600"}`}
+                          onClick={() => setActive({ ...activeForm, icon: opt.value })}
                           title={opt.label}
+                          className={`p-3 rounded-xl border flex items-center justify-center transition-all ${
+                            activeForm.icon === opt.value
+                              ? "bg-[var(--accent)] border-[var(--accent)] text-white shadow-lg"
+                              : "border-[var(--border)] text-[var(--text-tertiary)] hover:border-[var(--border-highlight)]"
+                          }`}
                         >
                           <Icon size={18} />
                         </button>
@@ -121,16 +238,19 @@ export default function SocialLinksEditorModal({ socialLinks, onClose }: { socia
                   </div>
                 </div>
 
-                <div className="pt-4">
-                  <button onClick={save} disabled={loading} className="btn-primary w-full h-12">
-                    {loading ? <FiLoader className="animate-spin" /> : <><FiSave /> Save Changes</>}
-                  </button>
-                </div>
+                <button
+                  onClick={mode === "add" ? saveNew : saveEdit}
+                  disabled={loading}
+                  className="btn-primary w-full"
+                >
+                  {loading ? <FiLoader className="animate-spin" /> : <FiSave />}
+                  {mode === "add" ? "Add Link" : "Save Changes"}
+                </button>
               </div>
             ) : (
-              <div className="h-full flex flex-col items-center justify-center text-slate-400 space-y-3 text-center">
+              <div className="h-full flex flex-col items-center justify-center text-[var(--text-tertiary)] space-y-3 text-center">
                 <FiLink size={40} className="opacity-10 mb-2" />
-                <p className="text-sm font-medium px-6">Select a platform to update your profile link.</p>
+                <p className="text-sm max-w-[200px]">Select a link to edit or click "Add New" to create one.</p>
               </div>
             )}
           </div>

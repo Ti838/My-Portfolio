@@ -1,9 +1,11 @@
 // REFINED
 "use client";
 
-import { useState } from "react";
-import { Save, Upload } from "lucide-react";
+import { useState, useRef } from "react";
+import { Save, Upload, Loader2, ImageIcon, User } from "lucide-react";
 import { updatePersonalInfo } from "@/lib/admin-actions";
+import { uploadImage } from "@/lib/upload";
+import Image from "next/image";
 import toast from "react-hot-toast";
 
 export default function ProfileEditor({ initialData }: { initialData: any }) {
@@ -23,6 +25,10 @@ export default function ProfileEditor({ initialData }: { initialData: any }) {
     stats: initialData?.stats || {},
   });
   const [saving, setSaving] = useState(false);
+  const [uploadingProfile, setUploadingProfile] = useState(false);
+  const [uploadingLogo, setUploadingLogo] = useState(false);
+  const profileFileRef = useRef<HTMLInputElement>(null);
+  const logoFileRef = useRef<HTMLInputElement>(null);
 
   const handleSave = async () => {
     setSaving(true);
@@ -35,12 +41,27 @@ export default function ProfileEditor({ initialData }: { initialData: any }) {
     setSaving(false);
   };
 
-  const updateField = (key: string, value: any) => {
-    setForm(prev => ({ ...prev, [key]: value }));
-  };
+  const updateField = (key: string, value: any) =>
+    setForm((prev) => ({ ...prev, [key]: value }));
 
-  const updateStat = (key: string, value: string) => {
-    setForm(prev => ({ ...prev, stats: { ...prev.stats, [key]: value } }));
+  const updateStat = (key: string, value: string) =>
+    setForm((prev) => ({ ...prev, stats: { ...prev.stats, [key]: value } }));
+
+  const handleImageUpload = async (
+    file: File,
+    field: "profileImage" | "logoImage",
+    setUploading: (v: boolean) => void
+  ) => {
+    setUploading(true);
+    try {
+      const url = await uploadImage(file, "profile");
+      updateField(field, url);
+      toast.success("Image uploaded!");
+    } catch (err: any) {
+      toast.error(err.message || "Upload failed");
+    } finally {
+      setUploading(false);
+    }
   };
 
   return (
@@ -51,7 +72,8 @@ export default function ProfileEditor({ initialData }: { initialData: any }) {
           <p className="body text-sm">Edit your personal information and hero section.</p>
         </div>
         <button onClick={handleSave} disabled={saving} className="btn-primary text-sm py-2.5 px-5 disabled:opacity-50">
-          {saving ? "Saving..." : <><Save size={14} /> Save Changes</>}
+          {saving ? <Loader2 size={14} className="animate-spin" /> : <Save size={14} />}
+          {saving ? "Saving…" : "Save Changes"}
         </button>
       </div>
 
@@ -83,38 +105,48 @@ export default function ProfileEditor({ initialData }: { initialData: any }) {
         <div className="card p-6 space-y-4">
           <h2 className="heading text-sm text-[var(--accent)]">Contact Info</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div>
-              <label className="label text-[10px] mb-1.5 block">Email</label>
-              <input className="admin-input" type="email" value={form.email} onChange={e => updateField("email", e.target.value)} />
-            </div>
-            <div>
-              <label className="label text-[10px] mb-1.5 block">Phone</label>
-              <input className="admin-input" value={form.phone} onChange={e => updateField("phone", e.target.value)} />
-            </div>
-            <div>
-              <label className="label text-[10px] mb-1.5 block">Location</label>
-              <input className="admin-input" value={form.location} onChange={e => updateField("location", e.target.value)} />
-            </div>
+            {[
+              { key: "email", label: "Email", type: "email" },
+              { key: "phone", label: "Phone" },
+              { key: "location", label: "Location" },
+            ].map(({ key, label, type }) => (
+              <div key={key}>
+                <label className="label text-[10px] mb-1.5 block">{label}</label>
+                <input className="admin-input" type={type || "text"} value={(form as any)[key]} onChange={e => updateField(key, e.target.value)} />
+              </div>
+            ))}
           </div>
         </div>
 
         {/* Images */}
-        <div className="card p-6 space-y-4">
+        <div className="card p-6 space-y-6">
           <h2 className="heading text-sm text-[var(--accent)]">Images</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label className="label text-[10px] mb-1.5 block">Profile Image URL</label>
-              <input className="admin-input" value={form.profileImage} onChange={e => updateField("profileImage", e.target.value)} placeholder="/profile.jpg or https://..." />
-              {form.profileImage && (
-                <div className="mt-2 w-20 h-20 rounded-xl overflow-hidden border border-[var(--border)]">
-                  <img src={form.profileImage} alt="Profile" className="w-full h-full object-cover" />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {[
+              { field: "profileImage" as const, label: "Profile Photo", ref: profileFileRef, uploading: uploadingProfile, setUploading: setUploadingProfile, icon: <User size={28} className="text-[var(--text-tertiary)]" /> },
+              { field: "logoImage" as const, label: "Logo / Brand Icon", ref: logoFileRef, uploading: uploadingLogo, setUploading: setUploadingLogo, icon: <ImageIcon size={28} className="text-[var(--text-tertiary)]" /> },
+            ].map(({ field, label, ref, uploading, setUploading, icon }) => (
+              <div key={field} className="space-y-3">
+                <label className="label text-[10px] block">{label}</label>
+                <div className="flex items-start gap-4">
+                  <div className="relative w-24 h-24 rounded-2xl overflow-hidden border border-[var(--border)] bg-[var(--bg-elevated)] flex-shrink-0">
+                    {form[field] ? (
+                      <Image src={form[field]} alt={label} fill className="object-cover" sizes="96px" unoptimized />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center">{icon}</div>
+                    )}
+                  </div>
+                  <div className="flex-1 space-y-2">
+                    <input className="admin-input text-xs" value={form[field]} onChange={e => updateField(field, e.target.value)} placeholder="URL or upload below…" />
+                    <button onClick={() => ref.current?.click()} disabled={uploading} className="btn-ghost text-xs py-2 px-3 w-full">
+                      {uploading ? <Loader2 size={12} className="animate-spin" /> : <Upload size={12} />}
+                      {uploading ? "Uploading…" : "Upload File"}
+                    </button>
+                    <input ref={ref} type="file" accept="image/*" className="hidden" onChange={e => { const f = e.target.files?.[0]; if (f) handleImageUpload(f, field, setUploading); }} />
+                  </div>
                 </div>
-              )}
-            </div>
-            <div>
-              <label className="label text-[10px] mb-1.5 block">Logo Image URL</label>
-              <input className="admin-input" value={form.logoImage} onChange={e => updateField("logoImage", e.target.value)} placeholder="/images/logo.png" />
-            </div>
+              </div>
+            ))}
           </div>
         </div>
 
@@ -122,41 +154,34 @@ export default function ProfileEditor({ initialData }: { initialData: any }) {
         <div className="card p-6 space-y-4">
           <h2 className="heading text-sm text-[var(--accent)]">Academic</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div>
-              <label className="label text-[10px] mb-1.5 block">University</label>
-              <input className="admin-input" value={form.university} onChange={e => updateField("university", e.target.value)} />
-            </div>
-            <div>
-              <label className="label text-[10px] mb-1.5 block">Student ID</label>
-              <input className="admin-input" value={form.studentId} onChange={e => updateField("studentId", e.target.value)} />
-            </div>
-            <div>
-              <label className="label text-[10px] mb-1.5 block">Batch</label>
-              <input className="admin-input" value={form.batch} onChange={e => updateField("batch", e.target.value)} />
-            </div>
+            {[
+              { key: "university", label: "University" },
+              { key: "studentId", label: "Student ID" },
+              { key: "batch", label: "Batch" },
+            ].map(({ key, label }) => (
+              <div key={key}>
+                <label className="label text-[10px] mb-1.5 block">{label}</label>
+                <input className="admin-input" value={(form as any)[key]} onChange={e => updateField(key, e.target.value)} />
+              </div>
+            ))}
           </div>
         </div>
 
-        {/* Stats (for hero) */}
+        {/* Stats */}
         <div className="card p-6 space-y-4">
           <h2 className="heading text-sm text-[var(--accent)]">Hero Stats</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label className="label text-[10px] mb-1.5 block">Projects Count</label>
-              <input className="admin-input" value={form.stats?.projects || ""} onChange={e => updateStat("projects", e.target.value)} placeholder="14+" />
-            </div>
-            <div>
-              <label className="label text-[10px] mb-1.5 block">Certificates</label>
-              <input className="admin-input" value={form.stats?.certificates || ""} onChange={e => updateStat("certificates", e.target.value)} placeholder="4+" />
-            </div>
-            <div>
-              <label className="label text-[10px] mb-1.5 block">ICPC Rank</label>
-              <input className="admin-input" value={form.stats?.icpc_rank || ""} onChange={e => updateStat("icpc_rank", e.target.value)} placeholder="Honorable Mention" />
-            </div>
-            <div>
-              <label className="label text-[10px] mb-1.5 block">Languages</label>
-              <input className="admin-input" value={form.stats?.languages || ""} onChange={e => updateStat("languages", e.target.value)} placeholder="Java/C++/PHP" />
-            </div>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            {[
+              { key: "projects", label: "Projects", placeholder: "14+" },
+              { key: "certificates", label: "Certificates", placeholder: "4+" },
+              { key: "icpc_rank", label: "ICPC Rank", placeholder: "Honorable Mention" },
+              { key: "languages", label: "Languages", placeholder: "Java/C++/PHP" },
+            ].map(({ key, label, placeholder }) => (
+              <div key={key}>
+                <label className="label text-[10px] mb-1.5 block">{label}</label>
+                <input className="admin-input" value={form.stats?.[key] || ""} onChange={e => updateStat(key, e.target.value)} placeholder={placeholder} />
+              </div>
+            ))}
           </div>
         </div>
       </div>

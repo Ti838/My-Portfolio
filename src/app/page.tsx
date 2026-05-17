@@ -1,5 +1,6 @@
 // REFINED
 import Link from "next/link";
+import Image from "next/image";
 
 import { Code, Monitor, Award, Mic, Globe, ExternalLink, ArrowUpRight, Phone, Mail, GraduationCap } from "lucide-react";
 import { FiGithub } from "react-icons/fi";
@@ -90,12 +91,14 @@ export default async function HomePage() {
               <div className="lg:col-span-5 relative">
                 <ScrollReveal direction="right" delay={200}>
                   <div className="relative aspect-[4/5] rounded-[2rem] overflow-hidden group">
-                    <img
+                    <Image
                       src={personalInfo?.profileImage || "/profile.jpg"}
                       alt={personalInfo?.name || "Profile"}
-                      className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700 scale-110 group-hover:scale-100"
+                      fill
+                      className="object-cover grayscale hover:grayscale-0 transition-all duration-700 scale-110 group-hover:scale-100"
+                      sizes="(max-width: 768px) 100vw, 50vw"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-bg-primary via-transparent to-transparent opacity-60" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-bg-primary via-transparent to-transparent opacity-60 pointer-events-none" />
                     
                     {/* Glass Frame Overlay */}
                     <div className="absolute inset-4 border border-white/10 rounded-[1.5rem] pointer-events-none" />
@@ -192,10 +195,12 @@ export default async function HomePage() {
                     {/* Image side */}
                     <div className={`md:col-span-7 relative aspect-[16/10] overflow-hidden rounded-[2rem] border border-white/5 ${i % 2 !== 0 ? 'md:order-2' : ''}`}>
                       {p.imageUrl ? (
-                        <img
+                        <Image
                           src={p.imageUrl}
                           alt={p.title}
-                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000"
+                          fill
+                          className="object-cover group-hover:scale-105 transition-transform duration-1000"
+                          sizes="(max-width: 768px) 100vw, 60vw"
                         />
                       ) : (
                         <div className="w-full h-full bg-bg-elevated flex items-center justify-center">
@@ -354,8 +359,8 @@ export default async function HomePage() {
                   <div className="card p-10 h-full group border-white/5 bg-white/[0.02]">
                     <div className="flex items-start gap-6">
                       {edu.logoUrl ? (
-                        <div className="w-16 h-16 rounded-2xl bg-white/[0.03] p-3 border border-white/5 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
-                          <img src={edu.logoUrl} alt={edu.institution} className="w-full h-full object-contain grayscale group-hover:grayscale-0 transition-all" />
+                        <div className="w-16 h-16 rounded-2xl bg-white/[0.03] border border-white/5 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform relative overflow-hidden">
+                          <Image src={edu.logoUrl} alt={edu.institution} fill className="object-contain p-3 grayscale group-hover:grayscale-0 transition-all" sizes="64px" />
                         </div>
                       ) : (
                         <div className="w-16 h-16 rounded-2xl bg-white/[0.03] flex items-center justify-center flex-shrink-0">

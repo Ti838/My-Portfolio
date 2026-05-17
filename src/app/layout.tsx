@@ -7,6 +7,7 @@ import { AdminProvider } from "@/components/admin/AdminProvider";
 import HeaderStack from "@/components/layout/HeaderStack";
 import AdminModalsRenderer from "@/components/admin/AdminModalsRenderer";
 import ThemeProvider from "@/components/providers/ThemeProvider";
+import SmoothScroll from "@/components/layout/SmoothScroll";
 
 import { getPersonalInfo, getProjects, getAchievements, getExperiences, getEducation, getSkills, getSocialLinks } from "@/data/portfolio";
 
@@ -76,44 +77,45 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link
-          href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
           rel="stylesheet"
         />
       </head>
       <body suppressHydrationWarning className="antialiased noise-bg" style={{ background: 'var(--bg-primary)', color: 'var(--text-primary)' }}>
         <ThemeProvider>
-          <div className="fixed inset-0 -z-10 bg-[radial-gradient(circle_at_20%_15%,rgba(14,165,233,0.08),transparent_28%),radial-gradient(circle_at_80%_18%,rgba(16,185,129,0.06),transparent_26%),radial-gradient(circle_at_50%_110%,rgba(37,99,235,0.05),transparent_34%)]" />
-          <div className="fixed inset-0 -z-10 bg-[linear-gradient(rgba(255,255,255,0.025)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.025)_1px,transparent_1px)] bg-[size:120px_120px] opacity-20 [mask-image:radial-gradient(circle_at_center,black,transparent_74%)]" />
-          <AdminProvider>
-            <div className="relative z-10">
-              <HeaderStack personalInfo={personalInfo} />
-              <AdminModalsRenderer 
-                personalInfo={personalInfo} 
-                projects={projects} 
-                achievements={achievements} 
-                experiences={experiences}
-                education={education}
-                skills={skillData.flatMap((c:any) => c.skills)}
-                skillCategories={skillData}
-                socialLinks={socialLinks}
+          {/* Clean background established by globals.css */ }
+          <SmoothScroll>
+            <AdminProvider>
+              <div className="relative z-10">
+                <HeaderStack personalInfo={personalInfo} />
+                <AdminModalsRenderer 
+                  personalInfo={personalInfo} 
+                  projects={projects} 
+                  achievements={achievements} 
+                  experiences={experiences}
+                  education={education}
+                  skills={skillData.flatMap((c:any) => c.skills)}
+                  skillCategories={skillData}
+                  socialLinks={socialLinks}
+                />
+                <main className="min-h-screen selection:bg-accent/20 selection:text-accent">{children}</main>
+                <Footer socialLinks={socialLinks} tagline={personalInfo?.tagline} />
+              </div>
+              <Toaster
+                position="bottom-right"
+                toastOptions={{
+                  style: { 
+                    borderRadius: "12px", 
+                    background: "#111111", 
+                    color: "#f0ece4", 
+                    border: "1px solid #222222",
+                    fontFamily: "'Inter', sans-serif",
+                    fontSize: "0.875rem",
+                  },
+                }}
               />
-              <main className="min-h-screen selection:bg-accent/20 selection:text-accent">{children}</main>
-              <Footer socialLinks={socialLinks} tagline={personalInfo?.tagline} />
-            </div>
-            <Toaster
-              position="bottom-right"
-              toastOptions={{
-                style: { 
-                  borderRadius: "12px", 
-                  background: "#111111", 
-                  color: "#f0ece4", 
-                  border: "1px solid #222222",
-                  fontFamily: "'Sora', sans-serif",
-                  fontSize: "0.875rem",
-                },
-              }}
-            />
-          </AdminProvider>
+            </AdminProvider>
+          </SmoothScroll>
         </ThemeProvider>
       </body>
     </html>

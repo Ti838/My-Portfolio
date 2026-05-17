@@ -1,5 +1,5 @@
 /* REFINED */
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -61,11 +61,7 @@ html {
 
 body {
   font-family: 'Inter', sans-serif;
-  background:
-    radial-gradient(circle at 12% 18%, rgba(6, 182, 212, 0.08), transparent 24%),
-    radial-gradient(circle at 88% 12%, rgba(99, 102, 241, 0.08), transparent 26%),
-    radial-gradient(circle at 50% 100%, rgba(15, 118, 110, 0.08), transparent 34%),
-    linear-gradient(180deg, #050505 0%, #030303 46%, #020202 100%);
+  background-color: var(--bg-primary);
   color: var(--text-primary);
   line-height: 1.6;
   font-weight: 400;
@@ -73,10 +69,7 @@ body {
 }
 
 .light body {
-  background:
-    radial-gradient(circle at 12% 18%, rgba(6, 182, 212, 0.08), transparent 24%),
-    radial-gradient(circle at 88% 12%, rgba(79, 70, 229, 0.07), transparent 26%),
-    linear-gradient(180deg, #ffffff 0%, #fafafa 52%, #f4f4f5 100%);
+  background-color: var(--bg-primary);
   color-scheme: light;
 }
 
@@ -109,27 +102,27 @@ body {
 }
 
 /* ── Typography System ────────────────────────────────────────────────────── */
-.font-display  { font-family: 'Outfit', sans-serif; }
+.font-display  { font-family: 'Playfair Display', serif; }
 .font-body     { font-family: 'Inter', sans-serif; }
 .font-mono     { font-family: 'JetBrains Mono', monospace; }
 
 .display-xl {
-  font: 700 clamp(3.5rem, 8vw, 7rem)/1 'Outfit', sans-serif;
+  font: italic 400 clamp(3.5rem, 8vw, 7rem)/1 'Playfair Display', serif;
   letter-spacing: -0.04em;
 }
 
 .display-lg {
-  font: 600 clamp(2.5rem, 5vw, 4.5rem)/1.1 'Outfit', sans-serif;
+  font: italic 400 clamp(2.5rem, 5vw, 4.5rem)/1.1 'Playfair Display', serif;
   letter-spacing: -0.03em;
 }
 
 .display-md {
-  font: 600 clamp(1.8rem, 3vw, 2.8rem)/1.2 'Outfit', sans-serif;
+  font: 400 clamp(1.8rem, 3vw, 2.8rem)/1.2 'Playfair Display', serif;
   letter-spacing: -0.02em;
 }
 
 .heading {
-  font: 600 1.25rem/1.4 'Outfit', sans-serif;
+  font: 600 1.25rem/1.4 'Inter', sans-serif;
 }
 
 .body-lg {
@@ -160,9 +153,10 @@ body {
 }
 
 .section-title {
-  font-family: 'Outfit', sans-serif;
+  font-family: 'Playfair Display', serif;
   font-size: clamp(2.5rem, 5vw, 3.5rem);
   font-weight: 700;
+  font-style: italic;
   color: var(--text-primary);
   letter-spacing: -0.03em;
 }
@@ -224,7 +218,7 @@ body {
   background: linear-gradient(135deg, #0f766e 0%, #0ea5e9 48%, #2563eb 100%);
   color: #ffffff;
   border-radius: var(--radius-full);
-  font-family: 'Outfit', sans-serif;
+  font-family: 'Inter', sans-serif;
   font-weight: 600;
   font-size: 0.9375rem;
   transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
@@ -245,7 +239,7 @@ body {
   color: var(--text-primary);
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: var(--radius-full);
-  font-family: 'Outfit', sans-serif;
+  font-family: 'Inter', sans-serif;
   font-weight: 500;
   font-size: 0.9375rem;
   transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
@@ -393,6 +387,35 @@ body {
   background: var(--accent);
 }
 
+/* ── Admin Input ──────────────────────────────────────────────────────────── */
+.admin-input {
+  width: 100%;
+  padding: 10px 14px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--text-primary);
+  font-family: 'Inter', sans-serif;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  transition: border-color 0.2s, background 0.2s;
+  outline: none;
+}
+
+.admin-input:focus {
+  border-color: var(--accent);
+  background: rgba(99, 102, 241, 0.04);
+}
+
+.admin-input::placeholder {
+  color: var(--text-tertiary);
+}
+
+.light .admin-input {
+  background: rgba(0, 0, 0, 0.03);
+  border-color: var(--border);
+}
+
 /* ── Animations ───────────────────────────────────────────────────────────── */
 @keyframes float {
   0%, 100% { transform: translateY(0); }
@@ -401,4 +424,13 @@ body {
 
 .animate-float {
   animation: float 5s ease-in-out infinite;
+}
+
+@keyframes pulse-slow {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
+}
+
+.animate-pulse-slow {
+  animation: pulse-slow 3s ease-in-out infinite;
 }

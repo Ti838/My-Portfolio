@@ -756,3 +756,65 @@ export async function updateSocialLink(id: string, data: any) {
   revalidatePath("/");
   return { success: true };
 }
+
+export async function createSocialLink(data: { label: string; url: string; icon: string }) {
+  await requireAdmin();
+  const supabase = createAdminClient();
+  if (!supabase) throw new Error("Supabase not configured");
+
+  const { error } = await supabase.from("social_links").insert([{
+    label: data.label,
+    url: data.url,
+    icon: data.icon,
+    sort_order: 99,
+  }]);
+
+  if (error) throw error;
+  revalidatePath("/");
+  return { success: true };
+}
+
+export async function deleteSocialLink(id: string) {
+  await requireAdmin();
+  const supabase = createAdminClient();
+  if (!supabase) throw new Error("Supabase not configured");
+
+  const { error } = await supabase.from("social_links").delete().eq("id", id);
+  if (error) throw error;
+  revalidatePath("/");
+  return { success: true };
+}
+
+// ─── Site Settings ──────────────────────────────────────────────────────────
+
+export async function getSiteSettings(): Promise<Array<{
+  key: string; value: string; type: string; label: string; description: string;
+}>> {
+  const supabase = createAdminClient();
+  if (!supabase) return [];
+
+  const { data, error } = await supabase
+    .from("site_settings")
+    .select("key, value, type, label, description")
+    .order("key");
+
+  if (error) {
+    console.warn("[site_settings] Table may not exist yet:", error.message);
+    return [];
+  }
+  return data ?? [];
+}
+
+export async function updateSiteSetting(key: string, value: string) {
+  await requireAdmin();
+  const supabase = createAdminClient();
+  if (!supabase) throw new Error("Supabase not configured");
+
+  const { error } = await supabase
+    .from("site_settings")
+    .upsert({ key, value, updated_at: new Date().toISOString() }, { onConflict: "key" });
+
+  if (error) throw error;
+  revalidatePath("/");
+  return { success: true };
+}

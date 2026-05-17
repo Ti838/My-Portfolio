@@ -55,18 +55,15 @@ export default function Navbar({ logoImage }: { logoImage?: string }) {
         <div className="max-w-[1400px] mx-auto px-6 flex items-center justify-between">
           {/* Logo */}
           <Link href="/" className="relative z-50 group flex items-center gap-3">
-            <span className="flex h-11 w-11 items-center justify-center rounded-2xl border border-white/10 bg-black/30 p-1.5 shadow-[0_18px_40px_rgba(0,0,0,0.24)] backdrop-blur-xl">
-              <img src={logoImage || "/images/logo.svg"} alt="Timon Biswas logo" className="h-full w-full rounded-xl object-contain" />
-            </span>
-            <span className="hidden font-display text-sm font-semibold uppercase tracking-[0.22em] text-text-1 sm:block">
-              Timon<span className="text-accent">.</span>
+            <span className="font-display text-2xl font-bold tracking-tighter text-ethereal-text-1">
+              Timon Biswas<span className="text-ethereal-accent">.</span>
             </span>
           </Link>
 
           {/* Center Nav - Floating Dock style when scrolled */}
           <nav className={`hidden md:flex items-center gap-1 p-1 transition-all duration-700 ${
             scrolled 
-              ? 'glass border border-white/5 rounded-full px-2 py-1 shadow-2xl scale-95 translate-y-2' 
+              ? 'bg-ethereal-surface/50 backdrop-blur-md border border-white/5 rounded-full px-2 py-1 shadow-2xl scale-95 translate-y-2' 
               : 'bg-transparent'
           }`}>
             {navLinks.map((link) => {
@@ -75,10 +72,10 @@ export default function Navbar({ logoImage }: { logoImage?: string }) {
                 <button
                   key={link.href}
                   onClick={() => handleNavClick(link.href)}
-                  className={`px-4 py-1.5 rounded-full text-[11px] font-mono uppercase tracking-[0.2em] transition-all duration-500 ${
+                  className={`px-4 py-1.5 rounded-full text-[11px] font-sans uppercase tracking-[0.2em] transition-all duration-500 ${
                     isActive 
-                      ? 'text-accent bg-white/[0.05]' 
-                      : 'text-text-2 hover:text-text-1'
+                      ? 'text-ethereal-text-1 bg-white/[0.05]' 
+                      : 'text-ethereal-text-2 hover:text-ethereal-text-1'
                   }`}
                 >
                   {link.label}
@@ -92,7 +89,7 @@ export default function Navbar({ logoImage }: { logoImage?: string }) {
             <ThemeToggle compact />
 
             {isAdmin && (
-              <Link href="/admin/dashboard" className="hidden lg:block text-[10px] font-mono text-accent uppercase tracking-widest hover:opacity-70 transition-opacity">
+              <Link href="/admin/dashboard" className="hidden lg:block text-[10px] font-sans text-ethereal-accent uppercase tracking-widest hover:opacity-70 transition-opacity">
                 Admin
               </Link>
             )}
@@ -100,7 +97,7 @@ export default function Navbar({ logoImage }: { logoImage?: string }) {
             {/* Mobile Toggle */}
             <button
               onClick={() => setOpen(!open)}
-              className="md:hidden w-10 h-10 flex items-center justify-center rounded-full glass border border-white/10 text-text-1"
+              className="md:hidden w-10 h-10 flex items-center justify-center rounded-full bg-ethereal-surface/50 border border-white/10 text-ethereal-text-1"
             >
               {open ? <X size={20} /> : <Menu size={20} />}
             </button>
@@ -110,13 +107,13 @@ export default function Navbar({ logoImage }: { logoImage?: string }) {
 
       {/* Mobile Menu Overlay */}
       <div className={`fixed inset-0 z-[45] md:hidden transition-all duration-700 ${open ? 'opacity-100 visible' : 'opacity-0 invisible'}`}>
-        <div className="absolute inset-0 bg-bg-primary/95 backdrop-blur-2xl" />
+        <div className="absolute inset-0 bg-ethereal-bg/95 backdrop-blur-2xl" />
         <nav className="relative h-full flex flex-col items-center justify-center gap-8 px-6">
           {navLinks.map((link, i) => (
             <button
               key={link.href}
               onClick={() => handleNavClick(link.href)}
-              className={`text-4xl font-display font-bold tracking-tight text-text-1 hover:text-accent transition-all duration-500 ${
+              className={`text-4xl font-display font-bold tracking-tight text-ethereal-text-1 hover:text-ethereal-text-2 transition-all duration-500 ${
                 open ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'
               }`}
               style={{ transitionDelay: `${i * 100}ms` }}
