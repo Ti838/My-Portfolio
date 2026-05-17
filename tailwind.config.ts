@@ -14,6 +14,7 @@ const config: Config = {
         display: ["'Playfair Display'", "serif"],
         sans: ["'Inter'", "system-ui", "sans-serif"],
         mono: ["'JetBrains Mono'", "monospace"],
+        handwriting: ["'Caveat'", "cursive"],
       },
       colors: {
         // Ethereal design system (namespaced)

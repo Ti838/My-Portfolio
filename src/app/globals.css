@@ -434,3 +434,31 @@ body {
 .animate-pulse-slow {
   animation: pulse-slow 3s ease-in-out infinite;
 }
+
+/* ── Grain / Noise Texture ───────────────────────────────────────────────────── */
+.noise-bg::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.035'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.5;
+}
+
+/* ── Font Handwriting ────────────────────────────────────────────────────────── */
+.font-handwriting {
+  font-family: 'Caveat', cursive;
+}
+
+/* ── Jackie Zhang Bookmark ───────────────────────────────────────────────────── */
+.bookmark-red {
+  position: absolute;
+  top: -4px;
+  width: 20px;
+  background: var(--accent);
+  height: 48px;
+  clip-path: polygon(0 0, 100% 0, 100% 80%, 50% 100%, 0 80%);
+  opacity: 0.8;
+}
+

@@ -1,11 +1,40 @@
-// REFINED — Ethereal Craft Hero
+// REFINED — Ethereal Craft Hero (Jackie Zhang Inspired)
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import { motion } from "framer-motion";
+import { useEffect, useState, useRef } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
-import Link from "next/link";
-import { ArrowDown, Mail } from "lucide-react";
+import { ArrowDown, MapPin } from "lucide-react";
+import MagneticButton from "@/components/ui/MagneticButton";
+
+// ── Rotating belief words (Jackie Zhang signature) ────────────────────────────
+const beliefWords = ["natural.", "powerful.", "reliable.", "joyful.", "precise."];
+
+function RotatingWord() {
+  const [index, setIndex] = useState(0);
+
+  useEffect(() => {
+    const id = setInterval(() => setIndex(i => (i + 1) % beliefWords.length), 2500);
+    return () => clearInterval(id);
+  }, []);
+
+  return (
+    <span className="relative inline-block">
+      <AnimatePresence mode="wait">
+        <motion.span
+          key={beliefWords[index]}
+          initial={{ y: 40, opacity: 0, filter: "blur(8px)" }}
+          animate={{ y: 0, opacity: 1, filter: "blur(0px)" }}
+          exit={{ y: -40, opacity: 0, filter: "blur(8px)" }}
+          transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+          className="inline-block text-ethereal-accent italic"
+        >
+          {beliefWords[index]}
+        </motion.span>
+      </AnimatePresence>
+    </span>
+  );
+}
 
 // ── Animated Counter ──────────────────────────────────────────────────────────
 function AnimatedCounter({ target, duration = 1500 }: { target: number; duration?: number }) {
@@ -34,224 +63,152 @@ function AnimatedCounter({ target, duration = 1500 }: { target: number; duration
   return <span ref={ref}>{count}</span>;
 }
 
-// ── Belief Ticker ─────────────────────────────────────────────────────────────
-const beliefs = [
-  "Tirelessly pursue clarity.",
-  "Design for moments.",
-  "Software should empower.",
-];
-
-function BeliefTicker() {
-  const [index, setIndex] = useState(0);
-
-  useEffect(() => {
-    const id = setInterval(() => setIndex(i => (i + 1) % beliefs.length), 3000);
-    return () => clearInterval(id);
-  }, []);
-
-  return (
-    <div className="relative overflow-hidden h-6">
-      {beliefs.map((b, i) => (
-        <motion.span
-          key={b}
-          initial={{ y: 24, opacity: 0 }}
-          animate={i === index ? { y: 0, opacity: 1 } : { y: -24, opacity: 0 }}
-          transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-          className="absolute inset-0 font-mono text-xs text-ethereal-accent uppercase tracking-widest"
-        >
-          {b}
-        </motion.span>
-      ))}
-    </div>
-  );
-}
-
 // ── Main Hero ─────────────────────────────────────────────────────────────────
-interface HeroProps {
-  personalInfo?: any;
-}
-
-const fadeUp = {
-  initial: { opacity: 0, y: 40 },
-  animate: { opacity: 1, y: 0 },
-};
-
-export default function Hero({ personalInfo }: HeroProps) {
+export default function Hero({ personalInfo }: { personalInfo?: any }) {
   const name = personalInfo?.name || "Timon Biswas";
+  const firstName = name.split(" ")[0];
+  const lastName = name.split(" ").slice(1).join(" ");
   const profileImage = personalInfo?.profile_image || personalInfo?.profileImage || "/profile.jpg";
-  const stats = personalInfo?.stats || {
-    projects: "14",
-    certificates: "4",
-    icpc_rank: "Honorable Mention",
-    languages: "Java/C++/PHP",
-  };
+  const location = personalInfo?.location || "Dhaka, Bangladesh";
+  const stats = personalInfo?.stats || { projects: "14", certificates: "4" };
 
   const parseNum = (val: string) => parseInt(val?.replace(/\D/g, "") || "0", 10);
 
+  const fadeUp = {
+    initial: { opacity: 0, y: 40 },
+    animate: { opacity: 1, y: 0 },
+  };
+
   return (
-    <section
-      id="hero"
-      className="relative min-h-screen flex flex-col justify-center overflow-hidden pt-24 pb-16"
-    >
-      {/* Subtle background glyph */}
+    <section id="hero" className="relative min-h-screen flex flex-col justify-center overflow-hidden pt-24 pb-16">
+      {/* Subtle radial glow */}
       <div
         aria-hidden
-        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] rounded-full opacity-[0.02] bg-ethereal-accent blur-3xl pointer-events-none"
+        className="absolute top-1/2 right-0 w-[600px] h-[600px] -translate-y-1/2 translate-x-1/4 rounded-full opacity-[0.04] bg-ethereal-accent blur-3xl pointer-events-none"
       />
 
       <div className="relative max-w-[1400px] mx-auto px-6 w-full">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center min-h-[85vh]">
 
           {/* ── Left: Typography ── */}
-          <div className="lg:col-span-7 space-y-8">
-            {/* Status Pill */}
-            <motion.div
-              variants={fadeUp}
-              initial="initial"
-              animate="animate"
-              transition={{ duration: 0.8, delay: 0.1 }}
-            >
-              <div className="inline-flex items-center gap-3">
-                <span className="relative flex h-2.5 w-2.5">
+          <div className="lg:col-span-7 space-y-10">
+
+            {/* Available pill */}
+            <motion.div variants={fadeUp} initial="initial" animate="animate" transition={{ duration: 0.7, delay: 0.1 }}>
+              <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full border border-white/10 bg-white/[0.02]">
+                <span className="relative flex h-2 w-2">
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75" />
-                  <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-green-400" />
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-green-400" />
                 </span>
-                <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-ethereal-text-3">
-                  Available for work
-                </span>
+                <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-ethereal-text-3">Available for work</span>
+                <span className="font-mono text-[10px] text-ethereal-text-3">·</span>
+                <MapPin size={10} className="text-ethereal-text-3" />
+                <span className="font-mono text-[10px] uppercase tracking-[0.15em] text-ethereal-text-3">{location}</span>
               </div>
             </motion.div>
 
-            {/* Name */}
-            <motion.div
-              variants={fadeUp}
-              initial="initial"
-              animate="animate"
-              transition={{ duration: 1, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-            >
-              <h1 className="font-display font-bold text-ethereal-text-1 leading-[0.95] tracking-tighter text-[clamp(3.5rem,8vw,7rem)]">
-                {name.split(" ").map((word: string, i: number) => (
-                  <span key={word} className={`block ${i === 1 ? "italic text-ethereal-text-2" : ""}`}>
-                    {word}
-                  </span>
-                ))}
-              </h1>
+            {/* Signature name — handwriting label */}
+            <motion.div variants={fadeUp} initial="initial" animate="animate" transition={{ duration: 0.9, delay: 0.15 }}>
+              <div className="relative">
+                {/* Handwriting annotation */}
+                <span className="absolute -top-8 -left-2 font-handwriting text-2xl text-ethereal-accent/70 rotate-[-3deg] select-none">
+                  {firstName} :)
+                </span>
+                <h1 className="font-display font-bold text-ethereal-text-1 leading-[0.9] tracking-tighter text-[clamp(3.5rem,9vw,7.5rem)]">
+                  <span className="block">{firstName}</span>
+                  <span className="block italic text-ethereal-text-2 text-[0.85em]">{lastName}</span>
+                </h1>
+              </div>
             </motion.div>
 
-            {/* Rotating Beliefs */}
-            <motion.div
-              variants={fadeUp}
-              initial="initial"
-              animate="animate"
-              transition={{ duration: 0.8, delay: 0.45 }}
-            >
-              <BeliefTicker />
+            {/* Jackie Zhang signature: "Software should feel ___" rotating */}
+            <motion.div variants={fadeUp} initial="initial" animate="animate" transition={{ duration: 0.8, delay: 0.3 }}>
+              <p className="font-display text-xl md:text-2xl text-ethereal-text-1 leading-snug">
+                Software should feel{" "}
+                <RotatingWord />
+              </p>
+              <p className="font-sans text-ethereal-text-2 text-sm leading-relaxed max-w-md mt-4">
+                CSE student at SMUCT — building products at the intersection of
+                AI, elegant code, and human experience.
+              </p>
             </motion.div>
-
-            {/* Bio line */}
-            <motion.p
-              variants={fadeUp}
-              initial="initial"
-              animate="animate"
-              transition={{ duration: 0.8, delay: 0.55 }}
-              className="font-sans text-ethereal-text-2 text-base leading-relaxed max-w-lg"
-            >
-              <em className="font-display text-lg text-ethereal-text-1 not-italic">
-                Software should feel natural.
-              </em>{" "}
-              CSE student at SMUCT, building products at the intersection of AI,
-              elegant code, and human experience.
-            </motion.p>
 
             {/* CTAs */}
-            <motion.div
-              variants={fadeUp}
-              initial="initial"
-              animate="animate"
-              transition={{ duration: 0.8, delay: 0.65 }}
-              className="flex flex-wrap items-center gap-4"
-            >
-              <a
+            <motion.div variants={fadeUp} initial="initial" animate="animate" transition={{ duration: 0.8, delay: 0.45 }} className="flex flex-wrap items-center gap-4">
+              <MagneticButton
+                as="a"
                 href="#contact"
-                onClick={e => { e.preventDefault(); document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" }); }}
                 className="btn-primary"
+                onClick={(e: any) => { e.preventDefault(); document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" }); }}
               >
-                <Mail size={16} />
-                Get in Touch
-              </a>
+                let&apos;s chat!
+              </MagneticButton>
               <a
                 href="#projects"
                 onClick={e => { e.preventDefault(); document.getElementById("projects")?.scrollIntoView({ behavior: "smooth" }); }}
                 className="btn-ghost"
               >
-                View Work
-                <ArrowDown size={16} />
+                View Work <ArrowDown size={14} />
               </a>
+            </motion.div>
+
+            {/* Stats */}
+            <motion.div variants={fadeUp} initial="initial" animate="animate" transition={{ duration: 0.8, delay: 0.55 }} className="flex items-center gap-10 pt-4 border-t border-white/5">
+              {[
+                { label: "Projects shipped", value: parseNum(stats.projects), suffix: "+" },
+                { label: "Certifications", value: parseNum(stats.certificates), suffix: "+" },
+                { label: "ICPC Rank", value: "HM", isText: true },
+              ].map(({ label, value, suffix, isText }) => (
+                <div key={label}>
+                  <div className="font-display text-2xl font-bold text-ethereal-text-1">
+                    {isText ? value : <><AnimatedCounter target={value as number} />{suffix}</>}
+                  </div>
+                  <div className="font-mono text-[9px] uppercase tracking-widest text-ethereal-text-3 mt-0.5">{label}</div>
+                </div>
+              ))}
             </motion.div>
           </div>
 
-          {/* ── Right: Photo + Stats ── */}
-          <div className="lg:col-span-5 flex flex-col items-center lg:items-end gap-8">
-            {/* Profile Photo */}
+          {/* ── Right: Polaroid-style tilted photo ── */}
+          <div className="lg:col-span-5 flex justify-center lg:justify-end">
             <motion.div
-              initial={{ opacity: 0, scale: 0.92, y: 20 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              transition={{ duration: 1.2, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
-              className="relative"
+              initial={{ opacity: 0, rotate: -3, y: 30 }}
+              animate={{ opacity: 1, rotate: -2, y: 0 }}
+              transition={{ duration: 1.2, delay: 0.35, ease: [0.16, 1, 0.3, 1] }}
+              whileHover={{ rotate: 0, scale: 1.02, transition: { duration: 0.4 } }}
+              className="relative cursor-pointer"
             >
-              <div className="relative w-60 h-72 sm:w-72 sm:h-80 rounded-3xl overflow-hidden border border-white/5">
-                <Image
-                  src={profileImage}
-                  alt={name}
-                  fill
-                  className="object-cover object-center"
-                  sizes="(max-width: 640px) 240px, 288px"
-                  priority
-                  unoptimized
-                />
-                {/* Gradient overlay at bottom */}
-                <div className="absolute inset-0 bg-gradient-to-t from-[var(--bg-primary)]/60 via-transparent to-transparent" />
-              </div>
-
-              {/* Floating accent label */}
-              <div className="absolute -bottom-4 -left-4 bg-[var(--bg-elevated)] border border-[var(--border)] rounded-2xl px-4 py-2 flex items-center gap-2">
-                <span className="w-2 h-2 rounded-full bg-ethereal-accent animate-pulse-slow" />
-                <span className="font-mono text-[10px] uppercase tracking-widest text-ethereal-text-2">
-                  CSE · SMUCT
-                </span>
-              </div>
-            </motion.div>
-
-            {/* Stats Grid */}
-            <motion.div
-              variants={fadeUp}
-              initial="initial"
-              animate="animate"
-              transition={{ duration: 0.8, delay: 0.75 }}
-              className="grid grid-cols-2 gap-3 w-full max-w-xs"
-            >
-              {[
-                { label: "Projects", value: parseNum(stats.projects), suffix: "+" },
-                { label: "Certificates", value: parseNum(stats.certificates), suffix: "+" },
-                { label: "ICPC", value: stats.icpc_rank || "HM", isText: true },
-                { label: "Languages", value: stats.languages || "5+", isText: true },
-              ].map(({ label, value, suffix, isText }) => (
-                <div
-                  key={label}
-                  className="bg-[var(--bg-elevated)] border border-[var(--border)] rounded-2xl p-4"
-                >
-                  <div className="font-display text-2xl font-bold text-ethereal-text-1 leading-none mb-1">
-                    {isText ? (
-                      <span className="text-lg">{value}</span>
-                    ) : (
-                      <><AnimatedCounter target={value as number} />{suffix}</>
-                    )}
-                  </div>
-                  <div className="font-mono text-[9px] uppercase tracking-widest text-ethereal-text-3">
-                    {label}
-                  </div>
+              {/* Polaroid frame */}
+              <div className="bg-white p-3 pb-16 shadow-2xl shadow-black/50 rounded-sm" style={{ width: "280px" }}>
+                <div className="relative w-full aspect-[3/4] overflow-hidden bg-gray-100">
+                  <Image
+                    src={profileImage}
+                    alt={name}
+                    fill
+                    className="object-cover object-center"
+                    sizes="280px"
+                    priority
+                    unoptimized
+                  />
                 </div>
-              ))}
+                {/* Polaroid bottom label */}
+                <div className="absolute bottom-4 left-0 right-0 flex justify-center">
+                  <span className="font-handwriting text-2xl text-gray-600 rotate-[-1deg]">
+                    {firstName} :)
+                  </span>
+                </div>
+              </div>
+
+              {/* Sticker tags scattered around */}
+              <div className="absolute -top-4 -right-6 bg-ethereal-accent/90 text-white font-mono text-[9px] uppercase tracking-widest px-2 py-1 rounded rotate-[4deg] shadow-lg">
+                AI Dev
+              </div>
+              <div className="absolute -bottom-3 -left-6 bg-white text-gray-700 font-handwriting text-sm px-2 py-1 rounded shadow rotate-[-3deg]">
+                ICPC 2024
+              </div>
+              <div className="absolute top-1/2 -right-8 bg-[var(--bg-elevated)] border border-white/10 text-ethereal-text-2 font-mono text-[9px] uppercase tracking-widest px-2 py-1 rounded rotate-[2deg] shadow">
+                SMUCT
+              </div>
             </motion.div>
           </div>
         </div>
@@ -260,16 +217,11 @@ export default function Hero({ personalInfo }: HeroProps) {
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 1.5, duration: 1 }}
-          className="absolute bottom-0 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 pb-8"
+          transition={{ delay: 1.8, duration: 1 }}
+          className="flex flex-col items-center gap-2 mt-8"
         >
-          <span className="font-mono text-[9px] uppercase tracking-[0.3em] text-ethereal-text-3">
-            Scroll
-          </span>
-          <motion.div
-            animate={{ y: [0, 8, 0] }}
-            transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
-          >
+          <span className="font-mono text-[9px] uppercase tracking-[0.3em] text-ethereal-text-3">Scroll</span>
+          <motion.div animate={{ y: [0, 8, 0] }} transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}>
             <ArrowDown size={14} className="text-ethereal-text-3" />
           </motion.div>
         </motion.div>
