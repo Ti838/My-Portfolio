@@ -170,7 +170,7 @@ export default function Hero({ personalInfo }: { personalInfo?: any }) {
           </div>
 
           {/* ── Right: Polaroid-style tilted photo ── */}
-          <div className="lg:col-span-5 flex justify-center lg:justify-end">
+          <div className="lg:col-span-5 flex justify-center lg:justify-center mt-12 lg:mt-0">
             <motion.div
               initial={{ opacity: 0, rotate: -3, y: 30 }}
               animate={{ opacity: 1, rotate: -2, y: 0 }}
