@@ -2,7 +2,7 @@
 "use client";
 
 import { useState, useRef } from "react";
-import { Save, Upload, Loader2, ImageIcon, User } from "lucide-react";
+import { Save, Upload, Loader2, ImageIcon, User, FileText } from "lucide-react";
 import { updatePersonalInfo } from "@/lib/admin-actions";
 import { uploadImage } from "@/lib/upload";
 import Image from "next/image";
@@ -22,13 +22,16 @@ export default function ProfileEditor({ initialData }: { initialData: any }) {
     university: initialData?.university || "",
     studentId: initialData?.studentId || initialData?.student_id || "",
     batch: initialData?.batch || "",
+    resumeUrl: initialData?.resumeUrl || initialData?.resume_url || "",
     stats: initialData?.stats || {},
   });
   const [saving, setSaving] = useState(false);
   const [uploadingProfile, setUploadingProfile] = useState(false);
   const [uploadingLogo, setUploadingLogo] = useState(false);
+  const [uploadingResume, setUploadingResume] = useState(false);
   const profileFileRef = useRef<HTMLInputElement>(null);
   const logoFileRef = useRef<HTMLInputElement>(null);
+  const resumeFileRef = useRef<HTMLInputElement>(null);
 
   const handleSave = async () => {
     setSaving(true);
@@ -147,6 +150,25 @@ export default function ProfileEditor({ initialData }: { initialData: any }) {
                 </div>
               </div>
             ))}
+          </div>
+          
+          <div className="mt-6 pt-6 border-t border-[var(--border)]">
+             <div className="space-y-3 max-w-sm">
+                <label className="label text-[10px] block">CV / Resume (PDF)</label>
+                <div className="flex items-center gap-4">
+                  <div className="flex-1 space-y-2">
+                    <input className="admin-input text-xs" value={form.resumeUrl} onChange={e => updateField("resumeUrl", e.target.value)} placeholder="URL or upload PDF…" />
+                    <button onClick={() => resumeFileRef.current?.click()} disabled={uploadingResume} className="btn-ghost text-xs py-2 px-3 w-full">
+                      {uploadingResume ? <Loader2 size={12} className="animate-spin" /> : <Upload size={12} />}
+                      {uploadingResume ? "Uploading…" : "Upload CV/Resume"}
+                    </button>
+                    <input ref={resumeFileRef} type="file" accept="application/pdf" className="hidden" onChange={e => { const f = e.target.files?.[0]; if (f) handleImageUpload(f, "resumeUrl" as any, setUploadingResume); }} />
+                  </div>
+                  <div className="w-12 h-12 rounded-lg bg-[var(--bg-elevated)] border border-[var(--border)] flex items-center justify-center flex-shrink-0">
+                     <FileText size={20} className="text-[var(--text-tertiary)]" />
+                  </div>
+                </div>
+             </div>
           </div>
         </div>
 

@@ -73,6 +73,7 @@ export default function Hero({ personalInfo }: { personalInfo?: any }) {
   const lastName = name.split(" ").slice(1).join(" ");
   const profileImage = personalInfo?.profile_image || personalInfo?.profileImage || "/profile.jpg";
   const location = personalInfo?.location || "Dhaka, Bangladesh";
+  const resumeUrl = personalInfo?.resume_url || personalInfo?.resumeUrl || "";
   const stats = personalInfo?.stats || { projects: "14", certificates: "4" };
 
   const parseNum = (val: string) => parseInt(val?.replace(/\D/g, "") || "0", 10);
@@ -134,8 +135,7 @@ export default function Hero({ personalInfo }: { personalInfo?: any }) {
                 <RotatingWord />
               </p>
               <p className="font-sans text-ethereal-text-2 text-sm leading-relaxed max-w-md mt-4">
-                CSE student at SMUCT — building products at the intersection of
-                AI, elegant code, and human experience.
+                {personalInfo?.bio || "CSE student at SMUCT — building products at the intersection of AI, elegant code, and human experience."}
               </p>
             </motion.div>
 
@@ -149,6 +149,16 @@ export default function Hero({ personalInfo }: { personalInfo?: any }) {
               >
                 let&apos;s chat!
               </MagneticButton>
+              {resumeUrl && (
+                <a
+                  href={resumeUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn-ghost"
+                >
+                  Download CV
+                </a>
+              )}
               <a
                 href="#projects"
                 onClick={e => { e.preventDefault(); document.getElementById("projects")?.scrollIntoView({ behavior: "smooth" }); }}
