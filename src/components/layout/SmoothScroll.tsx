@@ -3,9 +3,7 @@
 import { ReactLenis } from "@studio-freight/react-lenis";
 
 export default function SmoothScroll({ children }: { children: React.ReactNode }) {
-  return (
-    <ReactLenis root options={{ lerp: 0.1, duration: 1.2, smoothWheel: true, wheelMultiplier: 1.2 }}>
-      {children}
-    </ReactLenis>
-  );
+  // Lenis removed: falling back to perfectly optimized native browser scrolling
+  // as emulated scroll can cause massive lag on certain devices/trackpads.
+  return <>{children}</>;
 }
