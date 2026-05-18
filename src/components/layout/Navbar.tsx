@@ -8,14 +8,14 @@ import { Menu, X } from "lucide-react";
 import ThemeToggle from "@/components/ui/ThemeToggle";
 
 const navLinks = [
-  { href: "#hero", label: "Home" },
-  { href: "#about", label: "About" },
-  { href: "#skills", label: "Skills" },
-  { href: "#projects", label: "Projects" },
-  { href: "#experience", label: "Experience" },
-  { href: "#education", label: "Education" },
-  { href: "#blog", label: "Blog" },
-  { href: "#contact", label: "Contact" },
+  { href: "/", label: "Home", isAnchor: true, targetId: "hero" },
+  { href: "/#about", label: "About", isAnchor: true, targetId: "about" },
+  { href: "/#skills", label: "Skills", isAnchor: true, targetId: "skills" },
+  { href: "/#projects", label: "Projects", isAnchor: true, targetId: "projects" },
+  { href: "/#experience", label: "Experience", isAnchor: true, targetId: "experience" },
+  { href: "/#education", label: "Education", isAnchor: true, targetId: "education" },
+  { href: "/blog", label: "Blog", isAnchor: false },
+  { href: "/tools", label: "Tools", isAnchor: false },
 ];
 
 export default function Navbar({ logoImage }: { logoImage?: string }) {
@@ -33,19 +33,24 @@ export default function Navbar({ logoImage }: { logoImage?: string }) {
 
   useEffect(() => {
     if (pathname !== "/") return;
-    const sections = navLinks.map(l => document.getElementById(l.href.replace("#", ""))).filter(Boolean) as HTMLElement[];
+    const sections = navLinks.filter(l => l.isAnchor).map(l => document.getElementById(l.targetId!)).filter(Boolean) as HTMLElement[];
     const observer = new IntersectionObserver(
-      (entries) => entries.forEach(entry => entry.isIntersecting && setActiveSection(entry.target.id)),
+      (entries) => entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const matchedLink = navLinks.find(l => l.targetId === entry.target.id);
+          if (matchedLink) setActiveSection(matchedLink.href);
+        }
+      }),
       { threshold: 0.3, rootMargin: "-80px 0px -40% 0px" }
     );
     sections.forEach(el => observer.observe(el));
     return () => observer.disconnect();
   }, [pathname]);
 
-  const handleNavClick = useCallback((href: string) => {
+  const handleNavClick = useCallback((link: typeof navLinks[0]) => {
     setOpen(false);
-    if (pathname === "/") {
-      document.getElementById(href.replace("#", ""))?.scrollIntoView({ behavior: "smooth" });
+    if (link.isAnchor && pathname === "/") {
+      document.getElementById(link.targetId!)?.scrollIntoView({ behavior: "smooth" });
     }
   }, [pathname]);
 
@@ -67,11 +72,20 @@ export default function Navbar({ logoImage }: { logoImage?: string }) {
               : 'bg-transparent'
           }`}>
             {navLinks.map((link) => {
-              const isActive = activeSection === link.href.replace("#", "");
+              const isActive = (pathname === "/" && activeSection === link.href) || 
+                               (!link.isAnchor && pathname.startsWith(link.href) && link.href !== "/");
               return (
-                <button
+                <Link
                   key={link.href}
-                  onClick={() => handleNavClick(link.href)}
+                  href={link.href}
+                  onClick={(e) => {
+                    if (link.isAnchor && pathname === "/") {
+                      e.preventDefault();
+                      handleNavClick(link);
+                    } else {
+                      setOpen(false);
+                    }
+                  }}
                   className={`px-4 py-1.5 rounded-full text-[11px] font-sans uppercase tracking-[0.2em] transition-all duration-500 ${
                     isActive 
                       ? 'text-ethereal-text-1 bg-white/[0.05]' 
@@ -79,7 +93,7 @@ export default function Navbar({ logoImage }: { logoImage?: string }) {
                   }`}
                 >
                   {link.label}
-                </button>
+                </Link>
               );
             })}
           </nav>
@@ -110,16 +124,24 @@ export default function Navbar({ logoImage }: { logoImage?: string }) {
         <div className="absolute inset-0 bg-ethereal-bg/95 backdrop-blur-2xl" />
         <nav className="relative h-full flex flex-col items-center justify-center gap-8 px-6">
           {navLinks.map((link, i) => (
-            <button
+            <Link
               key={link.href}
-              onClick={() => handleNavClick(link.href)}
-              className={`text-4xl font-display font-bold tracking-tight text-ethereal-text-1 hover:text-ethereal-text-2 transition-all duration-500 ${
+              href={link.href}
+              onClick={(e) => {
+                if (link.isAnchor && pathname === "/") {
+                  e.preventDefault();
+                  handleNavClick(link);
+                } else {
+                  setOpen(false);
+                }
+              }}
+              className={`text-4xl font-display font-bold tracking-tight text-ethereal-text-1 hover:text-ethereal-accent transition-all duration-500 ${
                 open ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'
               }`}
               style={{ transitionDelay: `${i * 100}ms` }}
             >
               {link.label}
-            </button>
+            </Link>
           ))}
         </nav>
       </div>

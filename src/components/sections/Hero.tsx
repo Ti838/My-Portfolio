@@ -141,9 +141,8 @@ export default function Hero({ personalInfo }: { personalInfo?: any }) {
             <motion.div variants={fadeUp} initial="initial" animate="animate" transition={{ duration: 0.8, delay: 0.45 }} className="flex flex-wrap items-center gap-4">
               <MagneticButton
                 as="a"
-                href="#contact"
+                href="mailto:timonbiswas33@gmail.com"
                 className="btn-primary"
-                onClick={(e: any) => { e.preventDefault(); document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" }); }}
               >
                 let&apos;s chat!
               </MagneticButton>
