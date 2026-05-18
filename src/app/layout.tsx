@@ -96,7 +96,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
                 <VerticalStamps position="right" />
                 
                 {/* Wrap main layout content in padding so it doesn't overlap with the side stamps (w-16 on md) */}
-                <div className="w-full flex-1 mx-auto max-w-[100vw] md:px-16 overflow-x-hidden">
+                <div className="w-full flex-1 mx-auto max-w-full md:px-16 overflow-x-hidden">
                   <HeaderStack personalInfo={personalInfo} />
                   <AdminModalsRenderer 
                     personalInfo={personalInfo} 

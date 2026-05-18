@@ -146,19 +146,22 @@ export default function Footer({ socialLinks = [], tagline }: { socialLinks?: an
       <div className="max-w-[1400px] mx-auto px-6 pt-8 pb-12 border-t border-ethereal-border flex flex-col md:flex-row items-center justify-between gap-6">
         <div className="flex items-center gap-8">
           {socialLinks.map((social: any) => (
-            <a
+              <a
               key={social.label}
               href={social.url}
               target="_blank"
               rel="noopener noreferrer"
               className="font-sans text-xs uppercase tracking-widest text-ethereal-text-2 hover:text-ethereal-text-1 transition-colors flex items-center gap-1.5"
             >
-              {iconMap[social.icon] ? (
-                (() => {
-                  const Icon = iconMap[social.icon];
-                  return <Icon size={14} className="mr-1" />;
-                })()
-              ) : null}
+              {(() => {
+                const Icon = iconMap[social.icon] 
+                  || (social.label.toLowerCase().includes('github') ? GithubIcon : null)
+                  || (social.label.toLowerCase().includes('linkedin') ? LinkedinIcon : null)
+                  || (social.label.toLowerCase().includes('whatsapp') ? Mail : null)
+                  || ExternalLink;
+                
+                return <Icon size={14} className="mr-1" />;
+              })()}
               {social.label}
               <ArrowUpRight size={10} />
             </a>
