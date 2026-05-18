@@ -11,6 +11,7 @@ import AwardsList from "@/components/sections/AwardsList";
 import Hero from "@/components/sections/Hero";
 import ContactForm from "@/components/sections/ContactForm";
 import StackedBeliefs from "@/components/sections/StackedBeliefs";
+import InteractiveProjectMockups from "@/components/ui/InteractiveProjectMockups";
 
 export default async function HomePage() {
   const personalInfo = await getPersonalInfo();
@@ -194,64 +195,9 @@ export default async function HomePage() {
               </ScrollReveal>
             </div>
 
-            {/* Featured Projects — Editorial Layout */}
-            <div className="space-y-24">
-              {projects.filter((p: any) => p.featured).map((p: any, i: number) => (
-                <ScrollReveal key={p.id} delay={i * 100} direction="up">
-                  <div className={`group relative grid md:grid-cols-12 gap-8 items-center`}>
-                    {/* Image side */}
-                    <div className={`md:col-span-7 relative aspect-[16/10] overflow-hidden rounded-[2rem] border border-white/5 ${i % 2 !== 0 ? 'md:order-2' : ''}`}>
-                      {p.imageUrl ? (
-                        <Image
-                          src={p.imageUrl}
-                          alt={p.title}
-                          fill
-                          className="object-cover group-hover:scale-105 transition-transform duration-1000"
-                          sizes="(max-width: 768px) 100vw, 60vw"
-                        />
-                      ) : (
-                        <div className="w-full h-full bg-bg-elevated flex items-center justify-center">
-                          <Code size={48} className="text-text-3 opacity-20" />
-                        </div>
-                      )}
-                      <div className="absolute inset-0 bg-gradient-to-t from-bg-primary/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                    </div>
-
-                    {/* Content side */}
-                    <div className={`md:col-span-5 space-y-6 ${i % 2 !== 0 ? 'md:text-right' : ''}`}>
-                      <div className={`flex items-center gap-3 ${i % 2 !== 0 ? 'justify-end' : ''}`}>
-                        <span className="font-mono text-[10px] text-accent uppercase tracking-widest">Featured Project</span>
-                        <div className="w-12 h-[1px] bg-accent/30" />
-                      </div>
-                      <h3 className="display-md text-text-1">{p.title}</h3>
-                      <p className="body text-text-2 leading-relaxed">
-                        {p.description}
-                      </p>
-
-                      <div className={`flex flex-wrap gap-2 ${i % 2 !== 0 ? 'justify-end' : ''}`}>
-                        {(p.techStack || p.tags || []).map((t: string) => (
-                          <span key={t} className="skill-pill bg-white/[0.03] border-white/5">
-                            {t}
-                          </span>
-                        ))}
-                      </div>
-
-                      <div className={`flex gap-6 pt-4 ${i % 2 !== 0 ? 'justify-end' : ''}`}>
-                        {p.githubUrl && (
-                          <a href={p.githubUrl} target="_blank" rel="noopener noreferrer" className="text-text-2 hover:text-accent transition-colors flex items-center gap-2 font-medium text-sm">
-                            <FiGithub size={18} /> Codebase
-                          </a>
-                        )}
-                        {p.liveUrl && (
-                          <a href={p.liveUrl} target="_blank" rel="noopener noreferrer" className="text-text-2 hover:text-accent transition-colors flex items-center gap-2 font-medium text-sm">
-                            <Globe size={18} /> Live Demo
-                          </a>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                </ScrollReveal>
-              ))}
+            {/* Featured Projects — Jackie Zhang overlapping scrapbook style */}
+            <div className="relative z-10">
+              <InteractiveProjectMockups projects={projects} />
             </div>
 
             {/* Non-featured Projects Grid */}

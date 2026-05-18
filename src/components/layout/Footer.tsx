@@ -111,17 +111,26 @@ export default function Footer({ socialLinks = [], tagline }: { socialLinks?: an
                 {activeMeme !== null && (
                   <motion.div
                     key="meme"
-                    initial={{ y: 0, opacity: 0, rotate: -10 }}
-                    animate={{ y: -120, opacity: 1, rotate: 15 }}
-                    exit={{ y: 0, opacity: 0, rotate: -10 }}
-                    transition={{ type: "spring", bounce: 0.5 }}
-                    className="absolute top-0 right-0 z-0 pointer-events-none"
+                    initial={{ scale: 0, rotate: -20, opacity: 0 }}
+                    animate={{ scale: 1.1, rotate: -6, opacity: 1 }}
+                    exit={{ scale: 0, rotate: 10, opacity: 0 }}
+                    transition={{ type: "spring", stiffness: 180, damping: 15 }}
+                    className="absolute z-20 w-[240px] h-[250px] bg-white p-3 pb-12 rounded-sm shadow-2xl pointer-events-none border border-stone-200"
+                    style={{ transformOrigin: "center" }}
                   >
-                    <img 
-                      src={memes[activeMeme % memes.length]} 
-                      alt="meme" 
-                      className="w-32 h-32 object-cover rounded-xl border-4 border-white shadow-2xl"
-                    />
+                    <div className="relative w-full h-full bg-stone-100 overflow-hidden rounded-sm">
+                      <img 
+                        src={memes[activeMeme % memes.length]} 
+                        alt="meme" 
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                    {/* Cute hand-drawn label */}
+                    <div className="absolute bottom-2 left-0 right-0 text-center">
+                      <span className="font-handwriting text-xl text-gray-700">Code mode: active 🐾</span>
+                    </div>
+                    {/* Tape on top */}
+                    <div className="absolute -top-4 left-1/2 -translate-x-1/2 w-16 h-6 bg-yellow-100/60 backdrop-blur-sm shadow-sm" style={{ clipPath: "polygon(5% 0, 95% 2%, 100% 100%, 0 98%)" }} />
                   </motion.div>
                 )}
               </AnimatePresence>

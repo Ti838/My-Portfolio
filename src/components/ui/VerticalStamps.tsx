@@ -20,10 +20,9 @@ export default function VerticalStamps({ position = "left" }: { position?: "left
 
   return (
     <div 
-      className={`fixed ${position === "left" ? "left-0 border-r" : "right-0 border-l"} top-0 bottom-0 w-12 md:w-16 hidden md:flex flex-col items-center py-8 gap-12 overflow-hidden z-[40]`}
-      style={{ backgroundColor: "#FAF7F2" }}
+      className={`fixed ${position === "left" ? "left-0 border-r" : "right-0 border-l"} top-0 bottom-0 w-12 md:w-16 hidden md:flex flex-col items-center py-8 gap-12 overflow-hidden z-[40] border-ethereal-border bg-ethereal-bg`}
     >
-      <div className="flex flex-col items-center gap-12 h-full opacity-30">
+      <div className="flex flex-col items-center gap-12 h-full opacity-60">
         {displayStamps.map((stamp, i) => {
           const Icon = stamp.icon;
           return (
@@ -31,7 +30,7 @@ export default function VerticalStamps({ position = "left" }: { position?: "left
               key={i}
               className="relative w-10 h-10 md:w-12 md:h-12 flex items-center justify-center p-1.5"
               style={{
-                color: "#D45B45", 
+                color: "var(--accent)", 
                 rotate: `${(i % 2 === 0 ? 1 : -1) * (Math.random() * 8 + 4)}deg`,
               }}
             >
@@ -40,7 +39,7 @@ export default function VerticalStamps({ position = "left" }: { position?: "left
                 <path
                   d="M 5,5 Q 50,0 95,5 Q 100,50 95,95 Q 50,100 5,95 Q 0,50 5,5 Z"
                   fill="none"
-                  stroke="#D45B45"
+                  stroke="currentColor"
                   strokeWidth="3"
                   strokeDasharray="6 6"
                 />
