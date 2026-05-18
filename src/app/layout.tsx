@@ -88,21 +88,29 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           {/* Clean background established by globals.css */ }
           <SmoothScroll>
             <AdminProvider>
-              <div className="relative z-10">
+              <div className="relative z-10 flex min-h-screen flex-col">
                 <GlobalEffects />
-                <HeaderStack personalInfo={personalInfo} />
-                <AdminModalsRenderer 
-                  personalInfo={personalInfo} 
-                  projects={projects} 
-                  achievements={achievements} 
-                  experiences={experiences}
-                  education={education}
-                  skills={skillData.flatMap((c:any) => c.skills)}
-                  skillCategories={skillData}
-                  socialLinks={socialLinks}
-                />
-                <main className="min-h-screen selection:bg-accent/20 selection:text-accent">{children}</main>
-                <Footer socialLinks={socialLinks} tagline={personalInfo?.tagline} />
+                
+                {/* The side stamps are fixed to the edges on desktop */}
+                <VerticalStamps position="left" />
+                <VerticalStamps position="right" />
+                
+                {/* Wrap main layout content in padding so it doesn't overlap with the side stamps (w-16 on md) */}
+                <div className="w-full flex-1 mx-auto max-w-[100vw] md:px-16 overflow-x-hidden">
+                  <HeaderStack personalInfo={personalInfo} />
+                  <AdminModalsRenderer 
+                    personalInfo={personalInfo} 
+                    projects={projects} 
+                    achievements={achievements} 
+                    experiences={experiences}
+                    education={education}
+                    skills={skillData.flatMap((c:any) => c.skills)}
+                    skillCategories={skillData}
+                    socialLinks={socialLinks}
+                  />
+                  <main className="min-h-screen selection:bg-accent/20 selection:text-accent">{children}</main>
+                  <Footer socialLinks={socialLinks} tagline={personalInfo?.tagline} />
+                </div>
               </div>
               <Toaster
                 position="bottom-right"

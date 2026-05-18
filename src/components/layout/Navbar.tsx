@@ -56,7 +56,7 @@ export default function Navbar({ logoImage }: { logoImage?: string }) {
 
   return (
     <>
-      <header className={`fixed top-0 left-0 w-full z-50 transition-all duration-700 ${scrolled ? 'py-4' : 'py-8'}`}>
+      <header className={`fixed top-0 left-0 w-full md:left-16 md:right-16 md:w-auto z-50 transition-all duration-700 ${scrolled ? 'py-4' : 'py-8'}`}>
         <div className="max-w-[1400px] mx-auto px-6 flex items-center justify-between">
           {/* Logo */}
           <Link href="/" className="relative z-50 group flex items-center gap-3">
