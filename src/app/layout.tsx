@@ -83,7 +83,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           rel="stylesheet"
         />
       </head>
-      <body suppressHydrationWarning className="antialiased noise-bg" style={{ background: 'var(--bg-primary)', color: 'var(--text-primary)' }}>
+      <body suppressHydrationWarning className="antialiased noise-bg overflow-x-hidden" style={{ background: 'var(--bg-primary)', color: 'var(--text-primary)' }}>
         <ThemeProvider>
           {/* Clean background established by globals.css */ }
           <SmoothScroll>

@@ -15,26 +15,24 @@ const stamps = [
 ];
 
 export default function VerticalStamps({ position = "left" }: { position?: "left" | "right" }) {
+  // Generate enough stamps to fill a tall screen vertically (static)
+  const displayStamps = [...stamps, ...stamps, ...stamps, ...stamps];
+
   return (
     <div 
-      className={`fixed ${position === "left" ? "left-0 border-r" : "right-0 border-l"} top-0 bottom-0 w-12 md:w-16 hidden md:flex flex-col items-center py-8 gap-8 overflow-hidden z-50`}
-      style={{ backgroundColor: "#D45B45", borderColor: "rgba(0,0,0,0.1)" }}
+      className={`fixed ${position === "left" ? "left-0 border-r" : "right-0 border-l"} top-0 bottom-0 w-12 md:w-16 hidden md:flex flex-col items-center py-8 gap-12 overflow-hidden z-[40]`}
+      style={{ backgroundColor: "#FAF7F2" }}
     >
-      {/* Infinite vertical scroll effect using framer motion */}
-      <motion.div
-        animate={{ y: ["0%", "-50%"] }}
-        transition={{ repeat: Infinity, duration: 40, ease: "linear" }}
-        className="flex flex-col items-center gap-6"
-      >
-        {[...stamps, ...stamps, ...stamps].map((stamp, i) => {
+      <div className="flex flex-col items-center gap-12 h-full opacity-30">
+        {displayStamps.map((stamp, i) => {
           const Icon = stamp.icon;
           return (
             <div
               key={i}
               className="relative w-10 h-10 md:w-12 md:h-12 flex items-center justify-center p-1.5"
               style={{
-                color: "#FAF7F2", // Paper white
-                rotate: `${(i % 2 === 0 ? 1 : -1) * (Math.random() * 6 + 2)}deg`,
+                color: "#D45B45", 
+                rotate: `${(i % 2 === 0 ? 1 : -1) * (Math.random() * 8 + 4)}deg`,
               }}
             >
               {/* Hand-drawn style border for the stamp */}
@@ -42,16 +40,16 @@ export default function VerticalStamps({ position = "left" }: { position?: "left
                 <path
                   d="M 5,5 Q 50,0 95,5 Q 100,50 95,95 Q 50,100 5,95 Q 0,50 5,5 Z"
                   fill="none"
-                  stroke="#FAF7F2"
-                  strokeWidth="5"
-                  strokeDasharray="10 4"
+                  stroke="#D45B45"
+                  strokeWidth="3"
+                  strokeDasharray="6 6"
                 />
               </svg>
-              <Icon size={20} strokeWidth={2.5} className="relative z-10" />
+              <Icon size={20} strokeWidth={2} className="relative z-10" />
             </div>
           );
         })}
-      </motion.div>
+      </div>
     </div>
   );
 }
