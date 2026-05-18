@@ -5,24 +5,31 @@
 @tailwind components;
 @tailwind utilities;
 
-/* ── Ethereal Craft Design System ────────────────────────────────────────── */
+/* ── Dark Craft Design System — Jackie Zhang Inspired ───────────────────── */
 :root {
-  /* Dark Mode (Default) */
-  --bg-primary: #030303;
-  --bg-secondary: #080808;
-  --bg-elevated: #0f0f0f;
-  --border: #1a1a1a;
-  --border-highlight: #262626;
+  /* Dark Mode (Default) — warm charcoal base */
+  --bg-primary: #0e0e0e;
+  --bg-secondary: #141414;
+  --bg-elevated: #1a1a1a;
+  --border: #222222;
+  --border-highlight: #2e2e2e;
 
-  --text-primary: #ffffff;
-  --text-secondary: #a1a1aa;
-  --text-tertiary: #52525b;
+  --text-primary: #f5f0e8;
+  --text-secondary: #b0a99a;
+  --text-tertiary: #6b6560;
 
-  --accent: #6366f1;
-  --accent-secondary: #06b6d4;
-  --accent-gradient: linear-gradient(135deg, #6366f1 0%, #06b6d4 100%);
-  --accent-dim: rgba(99, 102, 241, 0.1);
-  --accent-glow: rgba(99, 102, 241, 0.2);
+  /* Coral red accent — Jackie Zhang signature */
+  --accent: #D45B45;
+  --accent-secondary: #E8856F;
+  --accent-gradient: linear-gradient(135deg, #D45B45 0%, #E8856F 100%);
+  --accent-dim: rgba(212, 91, 69, 0.1);
+  --accent-glow: rgba(212, 91, 69, 0.2);
+  --accent-rgb: 212, 91, 69;
+
+  /* Warm paper tones */
+  --cream: #FAF7F2;
+  --cream-dim: rgba(250, 247, 242, 0.04);
+  --sand: #F0E5D3;
   
   --success: #10b981;
   --error: #ef4444;
@@ -34,20 +41,20 @@
 }
 
 .light {
-  --bg-primary: #ffffff;
-  --bg-secondary: #fafafa;
-  --bg-elevated: #f4f4f5;
-  --border: #e5e7eb;
-  --border-highlight: #d1d5db;
+  --bg-primary: #faf8f5;
+  --bg-secondary: #f5f2ed;
+  --bg-elevated: #ece8e1;
+  --border: #d8d3cb;
+  --border-highlight: #c4bfb5;
 
-  --text-primary: #09090b;
-  --text-secondary: #4b5563;
-  --text-tertiary: #9ca3af;
+  --text-primary: #1a1714;
+  --text-secondary: #4a4540;
+  --text-tertiary: #8a847c;
 
-  --accent: #4f46e5;
-  --accent-secondary: #0891b2;
-  --accent-dim: rgba(79, 70, 229, 0.08);
-  --accent-glow: rgba(79, 70, 229, 0.15);
+  --accent: #C24B38;
+  --accent-secondary: #D4684F;
+  --accent-dim: rgba(194, 75, 56, 0.08);
+  --accent-glow: rgba(194, 75, 56, 0.15);
 }
 
 /* ── Base Reset ───────────────────────────────────────────────────────────── */
@@ -70,6 +77,19 @@ body {
   overflow-x: hidden;
 }
 
+/* Subtle noise grain overlay — Jackie Zhang tactile feel */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;
+  opacity: 0.035;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 256px 256px;
+}
+
 .light body {
   background-color: var(--bg-primary);
   color-scheme: light;
@@ -79,27 +99,27 @@ body {
   background:
     linear-gradient(180deg, rgba(255, 255, 255, 0.92), rgba(250, 250, 250, 0.82)),
     var(--bg-secondary);
-  border-color: rgba(9, 9, 11, 0.08);
-  box-shadow: 0 22px 70px rgba(15, 23, 42, 0.08);
+  border-color: rgba(26, 23, 20, 0.08);
+  box-shadow: 0 22px 70px rgba(26, 23, 20, 0.08);
 }
 
 .light .card:hover {
-  border-color: rgba(79, 70, 229, 0.18);
-  box-shadow: 0 30px 85px rgba(15, 23, 42, 0.12);
+  border-color: rgba(194, 75, 56, 0.18);
+  box-shadow: 0 30px 85px rgba(26, 23, 20, 0.12);
 }
 
 .light .surface-3d {
   background:
     linear-gradient(180deg, rgba(255, 255, 255, 0.92), rgba(250, 250, 250, 0.82)),
     rgba(255, 255, 255, 0.76);
-  border-color: rgba(9, 9, 11, 0.08);
+  border-color: rgba(26, 23, 20, 0.08);
   box-shadow:
-    0 28px 90px rgba(15, 23, 42, 0.12),
+    0 28px 90px rgba(26, 23, 20, 0.12),
     inset 0 1px 0 rgba(255, 255, 255, 0.85);
 }
 
 .light .btn-ghost {
-  border-color: rgba(9, 9, 11, 0.1);
+  border-color: rgba(26, 23, 20, 0.1);
   background: rgba(255, 255, 255, 0.62);
 }
 
@@ -177,31 +197,31 @@ body {
 
 .card {
   background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.015)),
+    linear-gradient(180deg, rgba(250, 247, 242, 0.035), rgba(250, 247, 242, 0.012)),
     var(--bg-secondary);
-  border: 1px solid rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(250, 247, 242, 0.06);
   border-radius: var(--radius-lg);
   transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
   position: relative;
   overflow: hidden;
-  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.24);
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.28);
   transform: translateZ(0);
 }
 
 .card:hover {
-  border-color: rgba(255, 255, 255, 0.14);
+  border-color: rgba(212, 91, 69, 0.2);
   background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.055), rgba(255, 255, 255, 0.02)),
+    linear-gradient(180deg, rgba(250, 247, 242, 0.05), rgba(250, 247, 242, 0.018)),
     var(--bg-elevated);
   transform: translateY(-6px);
-  box-shadow: 0 30px 90px rgba(0, 0, 0, 0.32);
+  box-shadow: 0 30px 90px rgba(0, 0, 0, 0.36);
 }
 
 .card-glow::after {
   content: '';
   position: absolute;
   inset: 0;
-  background: radial-gradient(600px circle at var(--mouse-x) var(--mouse-y), rgba(99, 102, 241, 0.08), transparent 40%);
+  background: radial-gradient(600px circle at var(--mouse-x) var(--mouse-y), rgba(212, 91, 69, 0.06), transparent 40%);
   opacity: 0;
   transition: opacity 0.5s;
   pointer-events: none;
@@ -217,19 +237,19 @@ body {
   align-items: center;
   gap: 10px;
   padding: 12px 28px;
-  background: linear-gradient(135deg, #0f766e 0%, #0ea5e9 48%, #2563eb 100%);
+  background: linear-gradient(135deg, #D45B45 0%, #E8856F 100%);
   color: #ffffff;
   border-radius: var(--radius-full);
   font-family: 'Inter', sans-serif;
   font-weight: 600;
   font-size: 0.9375rem;
   transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-  box-shadow: 0 16px 35px rgba(14, 165, 233, 0.18), 0 2px 0 rgba(255, 255, 255, 0.08) inset;
+  box-shadow: 0 16px 35px rgba(212, 91, 69, 0.2), 0 2px 0 rgba(255, 255, 255, 0.08) inset;
 }
 
 .btn-primary:hover {
   transform: translateY(-2px) scale(1.01);
-  box-shadow: 0 22px 50px rgba(14, 165, 233, 0.26), 0 2px 0 rgba(255, 255, 255, 0.12) inset;
+  box-shadow: 0 22px 50px rgba(212, 91, 69, 0.3), 0 2px 0 rgba(255, 255, 255, 0.12) inset;
 }
 
 .btn-ghost {
@@ -258,8 +278,8 @@ body {
 /* ── Skill Pill ───────────────────────────────────────────────────────────── */
 .skill-pill {
   padding: 6px 14px;
-  background: rgba(255, 255, 255, 0.035);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(250, 247, 242, 0.03);
+  border: 1px solid rgba(250, 247, 242, 0.07);
   border-radius: var(--radius-full);
   font-size: 0.75rem;
   color: var(--text-secondary);
@@ -267,7 +287,7 @@ body {
 }
 
 .skill-pill:hover {
-  border-color: rgba(14, 165, 233, 0.55);
+  border-color: rgba(212, 91, 69, 0.55);
   color: var(--accent);
   transform: scale(1.05);
 }
@@ -329,7 +349,7 @@ body {
 .light .hero-float-a,
 .light .hero-float-b {
   background: rgba(255, 255, 255, 0.72);
-  border-color: rgba(15, 23, 42, 0.1);
+  border-color: rgba(26, 23, 20, 0.1);
 }
 
 @keyframes heroOrbit {
@@ -392,7 +412,7 @@ body {
 
 .admin-input:focus {
   border-color: var(--accent);
-  background: rgba(99, 102, 241, 0.04);
+  background: rgba(212, 91, 69, 0.04);
 }
 
 .admin-input::placeholder {
@@ -444,3 +464,12 @@ body {
   opacity: 0.8;
 }
 
+/* ── Selection color ─────────────────────────────────────────────────────────── */
+::selection {
+  background: rgba(212, 91, 69, 0.3);
+  color: var(--text-primary);
+}
+
+/* ── Accent glow for hover states ────────────────────────────────────────────── */
+.text-accent { color: var(--accent); }
+.bg-accent-dim { background: var(--accent-dim); }
