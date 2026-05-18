@@ -90,8 +90,6 @@ export default async function RootLayout({ children }: { children: React.ReactNo
             <AdminProvider>
               <div className="relative z-10">
                 <GlobalEffects />
-                <VerticalStamps position="left" />
-                <VerticalStamps position="right" />
                 <HeaderStack personalInfo={personalInfo} />
                 <AdminModalsRenderer 
                   personalInfo={personalInfo} 
