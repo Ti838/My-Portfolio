@@ -7,6 +7,9 @@ import { FiGithub as GithubIcon, FiLinkedin as LinkedinIcon } from "react-icons/
 import LyricTicker from "@/components/ui/LyricTicker";
 import MagneticButton from "@/components/ui/MagneticButton";
 
+import { useState, useRef } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+
 const iconMap: Record<string, any> = {
   FiGithub: GithubIcon,
   FiLinkedin: LinkedinIcon,
@@ -16,6 +19,49 @@ const iconMap: Record<string, any> = {
 
 export default function Footer({ socialLinks = [], tagline }: { socialLinks?: any[]; tagline?: string }) {
   const { isAdmin } = useAdmin();
+  const [checkedItems, setCheckedItems] = useState<Record<number, boolean>>({});
+  const [activeMeme, setActiveMeme] = useState<number | null>(null);
+
+  const playMemeSound = () => {
+    try {
+      const AudioContext = window.AudioContext || (window as any).webkitAudioContext;
+      const ctx = new AudioContext();
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.type = "square"; // retro sound
+      
+      osc.frequency.setValueAtTime(440, ctx.currentTime);
+      osc.frequency.setValueAtTime(554, ctx.currentTime + 0.1);
+      osc.frequency.setValueAtTime(659, ctx.currentTime + 0.2);
+      osc.frequency.setValueAtTime(880, ctx.currentTime + 0.3);
+      
+      gain.gain.setValueAtTime(0, ctx.currentTime);
+      gain.gain.linearRampToValueAtTime(0.1, ctx.currentTime + 0.05);
+      gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.5);
+      
+      osc.start(ctx.currentTime);
+      osc.stop(ctx.currentTime + 0.5);
+    } catch(e) {}
+  };
+
+  const handleCheck = (i: number) => {
+    const isNowChecked = !checkedItems[i];
+    setCheckedItems(prev => ({ ...prev, [i]: isNowChecked }));
+    
+    if (isNowChecked) {
+      playMemeSound();
+      setActiveMeme(i);
+      setTimeout(() => setActiveMeme(null), 2500);
+    }
+  };
+
+  const memes = [
+    "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExMDJmODc3MzMwOTYzZDMxZjUzZjQwMjQ5Zjg0OGJiMzYzMzExMmEyMSZlcD12MV9pbnRlcm5hbF9naWZzX2dpZklkJmN0PWc/MDJ9CRV1424LbsL38f/giphy.gif",
+    "https://media.giphy.com/media/13CoXDiaCcCoyk/giphy.gif",
+    "https://media.giphy.com/media/JIX9t2j0ZTN9S/giphy.gif"
+  ];
 
   return (
     <footer className="relative bg-ethereal-bg border-t border-ethereal-border overflow-hidden">
@@ -36,11 +82,13 @@ export default function Footer({ socialLinks = [], tagline }: { socialLinks?: an
                   "Meaningful collaboration",
                   "A diverse team of talented folks"
                 ].map((item, i) => (
-                  <div key={i} className="flex items-center gap-4 group">
-                    <div className="w-6 h-6 rounded border-2 border-ethereal-accent flex items-center justify-center text-ethereal-accent group-hover:bg-ethereal-accent group-hover:text-white transition-colors cursor-pointer">
+                  <div key={i} className="flex items-center gap-4 group cursor-pointer" onClick={() => handleCheck(i)}>
+                    <div className={`w-6 h-6 rounded border-2 border-ethereal-accent flex items-center justify-center transition-colors ${checkedItems[i] ? 'bg-ethereal-accent text-white' : 'text-transparent group-hover:bg-ethereal-accent/20'}`}>
                       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" className="w-4 h-4"><path d="M20 6L9 17l-5-5" strokeLinecap="round" strokeLinejoin="round"/></svg>
                     </div>
-                    <span className="font-handwriting text-3xl text-gray-800 pt-1">{item}</span>
+                    <span className={`font-handwriting text-3xl text-gray-800 pt-1 transition-all duration-300 ${checkedItems[i] ? 'line-through decoration-ethereal-accent/50 decoration-4 opacity-50' : ''}`}>
+                      {item}
+                    </span>
                   </div>
                 ))}
               </div>
@@ -57,9 +105,28 @@ export default function Footer({ socialLinks = [], tagline }: { socialLinks?: an
               </div>
             </div>
             
-            {/* Hand-drawn illustration placeholder area */}
+            {/* Hand-drawn illustration placeholder area with hidden memes */}
             <div className="hidden md:flex flex-1 items-center justify-center relative">
-              <div className="w-full h-full min-h-[300px] bg-ethereal-accent rounded-xl opacity-90 overflow-hidden relative rotate-3 shadow-xl">
+              <AnimatePresence>
+                {activeMeme !== null && (
+                  <motion.div
+                    key="meme"
+                    initial={{ y: 0, opacity: 0, rotate: -10 }}
+                    animate={{ y: -120, opacity: 1, rotate: 15 }}
+                    exit={{ y: 0, opacity: 0, rotate: -10 }}
+                    transition={{ type: "spring", bounce: 0.5 }}
+                    className="absolute top-0 right-0 z-0 pointer-events-none"
+                  >
+                    <img 
+                      src={memes[activeMeme % memes.length]} 
+                      alt="meme" 
+                      className="w-32 h-32 object-cover rounded-xl border-4 border-white shadow-2xl"
+                    />
+                  </motion.div>
+                )}
+              </AnimatePresence>
+
+              <div className="w-full h-full min-h-[300px] bg-ethereal-accent rounded-xl opacity-100 overflow-hidden relative rotate-3 shadow-2xl z-10">
                  <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/stucco.png')] opacity-30 mix-blend-overlay"></div>
                  <div className="absolute inset-0 flex items-center justify-center flex-col text-white p-6 text-center border-4 border-white/20 m-4 rounded-lg border-dashed">
                    <Sparkles size={48} className="mb-4 opacity-80" />
