@@ -53,7 +53,6 @@ export default function GlobalEffects() {
     const handleClick = (e: MouseEvent) => {
       const id = Date.now();
       setTaps((prev) => [...prev.slice(-4), { id, x: e.clientX, y: e.clientY }]);
-      playPop();
     };
 
     const handleSelection = () => {

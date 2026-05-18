@@ -40,7 +40,7 @@ export default function Footer({ socialLinks = [], tagline }: { socialLinks?: an
                     <div className="w-6 h-6 rounded border-2 border-ethereal-accent flex items-center justify-center text-ethereal-accent group-hover:bg-ethereal-accent group-hover:text-white transition-colors cursor-pointer">
                       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" className="w-4 h-4"><path d="M20 6L9 17l-5-5" strokeLinecap="round" strokeLinejoin="round"/></svg>
                     </div>
-                    <span className="font-handwriting text-3xl text-gray-800 pt-1 line-through decoration-ethereal-accent/30 decoration-2">{item}</span>
+                    <span className="font-handwriting text-3xl text-gray-800 pt-1">{item}</span>
                   </div>
                 ))}
               </div>
