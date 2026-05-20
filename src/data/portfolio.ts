@@ -337,7 +337,7 @@ export async function getProjects() {
     
     const repos = await res.json();
     
-    const excluded = ["ti838", "portfolio", "readme"];
+    const excluded = ["ti838", "portfolio", "readme", "sandbox", "test"];
     const projects = repos
       .filter((repo: any) => {
         const name = repo.name.toLowerCase();

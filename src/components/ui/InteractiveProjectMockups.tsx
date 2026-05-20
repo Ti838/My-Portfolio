@@ -189,14 +189,14 @@ export default function InteractiveProjectMockups({ projects }: { projects: Proj
 
     // Terminal/CLI: Python, C++ (exact), AI/ML specific, bot, compiler
     const isTerminal =
-      techLower.some(t => t === "python" || t === "c++" || t === "c" || t === "ai" || t === "artificial intelligence" || t === "machine learning") ||
+      (techLower.some(t => t === "python" || t === "c++" || t === "c" || t === "ai" || t === "artificial intelligence" || t === "machine learning") ||
       techLower.some(t => t.includes("python") || t.includes("c++")) ||
       titleLower.includes("bot") ||
       titleLower.includes("compiler") ||
       titleLower.includes("cli") ||
       titleLower.includes("terminal") ||
-      titleLower.includes("jerry") || // Jerry AI — terminal chatbot
-      titleLower.includes("bank"); // Bank transaction — python/php backend
+      titleLower.includes("jerry")) &&
+      !titleLower.includes("bank");
 
     if (isTerminal) return "terminal";
 
