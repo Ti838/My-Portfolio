@@ -343,15 +343,22 @@ export async function getProjects() {
         const name = repo.name.toLowerCase();
         return !repo.fork && !excluded.some(ex => name.includes(ex));
       }) // Exclude forks and non-project profile/portfolio repos
-      .map((repo: any) => ({
-        id: repo.name,
-        title: repo.name.replace(/-/g, " ").replace(/_/g, " ").replace(/\b\w/g, (l: string) => l.toUpperCase()), // Title Case
-        description: repo.description || "An innovative project developed by Timon Biswas.",
-        techStack: repo.language ? [repo.language, ...(repo.topics || [])].slice(0, 4) : (repo.topics || []).slice(0, 4),
-        githubUrl: repo.html_url,
-        liveUrl: repo.homepage || "",
-        featured: true, // Make all fetched GitHub projects appear in the mockup
-      }));
+      .map((repo: any) => {
+        const nameLower = repo.name.toLowerCase();
+        let liveUrl = repo.homepage || "";
+        if (nameLower === "nextgen") {
+          liveUrl = "https://nextgenyouthclub.vercel.app/";
+        }
+        return {
+          id: repo.name,
+          title: repo.name.replace(/-/g, " ").replace(/_/g, " ").replace(/\b\w/g, (l: string) => l.toUpperCase()), // Title Case
+          description: repo.description || "An innovative project developed by Timon Biswas.",
+          techStack: repo.language ? [repo.language, ...(repo.topics || [])].slice(0, 4) : (repo.topics || []).slice(0, 4),
+          githubUrl: repo.html_url,
+          liveUrl: liveUrl,
+          featured: true, // Make all fetched GitHub projects appear in the mockup
+        };
+      });
       
     return projects.length > 0 ? projects : staticProjects;
   } catch (err) {
