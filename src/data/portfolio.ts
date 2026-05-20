@@ -324,19 +324,36 @@ export async function getPersonalInfo() {
 }
 
 export async function getProjects() {
-  const supabase = createAdminClient();
-  if (!supabase) return staticProjects;
-  
-  const { data, error } = await supabase.from("projects").select("*").order("sort_order", { ascending: true });
-  if (error || !data || data.length === 0) return staticProjects;
-  
-  return data.map(p => ({
-    ...p,
-    techStack: p.tech_stack || p.tags || [],
-    imageUrl: p.image_url,
-    githubUrl: p.github_url,
-    liveUrl: p.live_url,
-  }));
+  try {
+    // Fetch directly from GitHub API for real-time updates
+    const res = await fetch("https://api.github.com/users/Ti838/repos?sort=updated&direction=desc&per_page=100", { 
+      next: { revalidate: 3600 } 
+    });
+    
+    if (!res.ok) {
+      console.error("GitHub API error:", res.status);
+      return staticProjects;
+    }
+    
+    const repos = await res.json();
+    
+    const projects = repos
+      .filter((repo: any) => !repo.fork) // Exclude forked repositories
+      .map((repo: any) => ({
+        id: repo.name,
+        title: repo.name.replace(/-/g, " ").replace(/_/g, " ").replace(/\b\w/g, l => l.toUpperCase()), // Title Case
+        description: repo.description || "An innovative project developed by Timon Biswas.",
+        techStack: repo.language ? [repo.language, ...(repo.topics || [])].slice(0, 4) : (repo.topics || []).slice(0, 4),
+        githubUrl: repo.html_url,
+        liveUrl: repo.homepage || "",
+        featured: true, // Make all fetched GitHub projects appear in the mockup
+      }));
+      
+    return projects.length > 0 ? projects : staticProjects;
+  } catch (err) {
+    console.error("Failed to fetch GitHub projects:", err);
+    return staticProjects;
+  }
 }
 
 export async function getSkills() {
