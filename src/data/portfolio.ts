@@ -337,8 +337,12 @@ export async function getProjects() {
     
     const repos = await res.json();
     
+    const excluded = ["ti838", "portfolio", "readme"];
     const projects = repos
-      .filter((repo: any) => !repo.fork) // Exclude forked repositories
+      .filter((repo: any) => {
+        const name = repo.name.toLowerCase();
+        return !repo.fork && !excluded.some(ex => name.includes(ex));
+      }) // Exclude forks and non-project profile/portfolio repos
       .map((repo: any) => ({
         id: repo.name,
         title: repo.name.replace(/-/g, " ").replace(/_/g, " ").replace(/\b\w/g, (l: string) => l.toUpperCase()), // Title Case
