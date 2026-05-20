@@ -174,6 +174,36 @@ export default function InteractiveProjectMockups({ projects }: { projects: Proj
 
   const allProjects = projects.length > 0 ? projects : [];
 
+  // Helper: determine the mockup category for a project (single source of truth)
+  const getCategory = (project: Project): "mobile" | "terminal" | "browser" => {
+    const techLower = project.techStack.map(t => t.toLowerCase());
+    const titleLower = project.title.toLowerCase();
+
+    // Mobile: uses Android SDK, Dart/Flutter, explicit mobile keyword
+    const isMobile =
+      techLower.some(t => t === "dart" || t === "flutter" || t === "android sdk" || t === "android") ||
+      titleLower.includes("mobile") ||
+      techLower.some(t => t.includes("flutter") || t.includes("android"));
+
+    if (isMobile) return "mobile";
+
+    // Terminal/CLI: Python, C++ (exact), AI/ML specific, bot, compiler
+    const isTerminal =
+      techLower.some(t => t === "python" || t === "c++" || t === "c" || t === "ai" || t === "artificial intelligence" || t === "machine learning") ||
+      techLower.some(t => t.includes("python") || t.includes("c++")) ||
+      titleLower.includes("bot") ||
+      titleLower.includes("compiler") ||
+      titleLower.includes("cli") ||
+      titleLower.includes("terminal") ||
+      titleLower.includes("jerry") || // Jerry AI — terminal chatbot
+      titleLower.includes("bank"); // Bank transaction — python/php backend
+
+    if (isTerminal) return "terminal";
+
+    // Everything else: web
+    return "browser";
+  };
+
   // Filter projects by both search query and quick category selection
   const filteredProjects = useMemo(() => {
     return allProjects.filter((project) => {
@@ -183,34 +213,19 @@ export default function InteractiveProjectMockups({ projects }: { projects: Proj
       const matchesSearch = titleMatches || descriptionMatches || techMatches;
 
       if (!matchesSearch) return false;
-
       if (activeFilter === "all") return true;
-      const stack = project.techStack.join(" ").toLowerCase() + " " + project.title.toLowerCase();
 
-      if (activeFilter === "mobile") {
-        return stack.includes("mobile") || stack.includes("app") || stack.includes("flutter") || stack.includes("android") || stack.includes("dart");
-      }
-      if (activeFilter === "terminal") {
-        return stack.includes("python") || stack.includes("ai") || stack.includes("terminal") || stack.includes("bot") || stack.includes("compiler") || stack.includes("c++") || stack.includes("c");
-      }
-      if (activeFilter === "web") {
-        return !stack.includes("mobile") && !stack.includes("app") && !stack.includes("flutter") && !stack.includes("android") &&
-               (stack.includes("web") || stack.includes("next") || stack.includes("react") || stack.includes("html") || stack.includes("css") || stack.includes("javascript") || stack.includes("js") || stack.includes("hostel") || stack.includes("subscribly"));
-      }
+      const cat = getCategory(project);
+      if (activeFilter === "mobile") return cat === "mobile";
+      if (activeFilter === "terminal") return cat === "terminal";
+      if (activeFilter === "web") return cat === "browser";
       return true;
     });
   }, [allProjects, searchQuery, activeFilter]);
 
-  // Determine mockup category to render
+  // Determine mockup category to render — uses shared getCategory helper
   const getMockupType = (project: Project): "mobile" | "terminal" | "browser" => {
-    const stack = project.techStack.join(" ").toLowerCase() + " " + project.title.toLowerCase();
-    if (stack.includes("mobile") || stack.includes("app") || stack.includes("flutter") || stack.includes("android") || stack.includes("dart")) {
-      return "mobile";
-    }
-    if (stack.includes("python") || stack.includes("ai") || stack.includes("terminal") || stack.includes("bot") || stack.includes("compiler") || stack.includes("c++") || stack.includes("c")) {
-      return "terminal";
-    }
-    return "browser";
+    return getCategory(project);
   };
 
   const renderEmbeddedMockup = (project: Project, idx: number) => {
