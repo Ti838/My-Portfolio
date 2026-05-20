@@ -341,7 +341,7 @@ export async function getProjects() {
       .filter((repo: any) => !repo.fork) // Exclude forked repositories
       .map((repo: any) => ({
         id: repo.name,
-        title: repo.name.replace(/-/g, " ").replace(/_/g, " ").replace(/\b\w/g, l => l.toUpperCase()), // Title Case
+        title: repo.name.replace(/-/g, " ").replace(/_/g, " ").replace(/\b\w/g, (l: string) => l.toUpperCase()), // Title Case
         description: repo.description || "An innovative project developed by Timon Biswas.",
         techStack: repo.language ? [repo.language, ...(repo.topics || [])].slice(0, 4) : (repo.topics || []).slice(0, 4),
         githubUrl: repo.html_url,
