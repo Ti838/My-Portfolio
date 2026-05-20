@@ -23,7 +23,7 @@ export default async function ProjectsPage() {
           </ScrollReveal>
 
           <div className="grid md:grid-cols-2 gap-10">
-            {projects.map((p, i) => (
+            {projects.map((p: any, i: number) => (
               <ScrollReveal key={p.id} delay={i * 100} direction="up">
                 <GlowCard className="glass-card p-10 flex flex-col gap-8 group h-full">
                   <div className="flex items-start justify-between gap-4">
