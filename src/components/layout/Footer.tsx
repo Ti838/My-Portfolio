@@ -3,18 +3,43 @@
 import Link from "next/link";
 import { useAdmin } from "@/components/admin/AdminProvider";
 import { Mail, ExternalLink, ArrowUpRight, Sparkles } from "lucide-react";
-import { FiGithub as GithubIcon, FiLinkedin as LinkedinIcon } from "react-icons/fi";
+import { SiCodeforces } from "react-icons/si";
+import { FaGithub, FaLinkedin, FaWhatsapp } from "react-icons/fa6";
 import LyricTicker from "@/components/ui/LyricTicker";
 import MagneticButton from "@/components/ui/MagneticButton";
 
 import { useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
-const iconMap: Record<string, any> = {
-  FiGithub: GithubIcon,
-  FiLinkedin: LinkedinIcon,
-  FiCode: ExternalLink,
-  FiMessageCircle: Mail,
+const socialBrandConfig: Record<string, { icon: any; color: string; hoverBg: string; shadowColor: string; accentColor: string }> = {
+  github: {
+    icon: FaGithub,
+    color: "group-hover:text-[#24292e] dark:group-hover:text-white",
+    hoverBg: "hover:bg-neutral-800/10 dark:hover:bg-white/10 hover:border-neutral-500/30",
+    shadowColor: "shadow-black/10 dark:shadow-white/5",
+    accentColor: "rgba(255, 255, 255, 0.15)",
+  },
+  linkedin: {
+    icon: FaLinkedin,
+    color: "group-hover:text-[#0077b5]",
+    hoverBg: "hover:bg-[#0077b5]/10 hover:border-[#0077b5]/30",
+    shadowColor: "shadow-[#0077b5]/20",
+    accentColor: "rgba(0, 119, 181, 0.15)",
+  },
+  codeforces: {
+    icon: SiCodeforces,
+    color: "group-hover:text-[#ff7400]",
+    hoverBg: "hover:bg-[#ff7400]/10 hover:border-[#ff7400]/30",
+    shadowColor: "shadow-[#ff7400]/20",
+    accentColor: "rgba(255, 116, 0, 0.15)",
+  },
+  whatsapp: {
+    icon: FaWhatsapp,
+    color: "group-hover:text-[#25d366]",
+    hoverBg: "hover:bg-[#25d366]/10 hover:border-[#25d366]/30",
+    shadowColor: "shadow-[#25d366]/20",
+    accentColor: "rgba(37, 211, 102, 0.15)",
+  },
 };
 
 export default function Footer({ socialLinks = [], tagline }: { socialLinks?: any[]; tagline?: string }) {
@@ -152,43 +177,64 @@ export default function Footer({ socialLinks = [], tagline }: { socialLinks?: an
       <LyricTicker />
 
       {/* Bottom bar */}
-      <div className="max-w-[1400px] mx-auto px-6 pt-8 pb-12 border-t border-ethereal-border flex flex-col md:flex-row items-center justify-between gap-6">
-        <div className="flex items-center gap-8">
-          {socialLinks.map((social: any) => (
-              <a
-              key={social.label}
-              href={social.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="font-sans text-xs uppercase tracking-widest text-ethereal-text-2 hover:text-ethereal-text-1 transition-colors flex items-center gap-1.5"
-            >
-              {(() => {
-                const Icon = iconMap[social.icon] 
-                  || (social.label.toLowerCase().includes('github') ? GithubIcon : null)
-                  || (social.label.toLowerCase().includes('linkedin') ? LinkedinIcon : null)
-                  || (social.label.toLowerCase().includes('whatsapp') ? Mail : null)
-                  || ExternalLink;
-                
-                return <Icon size={14} className="mr-1" />;
-              })()}
-              {social.label}
-              <ArrowUpRight size={10} />
-            </a>
-          ))}
+      <div className="max-w-[1200px] mx-auto px-6 pt-12 pb-16 flex flex-col items-center gap-10">
+        
+        {/* Social Links Cards Grid */}
+        <div className="flex flex-wrap justify-center gap-4 md:gap-6 w-full relative z-10">
+          {socialLinks.map((social: any) => {
+            const key = social.label.toLowerCase();
+            const config = socialBrandConfig[key] || {
+              icon: ExternalLink,
+              color: "group-hover:text-ethereal-accent",
+              hoverBg: "hover:bg-ethereal-accent/10 hover:border-ethereal-accent/30",
+              shadowColor: "shadow-ethereal-accent/10",
+              accentColor: "rgba(212, 91, 69, 0.05)",
+            };
+            const BrandIcon = config.icon;
+
+            return (
+              <motion.a
+                key={social.label}
+                href={social.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                whileHover={{ y: -6, scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className={`flex items-center gap-3.5 px-6 py-4 rounded-2xl bg-white/[0.02] border border-white/5 backdrop-blur-md transition-all duration-300 shadow-md ${config.hoverBg} group`}
+                style={{
+                  boxShadow: `0 8px 30px -10px ${config.accentColor.replace('0.15', '0.08')}`
+                }}
+              >
+                <BrandIcon size={18} className={`text-ethereal-text-3 transition-colors duration-300 ${config.color}`} />
+                <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-ethereal-text-2 group-hover:text-ethereal-text-1 font-bold transition-colors">
+                  {social.label}
+                </span>
+                <ArrowUpRight size={11} className="text-ethereal-text-3 opacity-30 group-hover:opacity-100 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all" />
+              </motion.a>
+            );
+          })}
         </div>
 
-        <div className="flex items-center gap-6">
-          {isAdmin && (
-            <Link
-              href="/admin/dashboard"
-              className="font-mono text-[10px] uppercase tracking-widest text-ethereal-accent hover:opacity-70 transition-opacity"
-            >
-              Admin ↗
-            </Link>
-          )}
-          <Link href="/admin" className="font-mono text-[10px] text-ethereal-text-3 uppercase tracking-widest hover:text-ethereal-text-2 transition-colors">
-            © {new Date().getFullYear()} Timon Biswas. Handcrafted.
+        {/* Ambient Gradient Background Glow */}
+        <div className="relative w-full border-t border-ethereal-border/30 pt-10 flex flex-col md:flex-row items-center justify-between gap-6">
+          <div className="absolute inset-x-0 -top-24 h-48 bg-radial-gradient from-ethereal-accent/5 to-transparent blur-3xl pointer-events-none -z-10" />
+
+          {/* Copyright & Handcrafted signature */}
+          <Link href="/admin" className="font-mono text-[9px] text-ethereal-text-3 uppercase tracking-[0.15em] hover:text-ethereal-text-2 transition-colors">
+            © {new Date().getFullYear()} Timon Biswas · Handcrafted with ❤️ in Bangladesh
           </Link>
+
+          {/* Admin link */}
+          <div className="flex items-center gap-4">
+            {isAdmin && (
+              <Link
+                href="/admin/dashboard"
+                className="font-mono text-[9px] uppercase tracking-[0.15em] text-ethereal-accent hover:opacity-75 transition-opacity bg-ethereal-accent/5 border border-ethereal-accent/20 px-4 py-2 rounded-full"
+              >
+                Admin Area ↗
+              </Link>
+            )}
+          </div>
         </div>
       </div>
     </footer>
