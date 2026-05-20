@@ -12,6 +12,7 @@ interface Project {
   techStack: string[];
   githubUrl?: string;
   liveUrl?: string;
+  featured?: boolean;
 }
 
 // Pick an icon based on tech stack keywords
@@ -36,7 +37,7 @@ function getAccentColor(project: Project) {
 }
 
 export default function InteractiveProjectMockups({ projects }: { projects: Project[] }) {
-  const allProjects = projects.filter(p => p.featured !== false);
+  const allProjects = projects.length > 0 ? projects : [];
   const [activeIdx, setActiveIdx] = useState(0);
   const tabsRef = useRef<HTMLDivElement>(null);
   const currentProject = allProjects[activeIdx] || allProjects[0];
