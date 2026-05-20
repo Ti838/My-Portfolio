@@ -87,10 +87,12 @@ export default function Hero({ personalInfo }: { personalInfo?: any }) {
       <BackgroundSketches />
       <DraggableStickers />
       {/* Subtle radial glow */}
-      <div
-        aria-hidden
-        className="absolute top-1/2 right-0 w-[600px] h-[600px] -translate-y-1/2 translate-x-1/4 rounded-full opacity-[0.04] bg-ethereal-accent blur-3xl pointer-events-none"
-      />
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div
+          aria-hidden
+          className="absolute top-1/2 right-0 w-[600px] h-[600px] -translate-y-1/2 translate-x-1/4 rounded-full opacity-[0.04] bg-ethereal-accent blur-3xl"
+        />
+      </div>
 
       <div className="relative max-w-[1400px] mx-auto px-6 w-full">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center min-h-[85vh]">
@@ -119,7 +121,7 @@ export default function Hero({ personalInfo }: { personalInfo?: any }) {
                 <span className="absolute -top-8 -left-2 font-handwriting text-2xl text-ethereal-accent/70 rotate-[-3deg] select-none">
                   {firstName} :)
                 </span>
-                <h1 className="font-display font-bold text-ethereal-text-1 leading-[0.9] tracking-tighter text-[clamp(3.5rem,9vw,7.5rem)]">
+                <h1 className="font-display font-bold text-ethereal-text-1 leading-[0.9] tracking-tighter text-[clamp(2.5rem,8vw,7.5rem)]">
                   <span className="block">{firstName}</span>
                   <span className="block italic text-ethereal-text-2 text-[0.85em]">{lastName}</span>
                 </h1>
@@ -224,13 +226,13 @@ export default function Hero({ personalInfo }: { personalInfo?: any }) {
               </div>
 
               {/* Sticker tags scattered around */}
-              <div className="absolute -top-4 -right-6 bg-ethereal-accent/90 text-white font-mono text-[9px] uppercase tracking-widest px-2 py-1 rounded rotate-[4deg] shadow-lg">
+              <div className="absolute -top-4 -right-2 md:-right-6 bg-ethereal-accent/90 text-white font-mono text-[9px] uppercase tracking-widest px-2 py-1 rounded rotate-[4deg] shadow-lg">
                 AI Dev
               </div>
-              <div className="absolute -bottom-3 -left-6 bg-white text-gray-700 font-handwriting text-sm px-2 py-1 rounded shadow rotate-[-3deg]">
+              <div className="absolute -bottom-3 -left-2 md:-left-6 bg-white text-gray-700 font-handwriting text-sm px-2 py-1 rounded shadow rotate-[-3deg]">
                 ICPC 2024
               </div>
-              <div className="absolute top-1/2 -right-8 bg-[var(--bg-elevated)] border border-white/10 text-ethereal-text-2 font-mono text-[9px] uppercase tracking-widest px-2 py-1 rounded rotate-[2deg] shadow">
+              <div className="absolute top-1/2 -right-4 md:-right-8 bg-[var(--bg-elevated)] border border-white/10 text-ethereal-text-2 font-mono text-[9px] uppercase tracking-widest px-2 py-1 rounded rotate-[2deg] shadow">
                 SMUCT
               </div>
             </motion.div>

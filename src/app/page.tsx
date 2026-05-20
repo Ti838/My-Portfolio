@@ -45,7 +45,7 @@ export default async function HomePage() {
       {/* // 01. ABOUT ME */}
       {/* ══════════════════════════════════════════════════════════════ */}
       <EditableSection eventKey="bio" label="About Section">
-        <section id="about" className="py-32 md:py-48 px-6 relative overflow-hidden">
+        <section id="about" className="py-16 md:py-24 px-6 relative overflow-hidden">
           <div className="max-w-[1400px] mx-auto">
             <div className="grid lg:grid-cols-12 gap-16 items-center">
               {/* Left: Content */}
@@ -126,7 +126,7 @@ export default async function HomePage() {
       {/* // 02. SKILLS */}
       {/* ══════════════════════════════════════════════════════════════ */}
       <EditableSection eventKey="skills" label="Skills Section">
-        <section id="skills" className="py-32 md:py-48 px-6 bg-white/[0.01]">
+        <section id="skills" className="py-16 md:py-24 px-6 bg-white/[0.01]">
           <div className="max-w-[1400px] mx-auto">
             <ScrollReveal>
               <div className="flex flex-col items-center text-center space-y-4 mb-20">
@@ -180,7 +180,7 @@ export default async function HomePage() {
       {/* // 03. PROJECTS */}
       {/* ══════════════════════════════════════════════════════════════ */}
       <EditableSection eventKey="projects" label="Projects Section">
-        <section id="projects" className="py-32 md:py-48 px-6">
+        <section id="projects" className="py-16 md:py-24 px-6">
           <div className="max-w-[1400px] mx-auto">
             <div className="flex flex-col md:flex-row items-start md:items-end justify-between gap-8 mb-20">
               <ScrollReveal direction="left">
@@ -242,7 +242,7 @@ export default async function HomePage() {
       {/* // 04. EXPERIENCE */}
       {/* ══════════════════════════════════════════════════════════════ */}
       <EditableSection eventKey="experience" label="Experience Section">
-        <section id="experience" className="py-32 md:py-48 px-6">
+        <section id="experience" className="py-16 md:py-24 px-6">
           <div className="max-w-[1400px] mx-auto">
             <ScrollReveal>
               <div className="flex flex-col items-center text-center space-y-4 mb-20">
@@ -297,7 +297,7 @@ export default async function HomePage() {
       {/* // 05. EDUCATION */}
       {/* ══════════════════════════════════════════════════════════════ */}
       <EditableSection eventKey="education" label="Education Section">
-        <section id="education" className="py-32 md:py-48 px-6 bg-white/[0.01]">
+        <section id="education" className="py-16 md:py-24 px-6 bg-white/[0.01]">
           <div className="max-w-[1400px] mx-auto">
             <ScrollReveal>
               <div className="flex flex-col items-center text-center space-y-4 mb-20">
@@ -339,7 +339,7 @@ export default async function HomePage() {
       {/* ACHIEVEMENTS */}
       {/* ══════════════════════════════════════════════════════════════ */}
       <EditableSection eventKey="achievements" label="Achievements">
-        <section id="achievements" className="py-32 md:py-48 px-6">
+        <section id="achievements" className="py-16 md:py-24 px-6">
           <div className="max-w-[1400px] mx-auto">
             <ScrollReveal>
               <div className="flex flex-col items-center text-center space-y-4 mb-20">
@@ -358,7 +358,7 @@ export default async function HomePage() {
       {/* // 09. CONTACT */}
       {/* ══════════════════════════════════════════════════════════════ */}
       <EditableSection eventKey="contact" label="Contact Section">
-        <section id="contact" className="py-32 md:py-48 px-6 relative overflow-hidden">
+        <section id="contact" className="py-16 md:py-24 px-6 relative overflow-hidden">
           {/* Background Aura */}
           <div className="absolute inset-0 -z-10 overflow-hidden">
             <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[1000px] h-[600px] bg-accent/5 rounded-full blur-[150px]" />

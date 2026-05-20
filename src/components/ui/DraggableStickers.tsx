@@ -97,14 +97,13 @@ export default function DraggableStickers() {
               left: sticker.x,
               top: sticker.y,
               rotate: sticker.rotate,
-              backgroundColor: sticker.bgColor,
-              color: sticker.textColor,
-              borderColor: sticker.borderColor,
+              color: sticker.bgColor, // Using the vibrant bg color as the text color
+              textShadow: "0px 4px 12px rgba(0,0,0,0.15)",
             }}
-            className="pointer-events-auto cursor-grab active:cursor-grabbing flex items-center gap-2 px-4 py-2 rounded-xl border-4 shadow-lg shadow-black/30 font-handwriting select-none"
+            className="pointer-events-auto cursor-grab active:cursor-grabbing flex items-center gap-2 font-handwriting select-none"
           >
-            <Icon size={20} strokeWidth={2.5} />
-            <span className="text-xl md:text-2xl pt-0.5 tracking-wide">{sticker.text}</span>
+            <Icon size={28} strokeWidth={2.5} />
+            <span className="text-2xl md:text-3xl pt-0.5 tracking-wide font-bold">{sticker.text}</span>
           </motion.div>
         );
       })}

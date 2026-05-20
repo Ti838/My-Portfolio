@@ -1,9 +1,9 @@
 export default function BackgroundSketches() {
   return (
-    <div className="absolute inset-0 pointer-events-none overflow-hidden z-0">
+    <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
       {/* 1. Competitive Programming / ICPC Sketch (Top Right) */}
       <svg
-        className="absolute -top-10 -right-10 w-[500px] h-[500px] opacity-[0.03] text-white rotate-12"
+        className="absolute -top-10 -right-10 w-[500px] h-[500px] opacity-10 text-text-1 rotate-12"
         viewBox="0 0 200 200"
         fill="none"
         stroke="currentColor"
@@ -29,7 +29,7 @@ export default function BackgroundSketches() {
 
       {/* 2. Abstract Code Blocks & AI (Center Left) */}
       <svg
-        className="absolute top-1/3 -left-32 w-[500px] h-[500px] opacity-[0.02] text-white -rotate-6"
+        className="absolute top-1/3 -left-32 w-[500px] h-[500px] opacity-10 text-text-1 -rotate-6"
         viewBox="0 0 200 200"
         fill="none"
         stroke="currentColor"
@@ -51,7 +51,7 @@ export default function BackgroundSketches() {
 
       {/* 3. Music Notes & Vocalist Graph (Bottom Right) */}
       <svg
-        className="absolute -bottom-10 right-10 w-[450px] h-[450px] opacity-[0.03] text-white rotate-6"
+        className="absolute -bottom-10 right-10 w-[450px] h-[450px] opacity-10 text-text-1 rotate-6"
         viewBox="0 0 200 200"
         fill="none"
         stroke="currentColor"
@@ -85,7 +85,7 @@ export default function BackgroundSketches() {
       
       {/* 4. Binary Tree Structure (Top Center) */}
       <svg
-        className="absolute top-10 left-1/2 -translate-x-1/2 w-[700px] h-[300px] opacity-[0.02] text-white"
+        className="absolute top-10 left-1/2 -translate-x-1/2 w-[700px] h-[300px] opacity-10 text-text-1"
         viewBox="0 0 300 100"
         fill="none"
         stroke="currentColor"

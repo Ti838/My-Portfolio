@@ -66,9 +66,9 @@ export default function StackedBeliefs() {
   });
 
   // Cards start deep inside the envelope (y: 200 to 250) and slide up to reveal
-  const card1Y = useTransform(scrollYProgress, [0, 0.4], [250, -40]); // Lined paper (back)
-  const card2Y = useTransform(scrollYProgress, [0, 0.6], [280, 20]);  // Spiral (middle)
-  const card3Y = useTransform(scrollYProgress, [0, 0.8], [300, 80]); // Grid (front)
+  const card1Y = useTransform(scrollYProgress, [0.1, 0.45], [250, -40]); // Lined paper (back)
+  const card2Y = useTransform(scrollYProgress, [0.15, 0.65], [280, 20]);  // Spiral (middle)
+  const card3Y = useTransform(scrollYProgress, [0.2, 0.85], [300, 80]); // Grid (front)
 
   const transforms = [
     { y: card1Y, rotate: "-2deg" },
@@ -77,7 +77,7 @@ export default function StackedBeliefs() {
   ];
 
   return (
-    <section ref={containerRef} className="py-32 md:py-48 px-6 relative overflow-hidden h-[180vh]">
+    <section ref={containerRef} className="py-16 md:py-24 px-6 relative overflow-hidden h-[130vh]">
       <div className="sticky top-20 max-w-[1400px] mx-auto">
         {/* Section header */}
         <div className="flex flex-col items-center text-center mb-12">

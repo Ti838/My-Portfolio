@@ -225,7 +225,7 @@ export default function InteractiveProjectMockups({ projects }: { projects: Proj
           animate={{ opacity: 1, x: -140, y: 100, rotate: -4 }}
           whileHover={{ rotate: -2, zIndex: 30, scale: 1.03 }}
           transition={{ type: "spring", stiffness: 80, damping: 15 }}
-          className="absolute z-15 w-[260px] h-[340px] md:w-[320px] md:h-[400px] left-2 md:left-10 bottom-12 cursor-pointer origin-bottom-left"
+          className="hidden md:block absolute z-15 w-[260px] h-[340px] md:w-[320px] md:h-[400px] left-2 md:left-10 bottom-12 cursor-pointer origin-bottom-left"
         >
           {renderMockup(currentProject.id, "left")}
         </motion.div>
@@ -321,7 +321,7 @@ export default function InteractiveProjectMockups({ projects }: { projects: Proj
           animate={{ opacity: 1, x: 140, y: 100, rotate: 6 }}
           whileHover={{ rotate: 3, zIndex: 30, scale: 1.03 }}
           transition={{ type: "spring", stiffness: 80, damping: 15 }}
-          className="absolute z-15 w-[210px] h-[360px] md:w-[260px] md:h-[440px] right-2 md:right-10 bottom-6 cursor-pointer origin-bottom-right"
+          className="hidden md:block absolute z-15 w-[210px] h-[360px] md:w-[260px] md:h-[440px] right-2 md:right-10 bottom-6 cursor-pointer origin-bottom-right"
         >
           {renderMockup(currentProject.id, "right")}
         </motion.div>

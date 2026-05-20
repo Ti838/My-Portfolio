@@ -74,7 +74,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   ]);
 
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning className="overflow-x-hidden">
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
@@ -96,7 +96,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
                 <VerticalStamps position="right" />
                 
                 {/* Wrap main layout content in padding so it doesn't overlap with the side stamps (w-16 on md) */}
-                <div className="w-full flex-1 mx-auto max-w-full md:px-16 overflow-x-hidden">
+                <div className="w-full flex-1 mx-auto max-w-full md:px-16">
                   <HeaderStack personalInfo={personalInfo} />
                   <AdminModalsRenderer 
                     personalInfo={personalInfo} 
