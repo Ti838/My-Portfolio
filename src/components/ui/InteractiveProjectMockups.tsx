@@ -176,31 +176,49 @@ export default function InteractiveProjectMockups({ projects }: { projects: Proj
 
   // Helper: determine the mockup category for a project (single source of truth)
   const getCategory = (project: Project): "mobile" | "terminal" | "browser" => {
-    const techLower = project.techStack.map(t => t.toLowerCase());
+    const idLower = project.id.toLowerCase();
     const titleLower = project.title.toLowerCase();
+    const techLower = project.techStack.map(t => t.toLowerCase());
 
-    // Mobile: uses Android SDK, Dart/Flutter, explicit mobile keyword
-    const isMobile =
-      techLower.some(t => t === "dart" || t === "flutter" || t === "android sdk" || t === "android") ||
+    // 1. Mobile Apps (Android/Flutter/Dart/Kotlin/iOS)
+    if (
+      idLower.includes("mobile") ||
       titleLower.includes("mobile") ||
-      techLower.some(t => t.includes("flutter") || t.includes("android"));
+      techLower.some(t => t === "flutter" || t === "dart" || t === "android" || t === "android sdk" || t === "kotlin" || t === "swift")
+    ) {
+      return "mobile";
+    }
 
-    if (isMobile) return "mobile";
+    // 2. Web Technologies Check (used to resolve ambiguous/hybrid stacks)
+    const hasWebTech = techLower.some(t => 
+      t === "javascript" || 
+      t === "typescript" || 
+      t === "html" || 
+      t === "css" || 
+      t === "react" || 
+      t === "next.js" || 
+      t === "php" ||
+      t === "full-stack"
+    );
 
-    // Terminal/CLI: Python, C++ (exact), AI/ML specific, bot, compiler
+    // 3. Terminal/CLI Programs (Python, C/C++, assembly, compiler tools, or competitive programming scripts)
     const isTerminal =
-      (techLower.some(t => t === "python" || t === "c++" || t === "c" || t === "ai" || t === "artificial intelligence" || t === "machine learning") ||
-      techLower.some(t => t.includes("python") || t.includes("c++")) ||
-      titleLower.includes("bot") ||
-      titleLower.includes("compiler") ||
+      idLower.includes("cli") ||
       titleLower.includes("cli") ||
+      idLower.includes("terminal") ||
       titleLower.includes("terminal") ||
-      titleLower.includes("jerry")) &&
-      !titleLower.includes("bank");
+      idLower.includes("compiler") ||
+      titleLower.includes("compiler") ||
+      idLower.includes("bank-transaction") ||
+      titleLower.includes("bank transaction") ||
+      techLower.some(t => t === "c" || t === "c++" || t === "python" || t === "assembly");
 
-    if (isTerminal) return "terminal";
+    // If it's a CLI program, or a backend script lacking visual web front-ends
+    if (isTerminal && !(hasWebTech && !idLower.includes("bank-transaction") && !titleLower.includes("bank transaction"))) {
+      return "terminal";
+    }
 
-    // Everything else: web
+    // 4. Default: Browser/Web UI
     return "browser";
   };
 
