@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { 
   Globe, 
@@ -17,7 +17,8 @@ import {
   Monitor,
   Smartphone
 } from "lucide-react";
-import { FiGithub } from "react-icons/fi";
+// Re-import icons correctly
+import { FiGithub as FiGithubIcon } from "react-icons/fi";
 
 interface Project {
   id: string;
@@ -40,13 +41,13 @@ function getProjectIcon(project: Project) {
 // Get dynamic modern gradients/accents for simulated screens
 function getAccentColor(project: Project) {
   const stack = project.techStack.join(" ").toLowerCase() + " " + project.title.toLowerCase();
-  if (project.id.toLowerCase().includes("philomedis")) return { base: "#e87a5d", glow: "rgba(232, 122, 93, 0.12)", gradient: "from-orange-500/10 to-red-500/5" };
-  if (stack.includes("guard") || stack.includes("safe") || stack.includes("shield")) return { base: "#10b981", glow: "rgba(16, 185, 129, 0.12)", gradient: "from-emerald-500/10 to-teal-500/5" };
-  if (stack.includes("ai") || stack.includes("bot") || stack.includes("voice") || stack.includes("jerry")) return { base: "#a855f7", glow: "rgba(168, 85, 247, 0.12)", gradient: "from-purple-500/10 to-indigo-500/5" };
-  if (stack.includes("java") || stack.includes("android") || stack.includes("hostel")) return { base: "#f59e0b", glow: "rgba(245, 158, 11, 0.12)", gradient: "from-amber-500/10 to-yellow-500/5" };
-  if (stack.includes("next") || stack.includes("react") || stack.includes("portfolio")) return { base: "#0ea5e9", glow: "rgba(14, 165, 233, 0.12)", gradient: "from-sky-500/10 to-blue-500/5" };
-  if (stack.includes("python") || stack.includes("django")) return { base: "#3b82f6", glow: "rgba(59, 130, 246, 0.12)", gradient: "from-blue-500/10 to-indigo-500/5" };
-  return { base: "#6366f1", glow: "rgba(99, 102, 241, 0.12)", gradient: "from-indigo-500/10 to-purple-500/5" };
+  if (project.id.toLowerCase().includes("philomedis")) return { base: "#e87a5d", glow: "rgba(232, 122, 93, 0.14)", gradient: "from-orange-500/10 to-red-500/5" };
+  if (stack.includes("guard") || stack.includes("safe") || stack.includes("shield")) return { base: "#10b981", glow: "rgba(16, 185, 129, 0.14)", gradient: "from-emerald-500/10 to-teal-500/5" };
+  if (stack.includes("ai") || stack.includes("bot") || stack.includes("voice") || stack.includes("jerry")) return { base: "#a855f7", glow: "rgba(168, 85, 247, 0.14)", gradient: "from-purple-500/10 to-indigo-500/5" };
+  if (stack.includes("java") || stack.includes("android") || stack.includes("hostel")) return { base: "#f59e0b", glow: "rgba(245, 158, 11, 0.14)", gradient: "from-amber-500/10 to-yellow-500/5" };
+  if (stack.includes("next") || stack.includes("react") || stack.includes("portfolio")) return { base: "#0ea5e9", glow: "rgba(14, 165, 233, 0.14)", gradient: "from-sky-500/10 to-blue-500/5" };
+  if (stack.includes("python") || stack.includes("django")) return { base: "#3b82f6", glow: "rgba(59, 130, 246, 0.14)", gradient: "from-blue-500/10 to-indigo-500/5" };
+  return { base: "#6366f1", glow: "rgba(99, 102, 241, 0.14)", gradient: "from-indigo-500/10 to-purple-500/5" };
 }
 
 // Get modern category tags for color badge styling
@@ -54,7 +55,7 @@ const getTechColorClass = (tech: string) => {
   const t = tech.toLowerCase();
   if (t.includes("java") && !t.includes("javascript")) return "bg-orange-500/10 border-orange-500/20 text-orange-600 dark:text-orange-400";
   if (t.includes("dart") || t.includes("flutter")) return "bg-cyan-500/10 border-cyan-500/20 text-cyan-600 dark:text-cyan-400";
-  if (t.includes("javascript") || t.includes("js")) return "bg-yellow-500/10 border-yellow-500/20 text-yellow-600 dark:text-yellow-500";
+  if (t.includes("javascript") || t.includes("js")) return "bg-yellow-500/10 border-yellow-500/20 text-yellow-600 dark:text-yellow-550";
   if (t.includes("python")) return "bg-blue-500/10 border-blue-500/20 text-blue-600 dark:text-blue-400";
   if (t.includes("php")) return "bg-indigo-500/10 border-indigo-500/20 text-indigo-600 dark:text-indigo-400";
   if (t.includes("react") || t.includes("next")) return "bg-sky-500/10 border-sky-500/20 text-sky-600 dark:text-sky-400";
@@ -65,6 +66,107 @@ const getTechColorClass = (tech: string) => {
   if (t.includes("ai") || t.includes("machine learning")) return "bg-purple-500/10 border-purple-500/20 text-purple-600 dark:text-purple-400";
   return "bg-stone-500/10 border-stone-500/20 text-stone-600 dark:text-stone-300";
 };
+
+// 3D perspective mouse-tilt wrapper
+function TiltCard({ 
+  children, 
+  project 
+}: { 
+  children: React.ReactNode; 
+  project: Project; 
+}) {
+  const [rotateX, setRotateX] = useState(0);
+  const [rotateY, setRotateY] = useState(0);
+  const [glareX, setGlareX] = useState(0);
+  const [glareY, setGlareY] = useState(0);
+  const [isHovered, setIsHovered] = useState(false);
+  const [isTouchDevice, setIsTouchDevice] = useState(false);
+
+  // Disable 3D tilt calculations on mobile touch interfaces to keep scrolling fluid
+  useEffect(() => {
+    const checkTouch = () => {
+      setIsTouchDevice(
+        "ontouchstart" in window || 
+        navigator.maxTouchPoints > 0
+      );
+    };
+    checkTouch();
+  }, []);
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (isTouchDevice) return;
+    const card = e.currentTarget;
+    const box = card.getBoundingClientRect();
+    const x = e.clientX - box.left;
+    const y = e.clientY - box.top;
+    
+    // Normalize positioning centered around origin
+    const percentX = (x / box.width) - 0.5;
+    const percentY = (y / box.height) - 0.5;
+    
+    // Tilt limit
+    const maxTilt = 8;
+    setRotateX(-percentY * maxTilt);
+    setRotateY(percentX * maxTilt);
+    
+    // Cursor glare position percentage
+    setGlareX((x / box.width) * 100);
+    setGlareY((y / box.height) * 100);
+  };
+
+  const handleMouseEnter = () => {
+    if (isTouchDevice) return;
+    setIsHovered(true);
+  };
+
+  const handleMouseLeave = () => {
+    setIsHovered(false);
+    setRotateX(0);
+    setRotateY(0);
+  };
+
+  const accent = getAccentColor(project);
+
+  return (
+    <motion.div
+      layout
+      className="relative w-full rounded-[2.3rem] overflow-hidden"
+      style={{ perspective: 1000 }}
+    >
+      <motion.div
+        onMouseMove={handleMouseMove}
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
+        animate={{
+          rotateX: isHovered ? rotateX : 0,
+          rotateY: isHovered ? rotateY : 0,
+          scale: isHovered ? 1.015 : 1,
+        }}
+        transition={{ type: "spring", stiffness: 260, damping: 20 }}
+        style={{
+          transformStyle: "preserve-3d",
+          boxShadow: isHovered 
+            ? `0 25px 50px -12px ${accent.glow}, 0 0 15px -3px ${accent.base}22`
+            : `0 15px 30px -15px ${accent.glow}`,
+        }}
+        className="w-full h-full relative group/device"
+      >
+        {children}
+
+        {/* Ambient Glass Glow spotlight mask overlay */}
+        {!isTouchDevice && (
+          <div
+            className="absolute inset-0 pointer-events-none transition-opacity duration-300 opacity-0 z-30"
+            style={{
+              opacity: isHovered ? 1 : 0,
+              background: `radial-gradient(circle at ${glareX}% ${glareY}%, rgba(255, 255, 255, 0.08), transparent 45%)`,
+            }}
+          />
+        )}
+      </motion.div>
+    </motion.div>
+  );
+}
 
 export default function InteractiveProjectMockups({ projects }: { projects: Project[] }) {
   const [searchQuery, setSearchQuery] = useState("");
@@ -116,14 +218,11 @@ export default function InteractiveProjectMockups({ projects }: { projects: Proj
     const accent = getAccentColor(project);
     const Icon = getProjectIcon(project);
 
-    // 1. SLEEK, HIGHLY STYLISH SMARTPHONE MOCKUP
+    // 1. SMARTPHONE MOCKUP CARD (Option 1)
     if (type === "mobile") {
       return (
-        <motion.div 
-          layout
-          className="relative w-full h-[380px] bg-[#0d0d0e] rounded-[2.3rem] border-2 border-zinc-800 p-2 shadow-2xl flex flex-col group/device hover:border-zinc-700/80 transition-all duration-300 overflow-hidden"
-          style={{ boxShadow: `0 15px 30px -15px ${accent.glow}` }}
-        >
+        <div className="relative w-full h-[380px] bg-[#0d0d0e] rounded-[2.3rem] border-2 border-zinc-800 p-2 flex flex-col overflow-hidden">
+          
           {/* Bezel Camera Punchhole (Dynamic Island Style) */}
           <div className="absolute top-1.5 left-1/2 -translate-x-1/2 w-20 h-3.5 bg-black rounded-full z-20 flex items-center justify-between px-2.5 border border-zinc-900 shadow-inner">
             <span className="w-1 h-1 rounded-full bg-blue-600/60" />
@@ -137,7 +236,7 @@ export default function InteractiveProjectMockups({ projects }: { projects: Proj
           <div className="absolute right-[-2px] top-20 w-[2px] h-10 bg-zinc-700/60 rounded-l" />
 
           {/* Internal Smartphone Screen */}
-          <div className="flex-1 bg-[#050506] rounded-[1.9rem] overflow-hidden p-3.5 relative flex flex-col justify-between border border-zinc-950">
+          <div className="flex-1 bg-[#050506] rounded-[1.9rem] overflow-hidden p-3.5 relative flex flex-col justify-between border border-zinc-955">
             {/* Soft Ambient Mesh */}
             <div className={`absolute inset-0 bg-gradient-to-br ${accent.gradient} opacity-25 pointer-events-none`} />
 
@@ -203,9 +302,9 @@ export default function InteractiveProjectMockups({ projects }: { projects: Proj
                   href={project.githubUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex-1 flex items-center justify-center gap-1 bg-zinc-900 hover:bg-zinc-800 text-zinc-300 font-mono text-[8.5px] uppercase tracking-wider py-2 rounded-lg border border-zinc-850 hover:text-white transition-all"
+                  className="flex-1 flex items-center justify-center gap-1 bg-zinc-900 hover:bg-zinc-850 text-zinc-300 font-mono text-[8.5px] uppercase tracking-wider py-2 rounded-lg border border-zinc-850 hover:text-white transition-all"
                 >
-                  <FiGithub size={8} /> Code
+                  <FiGithubIcon size={10} /> Code
                 </a>
               )}
               {project.liveUrl && (
@@ -224,18 +323,15 @@ export default function InteractiveProjectMockups({ projects }: { projects: Proj
             {/* Bottom iOS Home Indicator */}
             <div className="w-16 h-0.5 bg-zinc-800 rounded-full mx-auto mt-2 flex-shrink-0" />
           </div>
-        </motion.div>
+        </div>
       );
     }
 
-    // 2. SLEEK BROWSER MOCKUP CARD
+    // 2. BROWSER MOCKUP CARD (Option 1)
     if (type === "browser") {
       return (
-        <motion.div
-          layout
-          className="relative w-full h-[380px] bg-stone-50 dark:bg-[#0c0c0d] rounded-2xl border border-stone-200 dark:border-zinc-800/80 p-3 shadow-2xl flex flex-col group/device hover:border-stone-300 dark:hover:border-zinc-700/80 transition-all duration-300 overflow-hidden"
-          style={{ boxShadow: `0 15px 30px -15px ${accent.glow}` }}
-        >
+        <div className="relative w-full h-[380px] bg-stone-50 dark:bg-[#0c0c0d] rounded-2xl border border-stone-200 dark:border-zinc-800/80 p-3 flex flex-col overflow-hidden">
+          
           {/* Header Chrome */}
           <div className="flex items-center justify-between border-b border-stone-200 dark:border-zinc-900 pb-2 mb-2">
             <div className="flex items-center gap-1">
@@ -305,7 +401,7 @@ export default function InteractiveProjectMockups({ projects }: { projects: Proj
                     rel="noopener noreferrer"
                     className="flex items-center gap-1 font-mono text-[8.5px] uppercase tracking-wider text-stone-600 hover:text-stone-900 dark:text-zinc-450 dark:hover:text-white transition-colors"
                   >
-                    <FiGithub size={8} /> Source
+                    <FiGithubIcon size={10} /> Source
                   </a>
                 )}
                 {project.liveUrl && (
@@ -322,17 +418,14 @@ export default function InteractiveProjectMockups({ projects }: { projects: Proj
               </div>
             </div>
           </div>
-        </motion.div>
+        </div>
       );
     }
 
-    // 3. SLEEK TERMINAL MOCKUP CARD
+    // 3. TERMINAL MOCKUP CARD (Option 1)
     return (
-      <motion.div
-        layout
-        className="relative w-full h-[380px] bg-[#070708] rounded-2xl border border-zinc-800/80 p-3 shadow-2xl flex flex-col group/device hover:border-zinc-700/80 transition-all duration-300 overflow-hidden font-mono"
-        style={{ boxShadow: `0 15px 30px -15px ${accent.glow}` }}
-      >
+      <div className="relative w-full h-[380px] bg-[#070708] rounded-2xl border border-zinc-800/80 p-3 flex flex-col overflow-hidden">
+        
         {/* Terminal Header */}
         <div className="flex items-center justify-between border-b border-zinc-900 pb-2 mb-2">
           <div className="flex items-center gap-1">
@@ -421,7 +514,7 @@ export default function InteractiveProjectMockups({ projects }: { projects: Proj
             </div>
           </div>
         </div>
-      </motion.div>
+      </div>
     );
   };
 
@@ -515,27 +608,15 @@ export default function InteractiveProjectMockups({ projects }: { projects: Proj
             </button>
           </div>
         ) : (
-          <motion.div 
-            layout
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
-          >
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             <AnimatePresence mode="popLayout">
               {filteredProjects.map((project, idx) => (
-                <motion.div
-                  key={project.id}
-                  layout
-                  initial={{ opacity: 0, scale: 0.95 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.95 }}
-                  transition={{ duration: 0.3 }}
-                  whileHover={{ y: -4 }}
-                  className="flex flex-col relative"
-                >
+                <TiltCard key={project.id} project={project}>
                   {renderEmbeddedMockup(project, idx)}
-                </motion.div>
+                </TiltCard>
               ))}
             </AnimatePresence>
-          </motion.div>
+          </div>
         )}
 
       </div>
