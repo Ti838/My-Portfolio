@@ -203,22 +203,22 @@ export default function InteractiveProjectMockups({ projects }: { projects: Proj
 
     // 3. Terminal/CLI Programs (Python, C/C++, assembly, compiler tools, or competitive programming scripts)
     const isTerminal =
-      idLower.includes("cli") ||
+      (idLower.includes("cli") ||
       titleLower.includes("cli") ||
       idLower.includes("terminal") ||
       titleLower.includes("terminal") ||
       idLower.includes("compiler") ||
       titleLower.includes("compiler") ||
-      idLower.includes("bank-transaction") ||
-      titleLower.includes("bank transaction") ||
-      techLower.some(t => t === "c" || t === "c++" || t === "python" || t === "assembly");
+      techLower.some(t => t === "c" || t === "c++" || t === "python" || t === "assembly")) &&
+      !idLower.includes("bank") &&
+      !titleLower.includes("bank"); // Explicitly exclude financial web applications like Bank Transaction System
 
     // If it's a CLI program, or a backend script lacking visual web front-ends
-    if (isTerminal && !(hasWebTech && !idLower.includes("bank-transaction") && !titleLower.includes("bank transaction"))) {
+    if (isTerminal && !hasWebTech) {
       return "terminal";
     }
 
-    // 4. Default: Browser/Web UI
+    // 4. Default: Browser/Web UI (Website)
     return "browser";
   };
 
